@@ -1,0 +1,39 @@
+@startuml Models
+left to right direction
+class Question{
+    id : INTEGER
+    ..
+    chapter : SRING
+    questionText : STRING
+    difficulty : FLOAT
+    addTime : DATETIME
+    addPerson : STRING
+    type : STRING
+}
+
+class mutipleChoice{
+    id : INTEGER
+    ..
+    choice1 : STRING
+    choice2 : STRING
+    choice3 : STRING
+    choice4 : STRING
+    answer : STRING
+}
+
+class fillInTheBlanks{
+    id : INTEGER
+    ..
+    answer : STRING
+}
+
+class brifeAnswers{
+    id : INTEGER
+    ..
+    answer : STRING
+}
+
+Question::id *-- mutipleChoice::id
+Question::id *-- fillInTheBlanks::id
+Question::id *-- brifeAnswers::id
+@enduml
