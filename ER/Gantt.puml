@@ -1,0 +1,21 @@
+@startuml Gantt
+
+Project starts 2022-1-3
+then [Environment build] as [E] lasts 2 days
+then [ER of Database] as [ER] lasts 2 days
+then [Coding for version_1 of the Project] as [C] ends at 2022-1-28
+note bottom
+Basic function finished
+Basic framework built finished
+end note
+then [Take a rest] as [T] lasts 2 days
+then [Spring Festival] as [S] lasts 7 days
+-- phase two --
+then [Coding for version_2 of the Project] as [C2] lasts 30 days
+note bottom 
+Bug fixed and imporvement of function
+Client-Server test
+Deployment on Server
+end note
+[Back to School] as [B] happens at 2022-2-27
+@enduml
