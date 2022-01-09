@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}
+addQuestion
+{% endblock %}
+
+{% block content %}
+<form action="", novalidate>
+    {{form.hidden_tag()}}
+    {{form.type.label()}}<br/>
+    {{form.type}}
+    {{form.chapter.label()}}<br/>
+    {{form.chapter}}
+    {{form.questionText.label()}}<br/>
+    {{form.questionText}}
+    {% if form.type == '选择题' %}
+        {{form.choice1.label()}}<br/>
+        {{form.choice1}}
+        {{form.choice2.label()}}<br/>
+        {{form.choice2}}
+        {{form.choice3.label()}}<br/>
+        {{form.choice3}}
+        {{form.choice4.label()}}<br/>
+        {{form.choice4}}
+    {% endif %}
+    {{form.answer.label()}}<br/>
+    {{form.answer}}
+    {{form.difficulity.label()}}<br/>
+    {{form.difficulity}}
+    {{form.addTime.label()}}<br/>
+    {{form.addTime}}
+    {{form.addPerson.label()}}<br/>
+    {{form.addPerson}}
+    {{form.submit}}
+    
+
+</form>
+
+{% endblock %}
