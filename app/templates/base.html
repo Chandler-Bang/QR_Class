@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <nav>
+        <a href="{{url_for('index')}}">主页</a>
+        <a href="{{url_for('addQuestion')}}">添加题目</a>
+        <a href="{{url_for('generateQR')}}">生成二维码</a>
+        <a href="{{url_for('questionSelect')}}">题目选择</a>
+    </nav>
+    <hr>
+
+{% block content %}
+{% endblock%}
+</body>
+</html>
