@@ -6,26 +6,55 @@ addQuestion
 {% block content %}
 <form action="", novalidate>
     {{form.hidden_tag()}}
-    {{form.type.label()}}<br/>
-    {{form.type}}
-    {{form.chapter.label()}}<br/>
-    {{form.chapter}}
-    {{form.questionText.label()}}<br/>
-    {{form.questionText}}
-    {% if form.type == '选择题' %}
-        {{form.choice1.label()}}<br/>
-        {{form.choice1}}
-        {{form.choice2.label()}}<br/>
-        {{form.choice2}}
-        {{form.choice3.label()}}<br/>
-        {{form.choice3}}
-        {{form.choice4.label()}}<br/>
-        {{form.choice4}}
-    {% endif %}
-    {{form.answer.label()}}<br/>
-    {{form.answer}}
-    {{form.difficulity.label()}}<br/>
-    {{form.difficulity}}
+    <select name="" id="select">
+        <option value="选择题" selected>选择题</option>
+        <option value="填空题">填空题</option>
+        <option value="简答题">简答题</option>
+    </select>
+    <!-- <button onclick="removeHidden()">
+        填空题
+    </button><button onclick="removeHidden()">
+        简答题
+    </button> -->
+    <div>
+        {{form.chapter.label()}}<br/>
+        {{form.chapter}}
+    </div>
+    <div>
+        {{form.questionText.label()}}<br/>
+        {{form.questionText}}
+    </div>
+    <div id="choice">
+       <p>
+        {{form.choice1.label()}}
+        {{form.choice1}}<br/>
+       </p> 
+       <p>
+        {{form.choice2.label()}}
+        {{form.choice2}}<br/>
+       </p>
+       <p>
+        {{form.choice3.label()}}
+        {{form.choice3}}<br/>
+       </p>
+       <p>
+        {{form.choice4.label()}}
+        {{form.choice4}}<br/>
+       </p>
+      
+
+        
+
+    </div>
+    <div>
+        {{form.answer.label()}}<br/>
+        {{form.answer}}
+    </div>
+    <div>
+        {{form.difficulity.label()}}<br/>
+        {{form.difficulity}}
+    </div>
+    
     {{form.addTime.label()}}<br/>
     {{form.addTime}}
     {{form.addPerson.label()}}<br/>
@@ -34,5 +63,17 @@ addQuestion
     
 
 </form>
+<script>
 
+    var select = document.getElementById("select");
+    select.onclick=function(){
+        var optionIndex = select.selectedIndex;
+        var selected =  select.options[optionIndex].value;
+        if (selected === "选择题")
+            choice.style.display="block";
+        else 
+            choice.style.display="none";
+    }
+</script>
 {% endblock %}
+

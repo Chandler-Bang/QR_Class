@@ -6,7 +6,6 @@ from datetime import datetime
 
 
 class AddQuestionForm(FlaskForm):
-    type = SelectField(label='题目类型', choices=['选择题', '填空题',  '简答题'])
     chapter = StringField(label='章节')  # 有待完善
     questionText = StringField(label='题目正文', validators=[DataRequired()])
     choice1 = StringField(label='A')
