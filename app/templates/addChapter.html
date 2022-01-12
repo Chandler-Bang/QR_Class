@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}
+addChapter
+{% endblock %}
+
+
+{% block content %}
+<form action="" method="post">
+    {{form.hidden_tag()}}
+    <div>
+        {{form.chapter.label()}}
+        {{form.chapter}}<br/>
+    </div>
+    <div>
+        {{form.submit}}
+    </div>
+</form>
+<hr>
+显示已经添加的章节
+{% endblock %}

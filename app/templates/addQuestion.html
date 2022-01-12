@@ -4,62 +4,81 @@ addQuestion
 {% endblock %}
 
 {% block content %}
-<form action="", novalidate>
+<h1>学科名</h1>
+<h2>章节</h1>
+<hr>
+<form action="" method="post" novalidate style="text-align:center;">
     {{form.hidden_tag()}}
-    <select name="" id="select">
-        <option value="选择题" selected>选择题</option>
-        <option value="填空题">填空题</option>
-        <option value="简答题">简答题</option>
-    </select>
-    <!-- <button onclick="removeHidden()">
-        填空题
-    </button><button onclick="removeHidden()">
-        简答题
-    </button> -->
+    <button >
+        鼠标移动到上面就显示选择、填空、简答
+    </button><br/>
     <div>
-        {{form.chapter.label()}}<br/>
-        {{form.chapter}}
+        <p>
+            <select name="" id="select">
+                <option value="选择题" selected>选择题</option>
+                <option value="填空题">填空题</option>
+                <option value="简答题">简答题</option>
+            </select>
+        </p>
+        
     </div>
+    
     <div>
         {{form.questionText.label()}}<br/>
         {{form.questionText}}
     </div>
     <div id="choice">
        <p>
-        {{form.choice1.label()}}
-        {{form.choice1}}<br/>
+        {{form.choice1.label()}}<br/>
+        {{form.choice1}}
        </p> 
        <p>
-        {{form.choice2.label()}}
-        {{form.choice2}}<br/>
+        {{form.choice2.label()}}<br/>
+        {{form.choice2}}
        </p>
        <p>
-        {{form.choice3.label()}}
-        {{form.choice3}}<br/>
+        {{form.choice3.label()}}<br/>
+        {{form.choice3}}
        </p>
        <p>
-        {{form.choice4.label()}}
-        {{form.choice4}}<br/>
+        {{form.choice4.label()}}<br/>
+        {{form.choice4}}
        </p>
-      
-
+    </div>
+    <div>
+        <p>
+            {{form.answer.label()}}<br/>
+            {{form.answer}}
+        </p>
+    </div>
+    <div>
+        <p>
+            {{form.difficulity.label()}}<br/>
+            {{form.difficulity}}
+        </p>
+    </div>
+    <div>
+        <p>
+            {{form.addTime.label()}}<br/>
+            {{form.addTime}}
+        </p>
         
-
     </div>
     <div>
-        {{form.answer.label()}}<br/>
-        {{form.answer}}
+        <p>
+            {{form.addPerson.label()}}<br/>
+            {{form.addPerson}}
+        </p>
     </div>
     <div>
-        {{form.difficulity.label()}}<br/>
-        {{form.difficulity}}
+        <p>
+            {{form.submit}}
+        </p>
+        
     </div>
     
-    {{form.addTime.label()}}<br/>
-    {{form.addTime}}
-    {{form.addPerson.label()}}<br/>
-    {{form.addPerson}}
-    {{form.submit}}
+    
+   
     
 
 </form>

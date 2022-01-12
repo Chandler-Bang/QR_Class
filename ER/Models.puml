@@ -1,5 +1,11 @@
 @startuml Models
 left to right direction
+class Subject{
+    id : INTEGER
+    ..
+    subject_name : STRING
+    questionId : INTEGER
+}
 class Question{
     id : INTEGER
     ..
@@ -11,7 +17,7 @@ class Question{
     type : STRING
 }
 
-class mutipleChoice{
+class MutipleChoice{
     id : INTEGER
     ..
     choice1 : STRING
@@ -19,21 +25,26 @@ class mutipleChoice{
     choice3 : STRING
     choice4 : STRING
     answer : STRING
+    questionId : INTEGER
 }
 
-class fillInTheBlanks{
+class FillInTheBlanks{
     id : INTEGER
     ..
     answer : STRING
+    questionId : INTEGER
 }
 
-class brifeAnswers{
+class BrifeAnswers{
     id : INTEGER
     ..
     answer : STRING
+    questionId : INTEGER
 }
 
-Question::id *-- mutipleChoice::id
-Question::id *-- fillInTheBlanks::id
-Question::id *-- brifeAnswers::id
+Question::id *-- MutipleChoice::questionId
+Question::id *-- FillInTheBlanks::questionId
+Question::id *-- BrifeAnswers::questionId
+Question::id *-- Subject::questionId
+
 @enduml
