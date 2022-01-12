@@ -1,6 +1,6 @@
 from app import app
-from flask import render_template
-from app.forms import AddQuestionForm
+from flask import render_template, redirect, url_for
+from app.forms import AddQuestionForm, AddSubjectForm, AddChapterForm
 
 
 @app.route('/')
@@ -9,7 +9,24 @@ def index():
     return render_template("index.html")
 
 
-@app.route('/addQuestion')
+@app.route('/addSubject', methods=['GET', 'POST'])
+def addSubject():
+    form = AddSubjectForm()
+    if form.validate_on_submit():
+        print('123333')
+        return redirect(url_for('addChapter'))
+    return render_template('addSubject.html', form=form)
+
+
+@app.route('/addChapter', methods=['GET', 'POST'])
+def addChapter():
+    form = AddChapterForm()
+    if form.validate_on_submit():
+        return redirect(url_for('addQuestion'))
+    return render_template('addChapter.html', form=form)
+
+
+@app.route('/addQuestion', methods=['GET', 'POST'])
 def addQuestion():
     form = AddQuestionForm()
 
