@@ -16,5 +16,10 @@ addSubject
     </div>
 </form>
 <hr>
+{% for items in subject %}
+    <p>
+    <a href="{{url_for('addChapter', subject_id=items.id)}}">{{items.subjectName}}</a>
+    </p>
+{% endfor %}
 显示已添加学科
 {% endblock %}
