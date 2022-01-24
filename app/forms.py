@@ -19,7 +19,6 @@ class AddChapterForm(FlaskForm):
 
 
 class AddQuestionForm(FlaskForm):
-    chapter = SelectField(label="章节选择")  # 有待完善
     questionText = StringField(label='题目正文', validators=[DataRequired()])
     choice1 = StringField(label='A')
     choice2 = StringField(label='B')

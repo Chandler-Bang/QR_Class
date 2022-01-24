@@ -14,7 +14,7 @@ addQuestion
     </button><br/>
     <div>
         <p>
-            <select name="" id="select">
+            <select name="select" id="select">
                 <option value="选择题" selected>选择题</option>
                 <option value="填空题">填空题</option>
                 <option value="简答题">简答题</option>
@@ -82,6 +82,12 @@ addQuestion
     
 
 </form>
+<hr>
+{% for qst in que %}
+    <p>
+        {{qst.questionText}}
+    </p>
+{% endfor %}
 <script>
 
     var select = document.getElementById("select");

@@ -3,18 +3,27 @@ left to right direction
 class Subject{
     id : INTEGER
     ..
-    subject_name : STRING
-    questionId : INTEGER
+    name : STRING
 }
+
+
+class Chapter{
+    id : INTEGER
+    ..
+    name : STRING
+    subject_id : INTEGER
+}
+
+
 class Question{
     id : INTEGER
     ..
-    chapter : SRING
     questionText : STRING
     difficulty : FLOAT
     addTime : DATETIME
     addPerson : STRING
     type : STRING
+    chapter_id : INTEGER
 }
 
 class MutipleChoice{
@@ -42,9 +51,10 @@ class BrifeAnswers{
     questionId : INTEGER
 }
 
+Subject::id *-- Chapter::subject_id
+Chapter::id *-- Question::chapter_id
 Question::id *-- MutipleChoice::questionId
 Question::id *-- FillInTheBlanks::questionId
 Question::id *-- BrifeAnswers::questionId
-Question::id *-- Subject::questionId
 
 @enduml
