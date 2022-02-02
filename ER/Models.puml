@@ -1,13 +1,14 @@
 @startuml Models
 left to right direction
-class Subject{
+entity Subject{
     id : INTEGER
     ..
     name : STRING
+    teacher_id : INTEGER
 }
 
 
-class Chapter{
+entity Chapter{
     id : INTEGER
     ..
     name : STRING
@@ -15,7 +16,12 @@ class Chapter{
 }
 
 
-class Question{
+entity ExamPaper{
+    id : INTEGER
+}
+
+
+entity Question{
     id : INTEGER
     ..
     questionText : STRING
@@ -23,10 +29,11 @@ class Question{
     addTime : DATETIME
     addPerson : STRING
     type : STRING
+    examPaper_id : INTEGER
     chapter_id : INTEGER
 }
 
-class MutipleChoice{
+entity MutipleChoice{
     id : INTEGER
     ..
     choice1 : STRING
@@ -37,24 +44,51 @@ class MutipleChoice{
     questionId : INTEGER
 }
 
-class FillInTheBlanks{
+entity FillInTheBlanks{
     id : INTEGER
     ..
     answer : STRING
     questionId : INTEGER
 }
 
-class BrifeAnswers{
+
+entity Teacher{
     id : INTEGER
     ..
-    answer : STRING
-    questionId : INTEGER
+    name : STRING
 }
 
-Subject::id *-- Chapter::subject_id
-Chapter::id *-- Question::chapter_id
-Question::id *-- MutipleChoice::questionId
-Question::id *-- FillInTheBlanks::questionId
-Question::id *-- BrifeAnswers::questionId
 
+entity Classes{
+    id : INTEGER
+    ..
+    teacher_id : INTEGER
+}
+
+
+entity Student{
+    id : INTEGER
+    ..
+    classes_id : INTEGER
+}
+
+
+entity Score{
+    id : INTEGER
+    score : INTEGERs
+    student_id : INTEGER
+    examPaper_id : INTEGER
+}
+
+
+Teacher "1" ||-|{ "n" Classes: 老师-班级
+Classes "m" }|--|{ "n" Student: 班级-学生
+Student "m" }|--|{ "n" Score: 学生-试卷分数
+Teacher "m" }|--|{ "n" Subject: 老师-学科
+Subject "1" ||--|{ "n" Chapter: 学科-章节
+Chapter "1" ||--|{ "n" Question: 章节-题目
+Question "1" ||--|| "1" MutipleChoice: 问题-选择题
+Question "1" ||--|| "1" FillInTheBlanks: 问题-填空题
+ExamPaper "m" }|--|{ "n" Question: 试卷-题目
+ExamPaper "m" }|--|{ "n" Score: 试卷-分数
 @enduml
