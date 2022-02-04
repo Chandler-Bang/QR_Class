@@ -8,11 +8,13 @@ class Subject(db.Model):
 
 
 # Question和 Chapter的关联表
-association_table = \
-    db.Table('association',
-             db.Column('Chapter_id', db.Integer, db.ForeignKey('chapter.id')),
-             db.Column('Question_id', db.Integer,
-                       db.ForeignKey('question.id')))
+association_table = db.Table(
+    'association', db.Column(
+        'Chapter_id', db.Integer, db.ForeignKey('chapter.id')
+    ), db.Column(
+        'Question_id', db.Integer, db.ForeignKey('question.id')
+        )
+)
 
 
 class Chapter(db.Model):
@@ -31,8 +33,9 @@ class Question(db.Model):
     addTime = db.Column(db.Date(), nullable=False)
     addPerson = db.Column(db.String(10), nullable=False)
     type = db.Column(db.String(10), index=True, nullable=False)
-    chapters = db.relationship('Chapter', secondary=association_table,
-                               back_populates='questions')
+    chapters = db.relationship(
+        'Chapter', secondary=association_table, back_populates='questions'
+    )
     mutipleChoice = db.relationship('MutipleChoice', uselist=False)
     fillInTheBlanks = db.relationship('MutipleChoice', uselist=False)
     brifeAnswers = db.relationship('MutipleChoice', uselist=False)
@@ -63,5 +66,5 @@ class BrifeAnswers(db.Model):
     question = db.relationship('Question')
 
 
-# db.drop_all()
+db.drop_all()
 db.create_all()

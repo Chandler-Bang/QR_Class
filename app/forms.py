@@ -1,3 +1,5 @@
+from cProfile import label
+from tokenize import String
 from flask.helpers import flash
 from flask_wtf import FlaskForm
 from wtforms import TextAreaField, SubmitField, SelectField, FloatField
@@ -29,3 +31,8 @@ class AddQuestionForm(FlaskForm):
     addTime = DateTimeField(label='添加时间', default=date.today())
     addPerson = StringField(label='添加人')
     submit = SubmitField(label='提交')
+
+
+class TeacherLogin(FlaskForm):
+    teacherId = StringField(label="教师用户名")
+    password = StringField(label="密码")

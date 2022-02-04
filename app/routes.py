@@ -2,16 +2,19 @@ from asyncio import QueueEmpty
 from cgi import print_directory
 from app import app
 from app import db
-from flask import render_template, redirect, url_for, request
-from app.forms import AddQuestionForm, AddSubjectForm, AddChapterForm
+from flask import render_template, redirect, url_for, request, flash
+from app.forms import AddQuestionForm, AddSubjectForm, AddChapterForm, TeacherLogin
 from app.models import Subject, Chapter, Question, MutipleChoice, \
-                       FillInTheBlanks, BrifeAnswers
+    FillInTheBlanks, BrifeAnswers
 
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template("index.html")
+    form = TeacherLogin()
+    if form.validate_on_submit():
+        flash('1')
+    return render_template("index.html", form=form)
 
 
 @app.route('/addSubject', methods=['GET', 'POST'])
@@ -28,7 +31,9 @@ def addSubject():
     return render_template('addSubject.html', form=form, subject=subject)
 
 
-@app.route('/addChapter/', defaults={'subject_id': '#'}, methods=['GET', 'POST'])
+@app.route(
+    '/addChapter/', defaults={'subject_id': '#'}, methods=['GET', 'POST']
+    )
 @app.route('/addChapter/<int:subject_id>', methods=['GET', 'POST'])
 def addChapter(subject_id):
     form = AddChapterForm()
@@ -44,32 +49,40 @@ def addChapter(subject_id):
     return render_template('addChapter.html', form=form, chapter=chapter)
 
 
-@app.route('/addQuestion', defaults={'chapter_id': '#'}, methods=['GET', 'POST'])
+@app.route(
+    '/addQuestion', defaults={'chapter_id': '#'}, methods=['GET', 'POST']
+    )
 @app.route('/addQuestion/<int:chapter_id>', methods=['GET', 'POST'])
 def addQuestion(chapter_id):
     chapter = Chapter.query.get(chapter_id)
     form = AddQuestionForm()
     que = Question.query.all()  # 测试 所用变量
     if form.validate_on_submit():
-        question = Question(questionText=form.questionText.data,
-                            difficulity=form.difficulity.data,
-                            addTime=form.addTime.data,
-                            addPerson=form.addPerson.data,
-                            type=request.form.get('select'))
-        print(request.form.get('select'))
+        question = Question(
+            questionText=form.questionText.data,
+            difficulity=form.difficulity.data,
+            addTime=form.addTime.data,
+            addPerson=form.addPerson.data,
+            type=request.form.get('select')
+        )
         question.chapters.append(chapter)
         db.session.add(question)
         db.session.commit()
         qst = chapter.questions[0]  # 此处有待完善
-        print(qst.id)
+        Qst = chapter.questions  # 此处有待完善
+        for item in Qst:
+            flash(item.id)
+            print(item.id)
         type = request.form.get('select')
         print(type)
         if type == "选择题":
-            mutipleChoice = MutipleChoice(choice1=form.choice1.data,
-                                          choice2=form.choice2.data,
-                                          choice3=form.choice3.data,
-                                          choice4=form.choice4.data,
-                                          answer=form.answer.data)
+            mutipleChoice = MutipleChoice(
+                choice1=form.choice1.data,
+                choice2=form.choice2.data,
+                choice3=form.choice3.data,
+                choice4=form.choice4.data,
+                answer=form.answer.data
+            )
             mutipleChoice.question_id = qst.id
             db.session.add(mutipleChoice)
             db.session.commit()
