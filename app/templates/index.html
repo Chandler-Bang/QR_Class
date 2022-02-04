@@ -2,3 +2,37 @@
 {% block title %}
 Home Page
 {% endblock %}
+
+
+{% block content %}
+
+<section class="text-center">
+    <div class="container mt-5">
+        <div class="row mt-5 justify-content-center">
+            <div class="col-md-4 border rounded border-primary">
+            <h2>登录</h2>
+                    <form action="">
+                        {{form.teacherId.label(class="form-label")}}
+                        {{form.teacherId(class="form-control")}}
+                        {{form.password.label(class="form-label")}}
+                        {{form.password(class="form-control")}}
+                        <button class="btn btn-primary mt-2 mb-2">登录</button>
+                    </form>
+            </div>
+        </div>
+    </div>
+</section>
+<style>
+    .login {
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    -o-transform: translateY(-50%);
+    transform: translateY(-50%);
+    min-height: 300px;
+    height: auto;
+}
+</style>
+{% endblock %}
