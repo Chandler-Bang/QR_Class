@@ -2,18 +2,25 @@ from asyncio import QueueEmpty
 from cgi import print_directory
 from app import app
 from app import db
+import click
 from flask import render_template, redirect, url_for, request, flash
 from app.forms import AddQuestionForm, AddSubjectForm, AddChapterForm, TeacherLogin
 from app.models import Subject, Chapter, Question, MutipleChoice, \
     FillInTheBlanks, BrifeAnswers
+import pymysql
 
 
-@app.route('/')
+@app.cli.command()
+def addTeacher():
+    click.echo('1')
+
+
+@app.route('/', methods=['GET', 'POST'])
 @app.route('/index')
 def index():
     form = TeacherLogin()
     if form.validate_on_submit():
-        flash('1')
+        pass
     return render_template("index.html", form=form)
 
 

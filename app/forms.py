@@ -1,3 +1,4 @@
+from ast import Sub
 from cProfile import label
 from tokenize import String
 from flask.helpers import flash
@@ -34,5 +35,6 @@ class AddQuestionForm(FlaskForm):
 
 
 class TeacherLogin(FlaskForm):
-    teacherId = StringField(label="教师用户名")
+    username = StringField(label="教师用户名")
     password = StringField(label="密码")
+    submit = SubmitField(label='登录')

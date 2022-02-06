@@ -66,5 +66,11 @@ class BrifeAnswers(db.Model):
     question = db.relationship('Question')
 
 
+class Teacher(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(5), nullable=False)
+    password = db.Column(db.String(50), nullable=False)
+
+
 db.drop_all()
 db.create_all()
