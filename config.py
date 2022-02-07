@@ -1,9 +1,8 @@
 import os
-basedir = os.path.abspath(os.path.dirname(__name__))
 
 
 class Config(object):
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'guess what'
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URI') or \
-        'sqlite:///' + os.path.join(basedir, 'app.db')
+        'mysql+pymysql://patrick:chinaren@localhost:3306/QRclass'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
