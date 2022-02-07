@@ -3,7 +3,7 @@ from cProfile import label
 from tokenize import String
 from flask.helpers import flash
 from flask_wtf import FlaskForm
-from wtforms import TextAreaField, SubmitField, SelectField, FloatField
+from wtforms import TextAreaField, SubmitField, SelectField, FloatField, RadioField
 from wtforms import DateTimeField, IntegerField, StringField
 from wtforms.validators import DataRequired, Length
 from datetime import date
@@ -35,6 +35,15 @@ class AddQuestionForm(FlaskForm):
 
 
 class TeacherLogin(FlaskForm):
-    username = StringField(label="教师用户名")
+    username = StringField(label="教师用户名", validators=[DataRequired()])
     password = StringField(label="密码")
     submit = SubmitField(label='登录')
+
+
+class questionAnswerForm(FlaskForm):
+    choice1 = RadioField(
+        label='选项如下', choices=[
+            ('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')
+        ]
+    )
+    submit = SubmitField(label="提交答案")

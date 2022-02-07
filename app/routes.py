@@ -4,24 +4,51 @@ from app import app
 from app import db
 import click
 from flask import render_template, redirect, url_for, request, flash
-from app.forms import AddQuestionForm, AddSubjectForm, AddChapterForm, TeacherLogin
+from app.forms import AddQuestionForm, AddSubjectForm, AddChapterForm, \
+    TeacherLogin, questionAnswerForm
 from app.models import Subject, Chapter, Question, MutipleChoice, \
-    FillInTheBlanks, BrifeAnswers
+    FillInTheBlanks, BrifeAnswers, Teacher
 import pymysql
 
 
 @app.cli.command()
 def addTeacher():
-    click.echo('1')
+    j = 123
+    for i in range(10):
+        teacher = Teacher(username=str(j))
+        j += 1
+        teacher.generate_password('123456')
+        db.session.add(teacher)
+        db.session.commit()
+        click.echo('adding teacher')
+    click.echo('adding teacher done!')
 
 
 @app.route('/', methods=['GET', 'POST'])
-@app.route('/index')
+@app.route('/index', methods=['GET', 'POST'])
 def index():
     form = TeacherLogin()
+    print(form.validate_on_submit())
     if form.validate_on_submit():
-        pass
+        teacher = Teacher.query.filter_by(username=form.username.data)[0]
+        flag = teacher.validate_password(form.password.data)
+        if flag:
+            return redirect(url_for('addSubject'))
     return render_template("index.html", form=form)
+
+
+@app.route('/questionAnswer', methods=['GET', 'POST'])
+def questionAnswer():
+    form = questionAnswerForm()
+    print(form.validate_on_submit())
+    if form.validate_on_submit():
+        return redirect(url_for('showAnswer'))
+    return render_template('questionAnswer.html', form=form)
+
+
+@app.route('/showAnswer')
+def showAnswer():
+    return render_template('showAnswer.html')
 
 
 @app.route('/addSubject', methods=['GET', 'POST'])
