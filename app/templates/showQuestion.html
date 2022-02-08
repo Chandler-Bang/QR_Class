@@ -6,5 +6,30 @@
 {% endblock %}
 
 {% block content %}
-
+<div>
+    <a class="btn btn-primary" href="{{url_for('addChapter', subject_id=subject_id)}}">返回章节</a>
+</div>
+<a class="btn btn-primary" href="{{url_for('addQuestion', chapter_id=chapter_id)}}">添加题目</a>
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">题目正文</th>
+        <th scope="col">题目类型</th>
+        <th scope="col">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+{% for question in questions %}
+      <tr>
+        <td>{{question.id}}</td>
+        <td>{{question.questionText}}</td>
+        <td>{{question.type}}</td>
+        <td>
+            <a href="{{url_for('questionDelete', question_id=question.id)}}">删除</a>
+        </td>
+      </tr>
+{% endfor %}
+    </tbody>
+</table>
 {% endblock %}

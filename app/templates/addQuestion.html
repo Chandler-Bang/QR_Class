@@ -7,6 +7,9 @@ addQuestion
 <h1>学科名</h1>
 <h2>章节</h1>
 <hr>
+<div>
+    <a class="btn btn-primary" href="{{url_for('showQuestion', chapter_id=chapter_id)}}">返回</a>
+</div>
 <form action="" method="post" novalidate style="text-align:center;">
     {{form.hidden_tag()}}
     <button >

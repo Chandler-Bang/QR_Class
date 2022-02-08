@@ -19,7 +19,7 @@ addChapter
 显示已经添加的章节
 {% for chapters in chapter %}
     <p>
-       <a href="{{url_for('addQuestion', chapter_id=chapters.id)}}">{{chapters.chapterName}}</a>
+       <a href="{{url_for('showQuestion', chapter_id=chapters.id)}}">{{chapters.chapterName}}</a>
     </p>
 {% endfor %}
 {% endblock %}

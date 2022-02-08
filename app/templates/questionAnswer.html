@@ -11,37 +11,18 @@ questionAnswer
     <div class="container">
         <div class="row justify-content-center align-items-center", style="height:100vh">
             <div class="col-md-6 col-sm-6">
-
                  <form action="{{url_for('questionAnswer')}}", method="post">
                      {{form.hidden_tag()}}
                      <div class="container">
                          <div class="row justify-content-center">
                              <div class="col text-center mx-auto">
-                                <!-- <div class="form-check form-check-inline">
-                                    <input type="radio" name="options" class="form-check-input" value="A" id="">
-                                    <label class="form-check-label">A</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input type="radio" name="options" class="form-check-input" value="B" id="">
-                                    <label class="form-check-label">B</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input type="radio" name="options" class="form-check-input" value="C" id="">
-                                    <label class="form-check-label">C</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input type="radio" name="options" class="form-check-input" value="D" id="">
-                                    <label class="form-check-label">D</label>
-                                </div><br> -->
-                                    {% for choice in form.choice1 %}
-
-                                <div class="form-check form-check-inline">
+                                {% for choice in form.choice1 %}
+                                    <div class="form-check form-check-inline">
                                         {{ choice(class="form-check-input") }}
-                                   {{choice.label}} 
-                                </div>
+                                        {{choice.label}} 
+                                    </div>
                                 {% endfor %}
-                                   {{form.submit(class="btn btn-primary d-flex mx-auto mt-4")}}
-                                
+                                {{form.submit(class="btn btn-primary d-flex mx-auto mt-4")}}
                              </div>
                          </div>
                      </div>
