@@ -14,7 +14,7 @@ association_table = db.Table(
         'Chapter_id', db.Integer, db.ForeignKey('chapter.id')
     ), db.Column(
         'Question_id', db.Integer, db.ForeignKey('question.id')
-        )
+    )
 )
 
 
@@ -37,9 +37,9 @@ class Question(db.Model):
     chapters = db.relationship(
         'Chapter', secondary=association_table, back_populates='questions'
     )
-    mutipleChoice = db.relationship('MutipleChoice', uselist=False)
-    fillInTheBlanks = db.relationship('MutipleChoice', uselist=False)
-    brifeAnswers = db.relationship('MutipleChoice', uselist=False)
+    mutipleChoice = db.relationship('MutipleChoice', cascade="delete", uselist=False)
+    fillInTheBlanks = db.relationship('FillInTheBlanks', cascade="all", uselist=False)
+    brifeAnswers = db.relationship('BrifeAnswers', uselist=False)
 
 
 class MutipleChoice(db.Model):
@@ -57,7 +57,7 @@ class FillInTheBlanks(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     answer = db.Column(db.Text(100), nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
-    question = db.relationship('Question')
+    question = db.relationship('Question', cascade="delete")
 
 
 class BrifeAnswers(db.Model):
@@ -79,5 +79,5 @@ class Teacher(db.Model):
         return check_password_hash(self.password_hash, password)
 
 
-# db.drop_all()
+db.drop_all()
 db.create_all()

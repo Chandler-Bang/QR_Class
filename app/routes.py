@@ -40,7 +40,6 @@ def index():
 @app.route('/questionAnswer', methods=['GET', 'POST'])
 def questionAnswer():
     form = questionAnswerForm()
-    print(form.validate_on_submit())
     if form.validate_on_submit():
         return redirect(url_for('showAnswer'))
     return render_template('questionAnswer.html', form=form)
@@ -79,8 +78,19 @@ def addChapter(subject_id):
         chapter.subject = subject
         db.session.add(chapter)
         db.session.commit()
-        return redirect(url_for('addQuestion', chapter_id=chapter.id))
+        return redirect(url_for('showQuestion', chapter_id=chapter.id))
     return render_template('addChapter.html', form=form, chapter=chapter)
+
+
+@app.route('/showQuestion/<int:chapter_id>', methods=['GET', 'POST'])
+def showQuestion(chapter_id):
+    chapter = Chapter.query.filter_by(id=chapter_id)[0]
+    questions = chapter.questions
+    subject_id = chapter.subject_id
+    return render_template(
+        'showQuestion.html', questions=questions, chapter_id=chapter_id,
+        subject_id=subject_id
+    )
 
 
 @app.route(
@@ -100,13 +110,6 @@ def addQuestion(chapter_id):
             type=request.form.get('select')
         )
         question.chapters.append(chapter)
-        db.session.add(question)
-        db.session.commit()
-        qst = chapter.questions[0]  # 此处有待完善
-        Qst = chapter.questions  # 此处有待完善
-        for item in Qst:
-            flash(item.id)
-            print(item.id)
         type = request.form.get('select')
         print(type)
         if type == "选择题":
@@ -117,26 +120,24 @@ def addQuestion(chapter_id):
                 choice4=form.choice4.data,
                 answer=form.answer.data
             )
-            mutipleChoice.question_id = qst.id
-            db.session.add(mutipleChoice)
-            db.session.commit()
+            question.mutipleChoice = mutipleChoice
         elif type == "填空题":
             fillInTheBlank = FillInTheBlanks(answer=form.answer.data)
-            fillInTheBlank.question_id = qst.id
-            db.session.add(fillInTheBlank)
-            db.session.commit()
-        else:
-            brifeAnswer = BrifeAnswers(answer=form.answer.data)
-            brifeAnswer.question_id = qst.id
-            db.session.add(brifeAnswer)
-            db.session.commit()
-        return redirect(url_for('showQuestion'))
-    return render_template('addQuestion.html', form=form, que=que)
+            question.fillInTheBlanks = fillInTheBlank
+        db.session.add(question)
+        db.session.commit()
+        return redirect(url_for('showQuestion', chapter_id=chapter_id))
+    return render_template(
+        'addQuestion.html', form=form, que=que, chapter_id=chapter_id
+    )
 
 
-@app.route('/showQuestion')
-def showQuestion():
-    return render_template('showQuestion.html')
+@app.route('/questionDelete/<int:question_id>', methods=['GET', 'POST'])
+def questionDelete(question_id):
+    question = Question.query.get(question_id)
+    db.session.delete(question)
+    db.session.commit()
+    return redirect(redirect_url())
 
 
 @app.route('/generateQR')
@@ -147,3 +148,9 @@ def generateQR():
 @app.route('/questionSelect')
 def questionSelect():
     return "questionSelect"
+
+
+def redirect_url(default='index'):
+    return request.args.get('next') or \
+           request.referrer or \
+           url_for(default)
