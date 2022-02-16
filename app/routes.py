@@ -7,7 +7,7 @@ from flask import render_template, redirect, url_for, request, flash
 from app.forms import AddQuestionForm, AddSubjectForm, AddChapterForm, \
     TeacherLogin, questionAnswerForm
 from app.models import Subject, Chapter, Question, MutipleChoice, \
-    FillInTheBlanks, BrifeAnswers, Teacher
+    FillInTheBlanks, BrifeAnswers, Teacher, Student, UserInfo
 import pymysql
 
 
@@ -15,25 +15,58 @@ import pymysql
 def addTeacher():
     j = 123
     for i in range(10):
-        teacher = Teacher(username=str(j))
+        teacher = Teacher(
+                username=str(j), role="老师"
+        )
+        student = Student(
+                username=str(j), role="学生"
+        )
         j += 1
         teacher.generate_password('123456')
+        student.generate_password('123456')
         db.session.add(teacher)
+        db.session.add(student)
         db.session.commit()
-        click.echo('adding teacher')
-    click.echo('adding teacher done!')
+        click.echo('adding teacher and stduent')
+    click.echo('adding teacher and student done!')
+
+
+@app.route(
+        '/index/teacher/',
+        defaults={'teacher_id': '#'},
+        methods=['GET', 'POST']
+    )
+@app.route(
+        '/index/teacher/<int:teacher_id>',
+        methods=['GET', 'POST']
+    )
+def teacherIndex(teacher_id):
+    return render_template('addClasses.html')
+
+
+@app.route(
+        '/index/student/',
+        defaults={'student_id': '#'},
+        methods=['GET', 'POST']
+    )
+@app.route(
+        '/index/student/<int:student_id>',
+        methods=['GET', 'POST']
+    )
+def studentIndex(student_id):
+    return render_template('addClasses.html')
 
 
 @app.route('/', methods=['GET', 'POST'])
-@app.route('/index', methods=['GET', 'POST'])
+@app.route('/teacher', methods=['GET', 'POST'])
 def index():
     form = TeacherLogin()
-    print(form.validate_on_submit())
     if form.validate_on_submit():
-        teacher = Teacher.query.filter_by(username=form.username.data)[0]
+        teachers = UserInfo.query.filter_by(role="老师")
+        teacher = teachers.queery.filter_by(username=form.username.data)[0]
         flag = teacher.validate_password(form.password.data)
         if flag:
-            return redirect(url_for('addSubject'))
+            return redirect(url_for('index'))
     return render_template("index.html", form=form)
 
 
