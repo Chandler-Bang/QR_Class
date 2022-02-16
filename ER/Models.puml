@@ -4,7 +4,7 @@ entity Subject{
     id : INTEGER
     ..
     name : STRING
-    teacher_id : INTEGER
+    classes_id : INTEGER
 }
 
 
@@ -55,7 +55,8 @@ entity FillInTheBlanks{
 entity Teacher{
     id : INTEGER
     ..
-    name : STRING
+    username : STRING
+    password : STRING
 }
 
 
@@ -73,7 +74,7 @@ entity Student{
 }
 
 
-entity Score{
+entity StudentScore{
     id : INTEGER
     score : INTEGERs
     student_id : INTEGER
@@ -83,12 +84,13 @@ entity Score{
 
 Teacher "1" ||-|{ "n" Classes: 老师-班级
 Classes "m" }|--|{ "n" Student: 班级-学生
-Student "m" }|--|{ "n" Score: 学生-试卷分数
+Student "n" }|--|{ "1" StudentScore: 学生-试卷分数
 Teacher "m" }|--|{ "n" Subject: 老师-学科
 Subject "1" ||--|{ "n" Chapter: 学科-章节
+Subject "1" ||-|| "1" Classes: 学科-班级
 Chapter "1" ||--|{ "n" Question: 章节-题目
 Question "1" ||--|| "1" MutipleChoice: 问题-选择题
 Question "1" ||--|| "1" FillInTheBlanks: 问题-填空题
 ExamPaper "m" }|--|{ "n" Question: 试卷-题目
-ExamPaper "m" }|--|{ "n" Score: 试卷-分数
+ExamPaper "n" }|--|{ "1" StudentScore: 试卷-分数
 @enduml
