@@ -7,6 +7,8 @@ class UserInfo(db.Model):
     username = db.Column(db.String(10))
     password_hash = db.Column(db.String(128))
     role = db.Column(db.String(10))
+    teachers = db.relationship('Teacher', back_populates="user")
+    students = db.relationship('Student', back_populates="user")
 
     def generate_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -27,6 +29,8 @@ teacher_subject = db.Table(
 
 class Teacher(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('user_info.id'))
+    user = db.relationship('UserInfo', back_populates='teachers')
     # 老师和班级是一对多
     classes = db.relationship('Classes', back_populates="teachers")
     subjects = db.relationship(
@@ -69,6 +73,8 @@ class Classes(db.Model):
 
 class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    student_id = db.Column(db.Integer, db.ForeignKey('user_info.id'))
+    user = db.relationship('UserInfo', back_populates='students')
     grade = db.relationship('StudentGrade', back_populates='students')
     classes = db.relationship(
             'Classes', secondary=students_classes, back_populates="students"
@@ -119,7 +125,7 @@ exampaper_question = db.Table(
 class ExamPaper(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     questions = db.relationship(
-        'Question', secondary=exampaper_question, back_populates='expampapers'
+        'Question', secondary=exampaper_question, back_populates='exampapers'
     )
     grade = db.relationship('StudentGrade', back_populates="exampapers")
 
@@ -167,5 +173,5 @@ class BrifeAnswers(db.Model):
     question = db.relationship('Question')
 
 
-db.drop_all()
+#db.drop_all()
 db.create_all()

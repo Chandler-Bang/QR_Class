@@ -40,6 +40,12 @@ class TeacherLogin(FlaskForm):
     submit = SubmitField(label='登录')
 
 
+class StudentLogin(FlaskForm):
+    username = StringField(label="学生用户名", validators=[DataRequired()])
+    password = StringField(label="密码")
+    submit = SubmitField(label='登录')
+
+
 class questionAnswerForm(FlaskForm):
     choice1 = RadioField(
         label='选项如下', choices=[
