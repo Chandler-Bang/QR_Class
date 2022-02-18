@@ -12,15 +12,11 @@ addQuestion
 </div>
 <form action="" method="post" novalidate style="text-align:center;">
     {{form.hidden_tag()}}
-    <button >
-        鼠标移动到上面就显示选择、填空、简答
-    </button><br/>
     <div>
         <p>
             <select name="select" id="select">
                 <option value="选择题" selected>选择题</option>
                 <option value="填空题">填空题</option>
-                <option value="简答题">简答题</option>
             </select>
         </p>
         
@@ -60,20 +56,6 @@ addQuestion
             {{form.difficulity}}
         </p>
     </div>
-    <div>
-        <p>
-            {{form.addTime.label()}}<br/>
-            {{form.addTime}}
-        </p>
-        
-    </div>
-    <div>
-        <p>
-            {{form.addPerson.label()}}<br/>
-            {{form.addPerson}}
-        </p>
-    </div>
-    <div>
         <p>
             {{form.submit}}
         </p>

@@ -29,8 +29,6 @@ class AddQuestionForm(FlaskForm):
     choice4 = StringField(label='D')
     answer = StringField(label='答案')
     difficulity = FloatField(label='难度选择')
-    addTime = DateTimeField(label='添加时间', default=date.today())
-    addPerson = StringField(label='添加人')
     submit = SubmitField(label='提交')
 
 
@@ -53,3 +51,9 @@ class questionAnswerForm(FlaskForm):
         ]
     )
     submit = SubmitField(label="提交答案")
+
+
+class AddExamPaper(FlaskForm):
+    examPaperName = StringField(label="试卷名称")
+    examTag = TextAreaField(label="试卷描述")
+    submit = SubmitField(label="提交")

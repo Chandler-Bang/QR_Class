@@ -5,9 +5,9 @@ from app import db
 import click
 from flask import render_template, redirect, url_for, request, flash
 from app.forms import AddQuestionForm, AddSubjectForm, AddChapterForm, \
-    TeacherLogin, questionAnswerForm, StudentLogin
+    TeacherLogin, questionAnswerForm, StudentLogin, AddExamPaper
 from app.models import Subject, Chapter, Question, MutipleChoice, \
-    FillInTheBlanks, BrifeAnswers, Teacher, Student, UserInfo
+    FillInTheBlanks, Teacher, Student, UserInfo, ExamPaper
 import pymysql
 
 
@@ -110,16 +110,13 @@ def addSubject():
         subject = Subject(subjectName=data)
         db.session.add(subject)
         db.session.commit()
-        id = Subject.query.filter(Subject.subjectName == data)[0].id
+        id = Subject.query.filter_by(subjectName=data)[0].id
         return redirect(url_for('addChapter', subject_id=id))
     return render_template('addSubject.html', form=form, subject=subject)
 
 
-@app.route(
-    '/addChapter/', defaults={'subject_id': '#'}, methods=['GET', 'POST']
-    )
 @app.route('/addChapter/<int:subject_id>', methods=['GET', 'POST'])
-def addChapter(subject_id):
+def addChapter(subject_id=0):
     form = AddChapterForm()
     chapter = Chapter.query.filter_by(subject_id=subject_id)
     if form.validate_on_submit():
@@ -135,20 +132,76 @@ def addChapter(subject_id):
 
 @app.route('/showQuestion/<int:chapter_id>', methods=['GET', 'POST'])
 def showQuestion(chapter_id):
-    chapter = Chapter.query.filter_by(id=chapter_id)[0]
+    chapter = Chapter.query.filter_by(id=chapter_id).first()
     questions = chapter.questions
     subject_id = chapter.subject_id
+    length = len(questions)
     return render_template(
         'showQuestion.html', questions=questions, chapter_id=chapter_id,
-        subject_id=subject_id
+        subject_id=subject_id, length=length, zip=zip
     )
 
 
-@app.route(
-    '/addQuestion', defaults={'chapter_id': '#'}, methods=['GET', 'POST']
+@app.route('/addExamPaper/<int:chapter_id>', methods=['GET', 'POST'])
+def addExamPaper(chapter_id):
+    from app.models import db
+    form = AddExamPaper()
+    exampapers = ExamPaper.query.filter_by(chapter_id=chapter_id).all()
+    length = len(exampapers)
+    if form.validate_on_submit():
+        exampaper = ExamPaper(
+            name=form.examPaperName.data,
+            chapter_id=chapter_id,
+            tag=form.examTag.data
+        )  
+        db.session.add(exampaper)
+        exampaper_id = db.session.flush()
+        db.session.commit()
+        return redirect(url_for('addQuestionToExamPaper', chapter_id=chapter_id, exampaper_id=exampaper_id))
+    return render_template(
+            'addExamPaper.html', form=form, exampapers=exampapers,
+            chapter_id=chapter_id, length=length, zip=zip
+        )
+
+
+@app.route('/addQuestionToExamPaper/<int:chapter_id>/<int:exampaper_id>', methods=['GET', 'POST'])
+def addQuestionToExamPaper(chapter_id=0, exampaper_id=0):
+    chapter = Chapter.query.filter_by(id=chapter_id).first()
+    questions = chapter.questions
+    length = len(questions)
+    print(questions)
+    return render_template(
+        'addQuestionToExamPaper.html', questions=questions, chapter_id=chapter_id,
+        length=length, zip=zip, exampaper_id=exampaper_id
     )
+
+
+@app.route('/questionAddToExamPaper/<int:exampaper_id>/<int:question_id>', methods=['GET', 'POST'])
+def questionAddToExamPaper(exampaper_id=0, question_id=0):
+    from app.models import db
+    exampaper = ExamPaper.query.get(exampaper_id) 
+    question = Question.query.get(question_id)
+    print(exampaper)
+    exampaper.questions.append(question)
+    print(exampaper.questions)
+    db.session.add(exampaper)
+    db.session.commit()
+    return redirect(redirect_url())
+
+
+@app.route('/questionDeleteFromExamPaper/<int:exampaper_id>/<int:question_id>', methods=['GET', 'POST'])
+def questionDeleteFromExamPaper(exampaper_id=0, question_id=0):
+    from app.models import db
+    exampaper = ExamPaper.query.get(exampaper_id) 
+    question = Question.query.get(question_id)
+    exampaper.questions.remove(question)
+    db.session.commit()
+    return redirect(redirect_url())
+
+
 @app.route('/addQuestion/<int:chapter_id>', methods=['GET', 'POST'])
-def addQuestion(chapter_id):
+def addQuestion(chapter_id=0):
+    from app.models import db
     chapter = Chapter.query.get(chapter_id)
     form = AddQuestionForm()
     que = Question.query.all()  # 测试 所用变量
@@ -156,8 +209,6 @@ def addQuestion(chapter_id):
         question = Question(
             questionText=form.questionText.data,
             difficulity=form.difficulity.data,
-            addTime=form.addTime.data,
-            addPerson=form.addPerson.data,
             type=request.form.get('select')
         )
         question.chapters.append(chapter)
@@ -185,6 +236,7 @@ def addQuestion(chapter_id):
 
 @app.route('/questionDelete/<int:question_id>', methods=['GET', 'POST'])
 def questionDelete(question_id):
+    from app.models import db
     question = Question.query.get(question_id)
     db.session.delete(question)
     db.session.commit()

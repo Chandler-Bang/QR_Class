@@ -65,6 +65,7 @@ students_classes = db.Table(
 class Classes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     teacher_id = db.Column(db.ForeignKey('teacher.id'))
+    grade = db.relationship('StudentGrade', back_populates='classes')
     teachers = db.relationship('Teacher', back_populates="classes")
     students = db.relationship(
             'Student', secondary=students_classes, back_populates="classes"
@@ -85,8 +86,10 @@ class StudentGrade(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     grade = db.Column(db.Integer)
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
+    classes_id = db.Column(db.Integer, db.ForeignKey('classes.id'))
     exampaper_id = db.Column(db.Integer, db.ForeignKey('exam_paper.id'))
     # 成绩和学生、试卷是一对多
+    classes = db.relationship('Classes', back_populates='grade')
     students = db.relationship('Student', back_populates="grade")
     exampapers = db.relationship('ExamPaper', back_populates="grade")
 
@@ -105,6 +108,7 @@ class Chapter(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     chapterName = db.Column(db.String(5), nullable=False)
     subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'))
+    exampapers = db.relationship("ExamPaper", back_populates="chapters")
     subject = db.relationship('Subject', back_populates="chapters")
     questions = db.relationship('Question', secondary=chapter_question,
                                 back_populates='chapters')
@@ -124,6 +128,10 @@ exampaper_question = db.Table(
 
 class ExamPaper(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120))
+    chapter_id = db.Column(db.Integer, db.ForeignKey('chapter.id'))
+    tag = db.Column(db.String(120))
+    chapters = db.relationship("Chapter", back_populates="exampapers")
     questions = db.relationship(
         'Question', secondary=exampaper_question, back_populates='exampapers'
     )
@@ -134,8 +142,6 @@ class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     questionText = db.Column(db.Text(254), nullable=False)
     difficulity = db.Column(db.Float(2), nullable=False)
-    addTime = db.Column(db.Date(), nullable=False)
-    addPerson = db.Column(db.String(10), nullable=False)
     exampapers = db.relationship(
         'ExamPaper', secondary=exampaper_question, back_populates='questions'
     )
@@ -145,7 +151,6 @@ class Question(db.Model):
     )
     mutipleChoice = db.relationship('MutipleChoice', cascade="delete", uselist=False)
     fillInTheBlanks = db.relationship('FillInTheBlanks', cascade="all", uselist=False)
-    brifeAnswers = db.relationship('BrifeAnswers', uselist=False)
 
 
 class MutipleChoice(db.Model):
@@ -166,12 +171,5 @@ class FillInTheBlanks(db.Model):
     question = db.relationship('Question', cascade="delete")
 
 
-class BrifeAnswers(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    answer = db.Column(db.Text(100), nullable=False)
-    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
-    question = db.relationship('Question')
-
-
-#db.drop_all()
-db.create_all()
+# db.drop_all()
+# db.create_all()
