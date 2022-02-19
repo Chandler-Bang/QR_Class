@@ -126,6 +126,7 @@ def addChapter(subject_id=0):
         chapter.subject = subject
         db.session.add(chapter)
         db.session.commit()
+        print(chapter.id)
         return redirect(url_for('showQuestion', chapter_id=chapter.id))
     return render_template('addChapter.html', form=form, chapter=chapter)
 
@@ -155,9 +156,8 @@ def addExamPaper(chapter_id):
             tag=form.examTag.data
         )  
         db.session.add(exampaper)
-        exampaper_id = db.session.flush()
         db.session.commit()
-        return redirect(url_for('addQuestionToExamPaper', chapter_id=chapter_id, exampaper_id=exampaper_id))
+        return redirect(url_for('addQuestionToExamPaper', chapter_id=chapter_id, exampaper_id=exampaper.id))
     return render_template(
             'addExamPaper.html', form=form, exampapers=exampapers,
             chapter_id=chapter_id, length=length, zip=zip
@@ -239,6 +239,17 @@ def questionDelete(question_id):
     from app.models import db
     question = Question.query.get(question_id)
     db.session.delete(question)
+    db.session.commit()
+    return redirect(redirect_url())
+
+
+@app.route('/examPaperDelete/<int:exampaper_id>', methods=['GET', 'POST'])
+def examPaperDelete(exampaper_id):
+    from app.models import db
+    exampaper = ExamPaper.query.get(exampaper_id)
+    for question in exampaper.questions:
+        exampaper.questions.remove(question)
+    db.session.delete(exampaper)
     db.session.commit()
     return redirect(redirect_url())
 

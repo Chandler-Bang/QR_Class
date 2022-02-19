@@ -43,7 +43,7 @@
                     <td>
                         {% block operation scoped %}
                             <a class="btn btn-primary" href="{{url_for('addQuestionToExamPaper', chapter_id=chapter_id, exampaper_id=exampaper.id)}}">添加题目</a>
-                            删除试卷需要将question和试卷一一接触关系后再删除
+                            <a class="btn btn-primary" href="{{url_for('examPaperDelete', exampaper_id=exampaper.id)}}">删除试卷</a>
                         {% endblock %}
                         
                     </td>
