@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+    showQuestion
+{% endblock %}
+    
+{% block button %}
+{% endblock %}
+
+{% block content %}
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+         {% block tableHeadLine %}
+         {% endblock %}
+      </tr>
+    </thead>
+    <tbody>
+        {% block tableContent %}
+        {% endblock %}
+    </tbody>
+</table>
+{% endblock %}

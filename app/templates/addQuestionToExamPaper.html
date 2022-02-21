@@ -1,19 +1,27 @@
 {% extends "showQuestion.html" %}
 
-
 {% block title %}
 addQuestionToExamPaper
 {% endblock %}
+{% block script %}
+<script src="{{url_for('static', filename='js/buttons.js')}}" charset="utf-8"></script>
+{% endblock %}
+
 
 {% block button %}
-    
+<a class="btn btn-primary" href="{{url_for('addExamPaper', chapter_id=chapter_id)}}">返回添加试卷</a>    
 {% endblock %}
 
 
 {% block operation %}
-<a href="{{url_for('questionAddToExamPaper', exampaper_id=exampaper_id, question_id=question.id)}}">加入试卷</a>
-<a href="{{url_for('questionDeleteFromExamPaper', exampaper_id=exampaper_id, question_id=question.id)}}">从试卷中删除</a>
-按钮状态改变
+<a id="addToExam" href="{{url_for('questionAddToExamPaper', exampaper_id=exampaper_id, question_id=question.id)}}">加入试卷</a>
+<a id="deleteFromExam" href="{{url_for('questionDeleteFromExamPaper', exampaper_id=exampaper_id, question_id=question.id)}}">从试卷中删除</a>
+{% if question in exampaper.questions %}
+    已添加进试卷
+{% else %}
+    未加入试卷
+{% endif %}
+
 {% endblock %}
 
 

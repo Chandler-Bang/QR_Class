@@ -166,13 +166,12 @@ def addExamPaper(chapter_id):
 
 @app.route('/addQuestionToExamPaper/<int:chapter_id>/<int:exampaper_id>', methods=['GET', 'POST'])
 def addQuestionToExamPaper(chapter_id=0, exampaper_id=0):
+    exampaper = ExamPaper.query.filter_by(id=exampaper_id).first()
     chapter = Chapter.query.filter_by(id=chapter_id).first()
     questions = chapter.questions
     length = len(questions)
-    print(questions)
     return render_template(
-        'addQuestionToExamPaper.html', questions=questions, chapter_id=chapter_id,
-        length=length, zip=zip, exampaper_id=exampaper_id
+        'addQuestionToExamPaper.html', questions=questions, chapter_id=chapter_id, length=length, zip=zip, exampaper_id=exampaper_id, exampaper=exampaper
     )
 
 

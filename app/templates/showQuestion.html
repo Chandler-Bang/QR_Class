@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "showbase.html" %}
 
 
 <head>
@@ -21,30 +21,34 @@
 
 <table class="table table-striped">
     <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">题目正文</th>
-        <th scope="col">题目类型</th>
-        <th scope="col">操作</th>
-      </tr>
+        <tr>
+            {% block tableHeadLine %}
+                <th scope="col">#</th>
+                <th scope="col">题目正文</th>
+                <th scope="col">题目类型</th>
+                <th scope="col">操作</th>
+            {% endblock %}
+          
+        </tr>
     </thead>
     <tbody>
-       {% if length %}
-            {% for question,i in zip(questions,range(1,length+1)) %}
-                  <tr>
-                    <td>{{i}}</td>
-                    <td>{{question.questionText}}</td>
-                    <td>{{question.type}}</td>
-                    <td>
-                        {% block operation scoped %}
-                            <a href="{{url_for('questionDelete', question_id=question.id)}}">删除</a>
-                        {% endblock %}
-                        
-                    </td>
-                  </tr>
-            {% endfor %}
-       {% endif %}
-        
+        {% block tableContent %}
+            {% if length %}
+                 {% for question,i in zip(questions,range(1,length+1)) %}
+                       <tr>
+                         <td>{{i}}</td>
+                         <td>{{question.questionText}}</td>
+                         <td>{{question.type}}</td>
+                         <td>
+                             {% block operation scoped %}
+                                 <a href="{{url_for('questionDelete', question_id=question.id)}}">删除</a>
+                             {% endblock %}
+                             
+                         </td>
+                       </tr>
+                 {% endfor %}
+            {% endif %}
+        {% endblock %}
     </tbody>
 </table>
 {% endblock %}

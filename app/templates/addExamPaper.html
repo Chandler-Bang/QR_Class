@@ -6,6 +6,12 @@
 {% endblock %}
 
 
+{% block button %}
+<a class="btn btn-primary" href="{{url_for("showQuestion", chapter_id=chapter_id)}}">返回添加题目</a>
+{% endblock %}
+
+
+
 {% block content %}
 <section class="text-center">
     <div class="container">
