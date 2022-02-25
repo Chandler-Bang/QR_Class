@@ -1,0 +1,31 @@
+{% extends "teacher/teacherLogin.html" %}
+
+
+{% block title %}
+    addClasses
+{% endblock %}
+
+{% block pagehead %}
+    班级添加
+{% endblock %}
+
+
+    {% block formHead %}
+        班级添加
+    {% endblock %}
+    
+
+    {% block form %}
+            <form method="post" accept-charset="utf-8">
+                {{form.hidden_tag()}}
+                {{form.classes_id.label(class="form-label")}}
+                {{form.classes_id(class="form-control")}}
+                {{form.terms.label(class="form-label")}}
+                {{form.terms(class="form-select text-center")}}
+                {{form.studentCount.label(class="form-label")}}
+                {{form.studentCount(class="form-control")}}
+                {{form.submit(class="btn btn-primary my-3")}}
+            </form>    
+    {% endblock %}
+    
+

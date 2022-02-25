@@ -64,9 +64,12 @@ students_classes = db.Table(
 
 class Classes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    classes_id = db.Column(db.String(20), unique=True)
+    terms = db.Column(db.String(20))
+    studentCount = db.Column(db.Integer)
     teacher_id = db.Column(db.ForeignKey('teacher.id'))
-    grade = db.relationship('StudentGrade', back_populates='classes')
     teachers = db.relationship('Teacher', back_populates="classes")
+    grade = db.relationship('StudentGrade', back_populates='classes')
     students = db.relationship(
             'Student', secondary=students_classes, back_populates="classes"
     )

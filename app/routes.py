@@ -5,9 +5,9 @@ from app import db
 import click
 from flask import render_template, redirect, url_for, request, flash
 from app.forms import AddQuestionForm, AddSubjectForm, AddChapterForm, \
-    TeacherLogin, questionAnswerForm, StudentLogin, AddExamPaper
+    TeacherLogin, questionAnswerForm, StudentLogin, AddExamPaper, AddClasses
 from app.models import Subject, Chapter, Question, MutipleChoice, \
-    FillInTheBlanks, Teacher, Student, UserInfo, ExamPaper
+    FillInTheBlanks, Teacher, Student, UserInfo, ExamPaper, Classes
 import pymysql
 
 
@@ -38,29 +38,46 @@ def addUser():
 
 
 @app.route(
-        '/index/teacher/',
-        defaults={'teacher_id': '#'},
-        methods=['GET', 'POST']
-    )
-@app.route(
         '/index/teacher/<int:teacher_id>',
         methods=['GET', 'POST']
     )
-def teacherIndex(teacher_id):
-    return render_template('addClasses.html')
+def teacherIndex(teacher_id=0):
+    from app.models import db
+    form = AddClasses()
+    if form.validate_on_submit():
+        classes = Classes(
+                classes_id=form.classes_id.data,
+                terms=form.terms.data,
+                studentCount=form.studentCount.data,
+                teacher_id=teacher_id
+        )
+        db.session.add(classes)
+        db.session.commit()
+        return redirect(url_for('showClasses', teacher_id=teacher_id))
+    return render_template('teacher/addClasses.html', form=form)
 
 
-@app.route(
-        '/index/student/',
-        defaults={'student_id': '#'},
-        methods=['GET', 'POST']
-    )
+@app.route('/teacher/<int:teacher_id>/showClasses', methods=['GET', 'POST'])
+def showClasses(teacher_id=0):
+    classes = Classes.query.filter_by(teacher_id=teacher_id).all()
+    length = len(classes)
+    return render_template(
+            'teacher/showClasses.html', classes=classes, length=length,
+            zip=zip
+            )
+
+
 @app.route(
         '/index/student/<int:student_id>',
         methods=['GET', 'POST']
     )
-def studentIndex(student_id):
-    return render_template('addClasses.html')
+def studentIndex(student_id=0):
+    classes = Classes.query.all()
+    length = len(classes)
+    return render_template(
+            'student/showClasses.html', classes=classes, length=length,
+            zip=zip
+            )
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -72,8 +89,8 @@ def teacherLogin():
         teacher = teachers.filter_by(username=form.username.data)[0]
         flag = teacher.validate_password(form.password.data)
         if flag:
-            return redirect(url_for('teacherIndex'))
-    return render_template("teacherLogin.html", form=form)
+            return redirect(url_for('teacherIndex', teacher_id=teacher.id))
+    return render_template("teacher/teacherLogin.html", form=form)
 
 
 @app.route('/student', methods=['GET', 'POST'])
@@ -84,8 +101,8 @@ def studentLogin():
         student = students.filter_by(username=form.username.data)[0]
         flag = student.validate_password(form.password.data)
         if flag:
-            return redirect(url_for('studentIndex'))
-    return render_template("studentLogin.html", form=form)
+            return redirect(url_for('studentIndex', student_id=student.id))
+    return render_template("student/studentLogin.html", form=form)
 
 
 @app.route('/questionAnswer', methods=['GET', 'POST'])
@@ -112,7 +129,7 @@ def addSubject():
         db.session.commit()
         id = Subject.query.filter_by(subjectName=data)[0].id
         return redirect(url_for('addChapter', subject_id=id))
-    return render_template('addSubject.html', form=form, subject=subject)
+    return render_template('teacher/addSubject.html', form=form, subject=subject)
 
 
 @app.route('/addChapter/<int:subject_id>', methods=['GET', 'POST'])
@@ -128,7 +145,7 @@ def addChapter(subject_id=0):
         db.session.commit()
         print(chapter.id)
         return redirect(url_for('showQuestion', chapter_id=chapter.id))
-    return render_template('addChapter.html', form=form, chapter=chapter)
+    return render_template('teacher/addChapter.html', form=form, chapter=chapter)
 
 
 @app.route('/showQuestion/<int:chapter_id>', methods=['GET', 'POST'])
@@ -138,7 +155,7 @@ def showQuestion(chapter_id):
     subject_id = chapter.subject_id
     length = len(questions)
     return render_template(
-        'showQuestion.html', questions=questions, chapter_id=chapter_id,
+        'teacher/showQuestion.html', questions=questions, chapter_id=chapter_id,
         subject_id=subject_id, length=length, zip=zip
     )
 
@@ -159,7 +176,7 @@ def addExamPaper(chapter_id):
         db.session.commit()
         return redirect(url_for('addQuestionToExamPaper', chapter_id=chapter_id, exampaper_id=exampaper.id))
     return render_template(
-            'addExamPaper.html', form=form, exampapers=exampapers,
+            '/teacher/addExamPaper.html', form=form, exampapers=exampapers,
             chapter_id=chapter_id, length=length, zip=zip
         )
 
@@ -171,7 +188,7 @@ def addQuestionToExamPaper(chapter_id=0, exampaper_id=0):
     questions = chapter.questions
     length = len(questions)
     return render_template(
-        'addQuestionToExamPaper.html', questions=questions, chapter_id=chapter_id, length=length, zip=zip, exampaper_id=exampaper_id, exampaper=exampaper
+        'teacher/addQuestionToExamPaper.html', questions=questions, chapter_id=chapter_id, length=length, zip=zip, exampaper_id=exampaper_id, exampaper=exampaper
     )
 
 
@@ -229,7 +246,7 @@ def addQuestion(chapter_id=0):
         db.session.commit()
         return redirect(url_for('showQuestion', chapter_id=chapter_id))
     return render_template(
-        'addQuestion.html', form=form, que=que, chapter_id=chapter_id
+        'teacher/addQuestion.html', form=form, que=que, chapter_id=chapter_id
     )
 
 

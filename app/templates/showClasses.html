@@ -1,0 +1,35 @@
+{% extends "showbase.html" %}
+
+ 
+{% block title %}
+    showClasses
+{% endblock %}
+
+
+{% block tableHeadLine %}
+    <td>#</td>
+    <td>班级编号</td>
+    <td>学期</td>
+    <td>班级最多人数</td>
+{% endblock %}
+
+
+{% block tableContent %}
+       {% if length %}
+            {% for classObject,i in zip(classes,range(1,length+1)) %}
+                  <tr>
+                    <td>{{i}}</td>
+                    <td>{{classObject.classes_id}}</td>
+                    <td>{{classObject.terms}}</td>
+                    <td>{{classObject.studentCount}}</td>
+                    <td>
+                        {% block operation scoped %}
+                        {% endblock %}
+                        
+                    </td>
+                  </tr>
+            {% endfor %}
+       {% endif %}
+    
+{% endblock %}
+

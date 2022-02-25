@@ -57,3 +57,14 @@ class AddExamPaper(FlaskForm):
     examPaperName = StringField(label="试卷名称")
     examTag = TextAreaField(label="试卷描述")
     submit = SubmitField(label="提交")
+
+
+class AddClasses(FlaskForm):
+    year = str(date.today().year)
+    classes_id = StringField(label="班级编号") 
+    terms = SelectField(
+            label="学期选择",
+            choices=[(year + '-1', year + '-1'), (year + '-2', year + '-2')]
+            )
+    studentCount = IntegerField(label='学生人数')
+    submit = SubmitField(label="提交")
