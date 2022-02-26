@@ -43,12 +43,18 @@ def addUser():
     )
 def teacherIndex(teacher_id=0):
     from app.models import db
-    form = AddClasses()
+    form = AddClasses(teacher_id)
     if form.validate_on_submit():
+        pass
+        subject = Subject.query.filter_by(teacher_id=teacher_id).all()
+        subject_id = subject.filter_by(
+                subjectName=form.subjectName.data
+                ).first().id
         classes = Classes(
                 classes_id=form.classes_id.data,
                 terms=form.terms.data,
                 studentCount=form.studentCount.data,
+                subject_id=subject_id,
                 teacher_id=teacher_id
         )
         db.session.add(classes)

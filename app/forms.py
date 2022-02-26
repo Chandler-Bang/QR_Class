@@ -5,6 +5,8 @@ from flask.helpers import flash
 from flask_wtf import FlaskForm
 from wtforms import TextAreaField, SubmitField, SelectField, FloatField, RadioField
 from wtforms import DateTimeField, IntegerField, StringField
+from app.models import db
+from app.models import Subject
 from wtforms.validators import DataRequired, Length
 from datetime import date
 
@@ -61,10 +63,17 @@ class AddExamPaper(FlaskForm):
 
 class AddClasses(FlaskForm):
     year = str(date.today().year)
-    classes_id = StringField(label="班级编号") 
+    classes_id = StringField(label="班级编号")
+    subjectName = SelectField(label="学科选择")
     terms = SelectField(
             label="学期选择",
             choices=[(year + '-1', year + '-1'), (year + '-2', year + '-2')]
             )
     studentCount = IntegerField(label='学生人数')
     submit = SubmitField(label="提交")
+    def __init__(self, teacher_id):
+        super(AddClasses, self).__init__()
+        subject = Subject.query.filter_by(teacher_id=teacher_id).all()
+        for subjectValue, subjectDescribe in zip(subject, subject):
+            self.subjectName.choices.append((subjectValue, subjectDescribe))
+

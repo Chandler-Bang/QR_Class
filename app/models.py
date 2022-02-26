@@ -17,37 +17,23 @@ class UserInfo(db.Model):
         return check_password_hash(self.password_hash, password)
 
 
-# 老师和科目是多对多
-teacher_subject = db.Table(
-    'teacher_subject', db.Column(
-        'teacher_id', db.Integer, db.ForeignKey('teacher.id')
-    ), db.Column(
-        'subject_id', db.Integer, db.ForeignKey('subject.id')
-    )
-)
-
-
 class Teacher(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     teacher_id = db.Column(db.Integer, db.ForeignKey('user_info.id'))
     user = db.relationship('UserInfo', back_populates='teachers')
     # 老师和班级是一对多
-    classes = db.relationship('Classes', back_populates="teachers")
-    subjects = db.relationship(
-        'Subject', secondary=teacher_subject, back_populates="teachers"
-    )
+    classes = db.relationship('Classes')
+    # 老师和学科是一对多
+    subjects = db.relationship('Subject')
 
 
 class Subject(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     subjectName = db.Column(db.String(10), nullable=False)
-    # 学科和班级一对一
-    classes_id = db.Column(db.ForeignKey('classes.id'))
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
+    # 学科和班级一对多
     classes = db.relationship('Classes')
     chapters = db.relationship('Chapter', back_populates="subject")
-    teachers = db.relationship(
-        'Teacher', secondary=teacher_subject, back_populates="subjects"
-    )
 
 
 # 学生和班级是多对多
@@ -67,8 +53,8 @@ class Classes(db.Model):
     classes_id = db.Column(db.String(20), unique=True)
     terms = db.Column(db.String(20))
     studentCount = db.Column(db.Integer)
-    teacher_id = db.Column(db.ForeignKey('teacher.id'))
-    teachers = db.relationship('Teacher', back_populates="classes")
+    subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'))
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
     grade = db.relationship('StudentGrade', back_populates='classes')
     students = db.relationship(
             'Student', secondary=students_classes, back_populates="classes"
@@ -152,8 +138,12 @@ class Question(db.Model):
     chapters = db.relationship(
         'Chapter', secondary=chapter_question, back_populates='questions'
     )
-    mutipleChoice = db.relationship('MutipleChoice', cascade="delete", uselist=False)
-    fillInTheBlanks = db.relationship('FillInTheBlanks', cascade="all", uselist=False)
+    mutipleChoice = db.relationship(
+            'MutipleChoice', cascade="delete", uselist=False
+            )
+    fillInTheBlanks = db.relationship(
+            'FillInTheBlanks', cascade="all", uselist=False
+            )
 
 
 class MutipleChoice(db.Model):
