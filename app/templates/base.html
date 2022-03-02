@@ -21,20 +21,7 @@
         <div class="collapse navbar-collapse" id="sToggler">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('teacherLogin')}}">主页</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('addSubject')}}">添加科目 </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('generateQR')}}">生成二维码</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('questionSelect')}}">题目选择</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{url_for('questionAnswer')}}">选项选择</a>
-                </li>
+                    <a class="nav-link" href="{{url_for('auth.teacherLogin')}}">主页</a>
             </ul>
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">

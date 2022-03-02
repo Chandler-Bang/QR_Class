@@ -12,9 +12,9 @@
     <a class="btn btn-primary" href="{{url_for('addChapter', subject_id=subject_id)}}">返回章节</a>
 </div>
 <div>
-    <a class="btn btn-primary my-4" href="{{url_for('addExamPaper', chapter_id=chapter_id)}}">添加试卷</a>
+    <a class="btn btn-primary my-4" href="{{url_for('addExamPaper', chapter_id=chapter_id, teacher_id=teacher_id)}}">添加试卷</a>
 </div>
-<a class="btn btn-primary" href="{{url_for('addQuestion', chapter_id=chapter_id)}}">添加题目</a>
+<a class="btn btn-primary" href="{{url_for('addQuestion', chapter_id=chapter_id, teacher_id=teacher_id)}}">添加题目</a>
 {% endblock %}
 
 {% block content %}
@@ -41,7 +41,7 @@
                          <td>{{question.type}}</td>
                          <td>
                              {% block operation scoped %}
-                                 <a href="{{url_for('questionDelete', question_id=question.id)}}">删除</a>
+                                 <a href="{{url_for('questionDelete', question_id=question.id, teacher_id=teacher_id)}}">删除</a>
                              {% endblock %}
                              
                          </td>

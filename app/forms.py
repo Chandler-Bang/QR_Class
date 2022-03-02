@@ -5,7 +5,6 @@ from flask.helpers import flash
 from flask_wtf import FlaskForm
 from wtforms import TextAreaField, SubmitField, SelectField, FloatField, RadioField
 from wtforms import DateTimeField, IntegerField, StringField
-from app.models import db
 from app.models import Subject
 from wtforms.validators import DataRequired, Length
 from datetime import date
@@ -71,9 +70,11 @@ class AddClasses(FlaskForm):
             )
     studentCount = IntegerField(label='学生人数')
     submit = SubmitField(label="提交")
+
     def __init__(self, teacher_id):
         super(AddClasses, self).__init__()
         subject = Subject.query.filter_by(teacher_id=teacher_id).all()
+        self.subjectName.choices = []
         for subjectValue, subjectDescribe in zip(subject, subject):
-            self.subjectName.choices.append((subjectValue, subjectDescribe))
+            self.subjectName.choices.append((subjectValue.subjectName, subjectDescribe.subjectName))
 

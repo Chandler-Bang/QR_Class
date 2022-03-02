@@ -18,7 +18,8 @@ addSubject
 <hr>
 {% for items in subject %}
     <p>
-    <a href="{{url_for('addChapter', subject_id=items.id)}}">{{items.subjectName}}</a>
+    <a href="{{url_for('addChapter', subject_id=items.id, teacher_id=teacher_id)}}">{{items.subjectName}}</a>
+    <a href="{{url_for('teacherIndex', teacher_id=teacher_id)}}">添加班级</a>
     </p>
 {% endfor %}
 显示已添加学科

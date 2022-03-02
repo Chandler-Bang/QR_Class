@@ -14,8 +14,8 @@ addQuestionToExamPaper
 
 
 {% block operation %}
-<a id="addToExam" href="{{url_for('questionAddToExamPaper', exampaper_id=exampaper_id, question_id=question.id)}}">加入试卷</a>
-<a id="deleteFromExam" href="{{url_for('questionDeleteFromExamPaper', exampaper_id=exampaper_id, question_id=question.id)}}">从试卷中删除</a>
+<a id="addToExam" href="{{url_for('questionAddToExamPaper', exampaper_id=exampaper_id, question_id=question.id, teacher_id=teacher_id)}}">加入试卷</a>
+<a id="deleteFromExam" href="{{url_for('questionDeleteFromExamPaper', exampaper_id=exampaper_id, question_id=question.id, teacher_id=teacher_id)}}">从试卷中删除</a>
 {% if question in exampaper.questions %}
     已添加进试卷
 {% else %}

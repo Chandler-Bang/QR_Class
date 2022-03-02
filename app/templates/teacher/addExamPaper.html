@@ -48,8 +48,8 @@
                     <td>{{exampaper.tag}}</td>
                     <td>
                         {% block operation scoped %}
-                            <a class="btn btn-primary" href="{{url_for('addQuestionToExamPaper', chapter_id=chapter_id, exampaper_id=exampaper.id)}}">添加题目</a>
-                            <a class="btn btn-primary" href="{{url_for('examPaperDelete', exampaper_id=exampaper.id)}}">删除试卷</a>
+                            <a class="btn btn-primary" href="{{url_for('addQuestionToExamPaper', chapter_id=chapter_id, exampaper_id=exampaper.id, teacher_id=teacher_id)}}">添加题目</a>
+                            <a class="btn btn-primary" href="{{url_for('examPaperDelete', exampaper_id=exampaper.id, teacher_id=teacher_id)}}">删除试卷</a>
                         {% endblock %}
                         
                     </td>
