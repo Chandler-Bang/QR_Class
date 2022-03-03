@@ -1,8 +1,16 @@
 from app import db
+from app import login
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import UserMixin
+
+
+@login.user_loader
+def user_load(teacher_id):
+    return Teacher.query.get(int(teacher_id))
 
 
 roles_permissions = db.Table(
+        'roles_permissions',
         db.Column("role_id", db.Integer, db.ForeignKey('role.id')),
         db.Column("permission_id", db.Integer, db.ForeignKey('permission.id'))
         )
@@ -16,6 +24,27 @@ class Role(db.Model):
             'Permission', secondary=roles_permissions, back_populates="roles"
             )
 
+    @staticmethod
+    def init_role():
+        from app import db
+        roles_permissions_map = {
+                'teacher': ['edit'],
+                'student': ['add']
+                }
+        for role_name in roles_permissions_map:
+            role = Role.query.filter_by(name=role_name).first()
+            if role is None:
+                role = Role(name=role_name)
+                db.session.add(role)
+            for permission_name in roles_permissions_map[role_name]:
+                permission = \
+                    Permission.query.filter_by(name=permission_name).first()
+                if permission is None:
+                    permission = Permission(name=permission_name)
+                    db.session.add(permission)
+                role.permissions.append(permission)
+        db.session.commit()
+
 
 class Permission(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -25,7 +54,7 @@ class Permission(db.Model):
             )
 
 
-class UserInfo(db.Model):
+class UserInfo(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(10))
     password_hash = db.Column(db.String(128))
@@ -41,7 +70,7 @@ class UserInfo(db.Model):
         return check_password_hash(self.password_hash, password)
 
 
-class Teacher(db.Model):
+class Teacher(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     teacher_id = db.Column(db.Integer, db.ForeignKey('user_info.id'))
     user = db.relationship('UserInfo', back_populates='teachers')
@@ -51,7 +80,7 @@ class Teacher(db.Model):
     subjects = db.relationship('Subject')
 
 
-class Subject(db.Model):
+class Subject(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     subjectName = db.Column(db.String(10), nullable=False)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
@@ -186,7 +215,3 @@ class FillInTheBlanks(db.Model):
     answer = db.Column(db.Text(100), nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
     question = db.relationship('Question', cascade="delete")
-
-
-# db.drop_all()
-# db.create_all()

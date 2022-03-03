@@ -3,6 +3,7 @@ from flask import url_for
 from flask import redirect
 from flask import render_template
 from flask import request
+from flask_login import login_user, login_required
 from app.forms import AddClasses
 from app.forms import AddSubjectForm
 from app.forms import AddChapterForm
@@ -42,7 +43,7 @@ def teacherIndex(teacher_id=0):
         db.session.add(classes)
         db.session.commit()
         return redirect(url_for('teacher.showClasses', teacher_id=teacher_id))
-    return render_template('teacher/addClasses.html', form=form)
+    return render_template('teacher/addClasses.html', form=form, redirect_url=redirect_url)
 
 
 @teacher_bp.route('/showClasses', methods=['GET', 'POST'])
@@ -56,6 +57,7 @@ def showClasses(teacher_id=0):
 
 
 @teacher_bp.route('/addSubject', methods=['GET', 'POST'])
+@login_required
 def addSubject(teacher_id=0):
     from app.models import db
     form = AddSubjectForm()
