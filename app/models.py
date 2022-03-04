@@ -5,8 +5,8 @@ from flask_login import UserMixin
 
 
 @login.user_loader
-def user_load(teacher_id):
-    return Teacher.query.get(int(teacher_id))
+def user_load(id):
+    return UserInfo.query.get(int(id))
 
 
 roles_permissions = db.Table(
@@ -69,8 +69,14 @@ class UserInfo(db.Model, UserMixin):
     def validate_password(self, password):
         return check_password_hash(self.password_hash, password)
 
+    def is_teacher(self):
+        return self.role.name == 'teacher'
 
-class Teacher(db.Model, UserMixin):
+    def is_student(self):
+        return self.role.name == 'student'
+
+
+class Teacher(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     teacher_id = db.Column(db.Integer, db.ForeignKey('user_info.id'))
     user = db.relationship('UserInfo', back_populates='teachers')
