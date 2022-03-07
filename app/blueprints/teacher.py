@@ -3,7 +3,7 @@ from flask import url_for
 from flask import redirect
 from flask import render_template
 from flask import request
-from flask_login import login_user, login_required
+from flask_login import login_user, login_required, current_user
 from app.forms import AddClasses
 from app.forms import AddSubjectForm
 from app.forms import AddChapterForm
@@ -280,7 +280,7 @@ def questionAnswer(teacher_id=0):
     return render_template('questionAnswer.html', form=form)
 
 
-def redirect_url(default='index'):
+def redirect_url(default='teacher.addSubject'):
     return request.args.get('next') or \
            request.referrer or \
-           url_for(default)
+           url_for(default, teacher_id=current_user.id)
