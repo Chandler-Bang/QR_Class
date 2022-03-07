@@ -205,7 +205,9 @@ def addQuestion(chapter_id=0, teacher_id=0):
     chapter = Chapter.query.get(chapter_id)
     form = AddQuestionForm()
     que = Question.query.all()  # 测试 所用变量
+    print(que)
     if form.validate_on_submit():
+        print('hhhh')
         question = Question(
             questionText=form.questionText.data,
             difficulity=form.difficulity.data,
@@ -226,6 +228,7 @@ def addQuestion(chapter_id=0, teacher_id=0):
         elif type == "填空题":
             fillInTheBlank = FillInTheBlanks(answer=form.answer.data)
             question.fillInTheBlanks = fillInTheBlank
+            print(1111)
         db.session.add(question)
         db.session.commit()
         return redirect(
@@ -241,7 +244,7 @@ def addQuestion(chapter_id=0, teacher_id=0):
 
 
 @teacher_bp.route('/questionDelete/<int:question_id>', methods=['GET', 'POST'])
-def questionDelete(question_id):
+def questionDelete(question_id=0, teacher_id=0):
     from app.models import db
     question = Question.query.get(question_id)
     db.session.delete(question)
