@@ -1,3 +1,4 @@
+import qrcode
 from app.blueprints import auth_bp
 from flask import redirect
 from flask import request
@@ -7,12 +8,42 @@ from flask import render_template
 from flask_login import login_user, login_required, logout_user, current_user
 from app.forms import TeacherLogin
 from app.forms import StudentLogin
+from app.forms import questionAnswerForm
+from app.forms import startAnswerForm
 from app.models import UserInfo
+from app.models import AnswerRecord
 from app.models import Role
 import pymysql
 
 
 @auth_bp.route('/', methods=['GET', 'POST'])
+def questionAnswer():
+    form = questionAnswerForm()
+    flash('答题开始')
+    if form.validate_on_submit():
+        from app.models import db
+        if form.choice1.data == 'A':
+            record = AnswerRecord(
+                    choice1=1
+                    )
+        if form.choice1.data == 'B':
+            record = AnswerRecord(
+                    choice2=1
+                    )
+        if form.choice1.data == 'C':
+            record = AnswerRecord(
+                    choice3=1
+                    )
+        if form.choice1.data == 'D':
+            record = AnswerRecord(
+                    choice4=1
+                    )
+        db.session.add(record)
+        db.session.commit()
+    return render_template('questionAnswer.html', form=form)
+
+
+@auth_bp.route('/teacher/login', methods=['GET', 'POST'])
 def teacherLogin():
     if current_user.is_authenticated:
         flash('您已登录')

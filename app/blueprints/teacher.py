@@ -1,6 +1,7 @@
 from app.blueprints import teacher_bp
 from flask import url_for
 from flask import redirect
+from flask import g
 from flask import render_template
 from flask import request
 from flask_login import login_user, login_required, current_user
@@ -10,6 +11,7 @@ from app.forms import AddChapterForm
 from app.forms import AddExamPaper
 from app.forms import AddQuestionForm
 from app.forms import questionAnswerForm
+from app.forms import startAnswerForm
 from app.models import Subject
 from app.models import Classes
 from app.models import UserInfo
@@ -19,6 +21,15 @@ from app.models import Question
 from app.models import MutipleChoice
 from app.models import FillInTheBlanks
 import pymysql
+
+
+@teacher_bp.before_request
+@login_required
+def login_commit():
+    if current_user.is_teacher():
+        pass
+    else:
+        return render_template('error.html')
 
 
 @teacher_bp.route(
@@ -57,7 +68,6 @@ def showClasses(teacher_id=0):
 
 
 @teacher_bp.route('/addSubject', methods=['GET', 'POST'])
-@login_required
 def addSubject(teacher_id=0):
     from app.models import db
     form = AddSubjectForm()
@@ -265,6 +275,12 @@ def examPaperDelete(exampaper_id=0, teacher_id=0):
     return redirect(redirect_url())
 
 
+@teacher_bp.route('/controlAnswer', methods=['GET', 'POST'])
+def controlAnswer(teacher_id=0):
+    form = startAnswerForm()
+    return render_template('teacher/startAnswer.html', form=form)
+
+
 @teacher_bp.route('/generateQR')
 def generateQR(teacher_id=0):
     return "generateQR"
@@ -273,14 +289,6 @@ def generateQR(teacher_id=0):
 @teacher_bp.route('/questionSelect')
 def questionSelect(teacher_id=0):
     return "questionSelect"
-
-
-@teacher_bp.route('/questionAnswer', methods=['GET', 'POST'])
-def questionAnswer(teacher_id=0):
-    form = questionAnswerForm()
-    if form.validate_on_submit():
-        return redirect(url_for('showAnswer'))
-    return render_template('questionAnswer.html', form=form)
 
 
 def redirect_url(default='teacher.addSubject'):

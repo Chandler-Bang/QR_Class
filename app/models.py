@@ -221,3 +221,11 @@ class FillInTheBlanks(db.Model):
     answer = db.Column(db.Text(100), nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
     question = db.relationship('Question', cascade="delete")
+
+
+class AnswerRecord(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    choice1 = db.Column(db.String, default='0')
+    choice2 = db.Column(db.String, default='0')
+    choice3 = db.Column(db.String, default='0')
+    choice4 = db.Column(db.String, default='0')
