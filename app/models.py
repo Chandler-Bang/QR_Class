@@ -225,7 +225,7 @@ class FillInTheBlanks(db.Model):
 
 class AnswerRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    choice1 = db.Column(db.String, default='0')
-    choice2 = db.Column(db.String, default='0')
-    choice3 = db.Column(db.String, default='0')
-    choice4 = db.Column(db.String, default='0')
+    choice1 = db.Column(db.Integer, default=0)
+    choice2 = db.Column(db.Integer, default=0)
+    choice3 = db.Column(db.Integer, default=0)
+    choice4 = db.Column(db.Integer, default=0)

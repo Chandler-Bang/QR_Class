@@ -11,7 +11,6 @@ from app.forms import AddChapterForm
 from app.forms import AddExamPaper
 from app.forms import AddQuestionForm
 from app.forms import questionAnswerForm
-from app.forms import startAnswerForm
 from app.models import Subject
 from app.models import Classes
 from app.models import UserInfo
@@ -20,6 +19,7 @@ from app.models import ExamPaper
 from app.models import Question
 from app.models import MutipleChoice
 from app.models import FillInTheBlanks
+from app.models import AnswerRecord
 import pymysql
 
 
@@ -277,8 +277,9 @@ def examPaperDelete(exampaper_id=0, teacher_id=0):
 
 @teacher_bp.route('/controlAnswer', methods=['GET', 'POST'])
 def controlAnswer(teacher_id=0):
-    form = startAnswerForm()
-    return render_template('teacher/startAnswer.html', form=form)
+    return render_template(
+            'teacher/startAnswer.html'
+            )
 
 
 @teacher_bp.route('/generateQR')

@@ -9,7 +9,6 @@ from flask_login import login_user, login_required, logout_user, current_user
 from app.forms import TeacherLogin
 from app.forms import StudentLogin
 from app.forms import questionAnswerForm
-from app.forms import startAnswerForm
 from app.models import UserInfo
 from app.models import AnswerRecord
 from app.models import Role

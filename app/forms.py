@@ -77,8 +77,3 @@ class AddClasses(FlaskForm):
         self.subjectName.choices = []
         for subjectValue, subjectDescribe in zip(subject, subject):
             self.subjectName.choices.append((subjectValue.subjectName, subjectDescribe.subjectName))
-
-
-class startAnswerForm(FlaskForm):
-    startSubmit = SubmitField(label="开始答题")
-    endSubmit = SubmitField(label="结束答题")
