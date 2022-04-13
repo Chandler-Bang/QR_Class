@@ -1,16 +1,45 @@
 {% extends "base.html" %}
 
 {% block content %}
-<button>开始答题</button>
-<button id="endSubmit">结束答题</button>
-<img src="{{qrcode('wqewq')}}" alt=""/>
+<button id="startSubmit" onclick="generateQR()">开始答题</button>
+<button id="endSubmit" onclick="loadXMLDoc()">结束答题</button>
+<img id="num" ></img>
 <div id="main" style="width: 600px;height:400px;"></div>
 
 <script type='text/javascript'>
-    const endSubmit = document.getElementById('endSubmit');
-    endSubmit.onclick=function(){
- // 基于准备好的dom，初始化echarts实例
       var myChart = echarts.init(document.getElementById('main'));
+function generateQR(){
+        img = document.getElementById('num');
+        img.src="{{qrcode('/auth/')}}";
+
+
+    }
+function loadXMLDoc()
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		// IE6, IE5 浏览器执行代码
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	xmlhttp.onreadystatechange=function()
+	{
+		if (xmlhttp.readyState==4 && xmlhttp.status==200)
+		{
+                data = JSON.parse(xmlhttp.responseText);
+                const keys = [];
+                const values = [];
+                for(const key in data){
+                   keys.push(key);
+                   values.push(data[key]);
+                    }
+    const endSubmit = document.getElementById('endSubmit');
+ // 基于准备好的dom，初始化echarts实例
 
 var option = {
         title: {
@@ -21,14 +50,14 @@ var option = {
           data: ['sales']
         },
         xAxis: {
-          data: ['Shirts', 'Cardigans', 'Chiffons', 'Pants', 'Heels', 'Socks']
+          data: keys
         },
         yAxis: {},
         series: [
           {
             name: 'sales',
             type: 'bar',
-            data: [5, 20, 36, 10, 10, 20]
+            data: values
           }
         ]
       };
@@ -38,6 +67,10 @@ var option = {
 
 
         }
+	}
+    xmlhttp.open("GET","/teacher/{{teacher_id}}/recordAnswer",true);
+	xmlhttp.send();
+}
     
 </script>
 

@@ -1,5 +1,5 @@
 from app.blueprints import teacher_bp
-from flask import url_for
+from flask import url_for, jsonify
 from flask import redirect
 from flask import g
 from flask import render_template
@@ -278,8 +278,23 @@ def examPaperDelete(exampaper_id=0, teacher_id=0):
 @teacher_bp.route('/controlAnswer', methods=['GET', 'POST'])
 def controlAnswer(teacher_id=0):
     return render_template(
-            'teacher/startAnswer.html'
+            'teacher/startAnswer.html', teacher_id=teacher_id
             )
+
+
+@teacher_bp.route('/recordAnswer', methods=['GET', 'POST'])
+def recordAnswer(teacher_id=0):
+    answer_record = AnswerRecord()
+    answer_A = answer_record.query.filter_by(choice1=1).count()
+    answer_B = answer_record.query.filter_by(choice2=1).count()
+    answer_C = answer_record.query.filter_by(choice3=1).count()
+    answer_D = answer_record.query.filter_by(choice4=1).count()
+    return jsonify({
+        'A': answer_A,
+        'B': answer_B,
+        'C': answer_C,
+        'D': answer_D
+        })
 
 
 @teacher_bp.route('/generateQR')
