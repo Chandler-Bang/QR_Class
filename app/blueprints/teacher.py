@@ -63,7 +63,7 @@ def showClasses(teacher_id=0):
     length = len(classes)
     return render_template(
             'teacher/showClasses.html', classes=classes, length=length,
-            zip=zip
+            zip=zip 
             )
 
 
@@ -194,7 +194,6 @@ def questionAddToExamPaper(exampaper_id=0, question_id=0, teacher_id=0):
     db.session.add(exampaper)
     db.session.commit()
     return redirect(redirect_url())
-
 
 @teacher_bp.route(
         '/questionDeleteFromExamPaper/<int:exampaper_id>/<int:question_id>',

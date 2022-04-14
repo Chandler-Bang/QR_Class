@@ -11,6 +11,9 @@
     <td>班级编号</td>
     <td>学期</td>
     <td>班级最多人数</td>
+    {% block tableHeadLineItem %}
+    {% endblock %}
+    
 {% endblock %}
 
 
@@ -22,6 +25,9 @@
                     <td>{{classObject.classes_id}}</td>
                     <td>{{classObject.terms}}</td>
                     <td>{{classObject.studentCount}}</td>
+                    {% block tableItems scoped %}
+                    {% endblock %}
+                    
                     <td>
                         {% block operation scoped %}
                         {% endblock %}

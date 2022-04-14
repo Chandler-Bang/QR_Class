@@ -1,4 +1,29 @@
 {% extends "showClasses.html" %}
 
 
+{% block tableHeadLineItem %}
+    <td>班级所剩名额</td>
+{% endblock %}
+
+
+{% block tableItems %}
+{% set num = classObject.studentCount-len(classObject.students) %}
+<td>{{num}}</td>
+{% endblock %}
+
+
+
+{% block operation %}
+{% if student in classObject.students %}
+<a href="{{url_for('student.deleteFromClass', student_id=student_id, class_id=classObject.id)}}" >退出班级</a> 
+已在该教学班中 
+{% else %}
+<a href="{{url_for('student.addToClass', student_id=student_id, class_id=classObject.id)}}" >加入班级</a> 
+尚未加入该教学班
+{% endif %}
+
+{% endblock %}
+
+
+
 
