@@ -2,6 +2,7 @@ from app.blueprints import teacher_bp
 from flask import url_for, jsonify
 from flask import redirect
 from flask import g
+from flask import flash
 from flask import render_template
 from flask import request
 from flask_login import login_user, login_required, current_user
@@ -277,8 +278,20 @@ def examPaperDelete(exampaper_id=0, teacher_id=0):
 @teacher_bp.route('/controlAnswer', methods=['GET', 'POST'])
 def controlAnswer(teacher_id=0):
     return render_template(
-            'teacher/startAnswer.html', teacher_id=teacher_id
+            'teacher/startAnswer.html', teacher_id=teacher_id 
             )
+
+
+@teacher_bp.route('/deleteRecord', methods=['GET', 'POST'])
+def deleteRecord(teacher_id=0):
+    from app.models import db
+    record = AnswerRecord()
+    records = record.query.all()
+    for record_item in records:
+        db.session.delete(record_item)
+    db.session.commit() 
+    flash('数据清除完成')
+    return redirect(redirect_url())
 
 
 @teacher_bp.route('/recordAnswer', methods=['GET', 'POST'])

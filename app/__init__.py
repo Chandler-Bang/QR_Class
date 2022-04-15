@@ -25,6 +25,7 @@ def create_app(config_name=Config):
     register_user(app)
     register_login(app)
     with app.app_context():
+        pass
         # db.drop_all()
         db.create_all()
     return app

@@ -3,10 +3,12 @@
 {% block content %}
 <button id="startSubmit" onclick="generateQR()">开始答题</button>
 <button id="endSubmit" onclick="loadXMLDoc()">结束答题</button>
+<a class="btn btn-primary" href="{{url_for('teacher.deleteRecord', teacher_id=teacher_id)}}" >清除数据</a>
 <img id="num" ></img>
 <div id="main" style="width: 600px;height:400px;"></div>
 
 <script type='text/javascript'>
+
       var myChart = echarts.init(document.getElementById('main'));
 function generateQR(){
         img = document.getElementById('num');

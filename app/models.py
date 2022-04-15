@@ -107,6 +107,18 @@ students_classes = db.Table(
     )
 
 
+# 试卷和班级是多对多
+exampaper_classes = db.Table(
+        'exampaper_classes',
+        db.Column(
+            'exampaper_id', db.Integer, db.ForeignKey('exam_paper.id')
+            ),
+        db.Column(
+            'classes_id', db.Integer, db.ForeignKey('classes.id')
+            )
+        )
+
+
 class Classes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     classes_id = db.Column(db.String(20), unique=True)
@@ -118,6 +130,7 @@ class Classes(db.Model):
     students = db.relationship(
             'Student', secondary=students_classes, back_populates="classes"
     )
+    exampapers = db.relationship('ExamPaper', secondary=exampaper_classes, back_populates="classes")
 
 
 class Student(db.Model):
@@ -184,6 +197,7 @@ class ExamPaper(db.Model):
         'Question', secondary=exampaper_question, back_populates='exampapers'
     )
     grade = db.relationship('StudentGrade', back_populates="exampapers")
+    classes = db.relationship('Classes', secondary=exampaper_classes, back_populates='exampapers')
 
 
 class Question(db.Model):
