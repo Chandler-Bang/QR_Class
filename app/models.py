@@ -132,6 +132,20 @@ class Classes(db.Model):
     )
     exampapers = db.relationship('ExamPaper', secondary=exampaper_classes, back_populates="classes")
 
+    def serialize(self):
+        return{
+                'id': self.id,
+                'classes_id': self.classes_id,
+                'terms': self.terms,
+                'studentCount': self.studentCount,
+                'subject_id': self.subject_id,
+                'teacher_id': self.teacher_id,
+                'grade': self.grade,
+                'students': self.students,
+                'exampapers': self.exampapers
+
+                }
+
 
 class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)

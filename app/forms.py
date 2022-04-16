@@ -77,3 +77,8 @@ class AddClasses(FlaskForm):
         self.subjectName.choices = []
         for subjectValue, subjectDescribe in zip(subject, subject):
             self.subjectName.choices.append((subjectValue.subjectName, subjectDescribe.subjectName))
+
+
+class ExamPaperToClasses(FlaskForm):
+    classes_select = SelectField(label='班级选择', choices=[], coerce=int)
+    submit = SubmitField(label="发布")

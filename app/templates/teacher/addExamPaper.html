@@ -50,6 +50,13 @@
                         {% block operation scoped %}
                             <a class="btn btn-primary" href="{{url_for('teacher.addQuestionToExamPaper', chapter_id=chapter_id, exampaper_id=exampaper.id, teacher_id=teacher_id)}}">添加题目</a>
                             <a class="btn btn-primary" href="{{url_for('teacher.examPaperDelete', exampaper_id=exampaper.id, teacher_id=teacher_id)}}">删除试卷</a>
+                            <form action="{{url_for('teacher.exampaperToClasses', exampaper_id=exampaper.id, teacher_id=teacher_id)}}" style="display:inline" method="POST" accept-charset="utf-8">
+                                {{classes_exampaper.hidden_tag()}}
+                                {{classes_exampaper.classes_select.label()}}
+                                {{classes_exampaper.classes_select()}}
+                                {{classes_exampaper.submit()}}
+                                    
+                            </form>
                         {% endblock %}
                         
                     </td>

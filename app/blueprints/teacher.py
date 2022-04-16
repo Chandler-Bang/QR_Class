@@ -12,9 +12,11 @@ from app.forms import AddChapterForm
 from app.forms import AddExamPaper
 from app.forms import AddQuestionForm
 from app.forms import questionAnswerForm
+from app.forms import ExamPaperToClasses
 from app.models import Subject
 from app.models import Classes
 from app.models import UserInfo
+from app.models import Teacher
 from app.models import Chapter
 from app.models import ExamPaper
 from app.models import Question
@@ -137,6 +139,10 @@ def showQuestion(chapter_id=0, teacher_id=0):
 def addExamPaper(chapter_id=0, teacher_id=0):
     from app.models import db
     form = AddExamPaper()
+    classes_exampaper = ExamPaperToClasses()
+    teacher = Teacher().query.filter_by(teacher_id=teacher_id).first()
+    classes = teacher.classes
+    classes_exampaper.classes_select.choices += [(r.classes_id, r.classes_id) for r in classes]
     exampapers = ExamPaper.query.filter_by(chapter_id=chapter_id).all()
     length = len(exampapers)
     if form.validate_on_submit():
@@ -157,9 +163,37 @@ def addExamPaper(chapter_id=0, teacher_id=0):
                 )
     return render_template(
             '/teacher/addExamPaper.html', form=form, exampapers=exampapers,
+            classes_exampaper=classes_exampaper,
             chapter_id=chapter_id,
             length=length, zip=zip, teacher_id=teacher_id
         )
+
+
+@teacher_bp.route(
+        '/exampaperToClasses/<int:exampaper_id>', methods=['POST']
+        )
+def exampaperToClasses(teacher_id=0, exampaper_id=0):
+    from app.models import db
+    form = ExamPaperToClasses()
+    exampaper = ExamPaper().query.get(exampaper_id)
+    print(form.classes_select.data)
+    print(form.validate_on_submit())
+    classes_id = form.classes_select.data
+    classes = Classes().query.filter_by(classes_id=classes_id).first()
+    exampaper.classes.append(classes)
+    db.session.add(exampaper)
+    db.session.commit()
+    flash('发布成功')
+    return redirect(redirect_url())
+
+
+@teacher_bp.route(
+        '/selectClasses', methods=['GET', 'POST']
+        )
+def selectClasses(teacher_id=0):
+    teacher = Teacher().query.filter_by(teacher_id=teacher_id).first()
+    classes = teacher.classes
+    return jsonify([i.serialize() for i in classes])
 
 
 @teacher_bp.route(
