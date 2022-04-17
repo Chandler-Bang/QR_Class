@@ -226,10 +226,10 @@ class Question(db.Model):
         'Chapter', secondary=chapter_question, back_populates='questions'
     )
     mutipleChoice = db.relationship(
-            'MutipleChoice', cascade="delete", uselist=False
+            'MutipleChoice', cascade='all', uselist=False
             )
     fillInTheBlanks = db.relationship(
-            'FillInTheBlanks', cascade="all", uselist=False
+            'FillInTheBlanks', cascade='all', uselist=False
             )
 
 
@@ -248,7 +248,7 @@ class FillInTheBlanks(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     answer = db.Column(db.Text(100), nullable=False)
     question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
-    question = db.relationship('Question', cascade="delete")
+    question = db.relationship('Question')
 
 
 class AnswerRecord(db.Model):

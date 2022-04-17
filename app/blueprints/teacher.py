@@ -249,9 +249,7 @@ def addQuestion(chapter_id=0, teacher_id=0):
     chapter = Chapter.query.get(chapter_id)
     form = AddQuestionForm()
     que = Question.query.all()  # 测试 所用变量
-    print(que)
     if form.validate_on_submit():
-        print('hhhh')
         question = Question(
             questionText=form.questionText.data,
             difficulity=form.difficulity.data,
@@ -259,7 +257,6 @@ def addQuestion(chapter_id=0, teacher_id=0):
         )
         question.chapters.append(chapter)
         type = request.form.get('select')
-        print(type)
         if type == "选择题":
             mutipleChoice = MutipleChoice(
                 choice1=form.choice1.data,
@@ -269,11 +266,11 @@ def addQuestion(chapter_id=0, teacher_id=0):
                 answer=form.answer.data
             )
             question.mutipleChoice = mutipleChoice
+            db.session.add(question)
         elif type == "填空题":
             fillInTheBlank = FillInTheBlanks(answer=form.answer.data)
             question.fillInTheBlanks = fillInTheBlank
-            print(1111)
-        db.session.add(question)
+            db.session.add(question)
         db.session.commit()
         return redirect(
                 url_for(

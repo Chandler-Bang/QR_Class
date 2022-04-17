@@ -1,0 +1,33 @@
+{% extends "showbase.html" %}
+
+
+{% block tableHeadLine %}
+    <td>#</td>
+    <td>试卷名称</td>
+    <td>试卷描述</td>
+    <td>操作</td>
+{% endblock %}
+
+
+{% block tableContent %}
+    {% if exampapers %}
+        {% for exampaper, i in zip(exampapers, range(1,length+1)) %}
+        <tr>
+            <td>{{i}}</td>
+            <td>{{exampaper.name}}</td>
+            <td>{{exampaper.tag}}</td>
+            {% block tableItems scoped %}
+            {% endblock %}
+            <td>
+                {% block operation scoped %}
+                <a href="{{url_for('student.checkExampaper', student_id=student_id, exampaper_id=exampaper.id)}}" >查看试卷</a>
+                {% endblock %}
+            </td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        暂无试卷信息
+    {% endif %}
+    
+{% endblock %}
+
