@@ -71,8 +71,35 @@ def checkExampaper(student_id=0, exampaper_id=0):
             questions_fillInTheBlank.append(question)
         length_mutipleChoice = len(questions_mutipleChoice)
         length_fillInTheBlank = len(questions_fillInTheBlank)
+    if request.method == 'POST':
+        for question_mutipleChoice in questions_mutipleChoice:
+            question_obj = question_mutipleChoice.mutipleChoice
+            id = str(question_obj.id)
+            selected_answer = request.form.get(id)
+            if selected_answer == question_obj.choice1:
+                selected_answer = 'A'
+            elif selected_answer == question_obj.choice2:
+                selected_answer = 'B'
+            elif selected_answer == question_obj.choice3:
+                selected_answer = 'C'
+            else:
+                selected_answer = 'D'
+            if selected_answer == question_obj.answer:
+                print('cool')
+            else:
+                print('ops')
+        for question_fillInTheBlank in questions_fillInTheBlank:
+            question_obj = question_fillInTheBlank.fillInTheBlanks
+            id = str(question_obj.id)
+            selected_answer = request.form.get(id)
+            if selected_answer == question_obj.answer:
+                print('cool')
+            else:
+                print('ops')
     return render_template(
             'student/checkExampaper.html',
+            student_id=student_id,
+            exampaper_id=exampaper_id,
             questions_mutipleChoice=questions_mutipleChoice,
             questions_fillInTheBlank=questions_fillInTheBlank,
             length_mutipleChoice=length_mutipleChoice,
