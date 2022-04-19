@@ -2,18 +2,20 @@ import click
 import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from config import config
 from flask_qrcode import QRcode
-from config import Config
 from flask_login import LoginManager
 db = SQLAlchemy()
 login = LoginManager()
 qr = QRcode()
 
 
-def create_app(config_name=Config):
+def create_app(config_name=None):
+    if config_name is None:
+        config_name = os.getenv('FLASK_CONFIG', 'develpment')
     app = Flask(__name__)
     qr.init_app(app)
-    app.config.from_object(config_name)
+    app.config.from_object(config[config_name])
     db.init_app(app)
     from app.blueprints import teacher_bp
     from app.blueprints import student_bp
