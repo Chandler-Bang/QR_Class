@@ -1,2 +1,2 @@
-FLASK_ENV=development
 FLASK_APP=QRclass.py
+FLASK_ENV=development
