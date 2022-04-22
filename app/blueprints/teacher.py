@@ -1,3 +1,4 @@
+import time
 from app.blueprints import teacher_bp
 from flask import url_for, jsonify
 from flask import redirect
@@ -308,8 +309,11 @@ def examPaperDelete(exampaper_id=0, teacher_id=0):
 
 @teacher_bp.route('/controlAnswer', methods=['GET', 'POST'])
 def controlAnswer(teacher_id=0):
+    timestamp = int(time.time())
     return render_template(
-            'teacher/startAnswer.html', teacher_id=teacher_id 
+            'teacher/startAnswer.html',
+            teacher_id=teacher_id,
+            timestamp=timestamp
             )
 
 
