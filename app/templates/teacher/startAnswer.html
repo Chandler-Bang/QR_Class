@@ -12,7 +12,7 @@
       var myChart = echarts.init(document.getElementById('main'));
 function generateQR(){
         img = document.getElementById('num');
-        img.src="{{qrcode('/auth/')}}";
+        img.src="{{qrcode(url_for('auth.questionAnswer', timestamp=timestamp))}}";
 
 
     }

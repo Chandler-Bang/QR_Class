@@ -1,3 +1,4 @@
+import time
 import qrcode
 from app.blueprints import auth_bp
 from flask import redirect
@@ -15,8 +16,8 @@ from app.models import Role
 import pymysql
 
 
-@auth_bp.route('/', methods=['GET', 'POST'])
-def questionAnswer():
+@auth_bp.route('/<int:timestamp>', methods=['GET', 'POST'])
+def questionAnswer(timestamp=0):
     form = questionAnswerForm()
     flash('答题开始')
     if form.validate_on_submit():

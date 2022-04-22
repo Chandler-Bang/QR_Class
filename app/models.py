@@ -161,7 +161,7 @@ class StudentGrade(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     grade = db.Column(db.Integer)
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
-    classes_id = db.Column(db.Integer, db.ForeignKey('classes.id'))
+    classes_id = db.Column(db.String(20), db.ForeignKey('classes.classes_id'))
     exampaper_id = db.Column(db.Integer, db.ForeignKey('exam_paper.id'))
     # 成绩和学生、试卷是一对多
     classes = db.relationship('Classes', back_populates='grade')
