@@ -4,7 +4,9 @@ entity Subject{
     id : INTEGER
     ..
     name : STRING
+    teacher_id : INTEGER
     classes_id : INTEGER
+    chapter_id : INTEGER
 }
 
 
@@ -13,11 +15,20 @@ entity Chapter{
     ..
     name : STRING
     subject_id : INTEGER
+    examPaper_id : INTEGER
+    question_id : INTEGER
 }
 
 
 entity ExamPaper{
     id : INTEGER
+    --
+    name : STRING
+    tag : STRING
+    chapter_id : INTEGER
+    question_id : INTEGER
+    grade_id : INTEGER
+    classes_id : INTEGER
 }
 
 
@@ -26,8 +37,6 @@ entity Question{
     ..
     questionText : STRING
     difficulty : FLOAT
-    addTime : DATETIME
-    addPerson : STRING
     type : STRING
     examPaper_id : INTEGER
     chapter_id : INTEGER
@@ -52,6 +61,34 @@ entity FillInTheBlanks{
 }
 
 
+entity Role{
+    id : INTEGER
+    ..
+    name : STRING
+    user_id : INTEGER
+    permission_id : INTEGER
+}
+
+
+entity Permission{
+    id : INTEGER
+    ..
+    name : STRING
+    role_id : INTEGER
+}
+
+
+entity UserInfo{
+    id : INTEGER
+    ..
+    username : STRING
+    password : STRING
+    role_id : INTEGER
+    teacher_id : INTEGER
+    student_id : INTEGER
+
+}
+
 entity Teacher{
     id : INTEGER
     ..
@@ -63,28 +100,59 @@ entity Teacher{
 entity Classes{
     id : INTEGER
     ..
+    classes_id : INTEGER
+    terms : STRING
+    studentCount : INTEGER
+    subject_id : INTEGER
     teacher_id : INTEGER
+    student_grade_id : INTEGER
+    student_id : INTEGER
+    examPaper_id : INTEGER
 }
 
 
 entity Student{
     id : INTEGER
     ..
+    student_id : INTEGER
+    user_id : INTEGER
+    grade : INTEGER
     classes_id : INTEGER
 }
 
 
-entity StudentScore{
+entity StudentGrade{
     id : INTEGER
-    score : INTEGERs
+    --
+    student_id : INTEGER
+    classes_id : INTEGER
+    examPaper_id : INTEGER
+    grade : INTEGER
     student_id : INTEGER
     examPaper_id : INTEGER
 }
 
 
+entity AnswerRecord{
+    id : INTEGER
+    --
+    choice1Count : INTEGER
+    choice2Count : INTEGER
+    choice3Count : INTEGER
+    choice4Count : INTEGER
+
+}
+
+
+Role "m" ||--|{ "n" Permission: 角色-权限
+Role "1" ||-|{ "n" UserInfo: 角色-用户
+UserInfo "1" ||--|{ "1" Teacher: 用户-老师
+UserInfo "1" ||-|{ "1" Student: 用户-学生
 Teacher "1" ||-|{ "n" Classes: 老师-班级
 Classes "m" }|--|{ "n" Student: 班级-学生
-Student "n" }|--|{ "1" StudentScore: 学生-试卷分数
+Student "n" }|--|{ "1" StudentGrade: 学生-试卷分数
+Classes "n" }|--|{ "1" StudentGrade: 班级-试卷分数
+ExamPaper "n" }|--|{ "1" StudentGrade: 试卷-试卷分数
 Teacher "m" }|--|{ "n" Subject: 老师-学科
 Subject "1" ||--|{ "n" Chapter: 学科-章节
 Subject "1" ||-|| "1" Classes: 学科-班级
@@ -92,5 +160,4 @@ Chapter "1" ||--|{ "n" Question: 章节-题目
 Question "1" ||--|| "1" MutipleChoice: 问题-选择题
 Question "1" ||--|| "1" FillInTheBlanks: 问题-填空题
 ExamPaper "m" }|--|{ "n" Question: 试卷-题目
-ExamPaper "n" }|--|{ "1" StudentScore: 试卷-分数
 @enduml
