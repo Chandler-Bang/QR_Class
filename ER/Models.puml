@@ -144,20 +144,20 @@ entity AnswerRecord{
 }
 
 
-Role "m" ||--|{ "n" Permission: 角色-权限
-Role "1" ||-|{ "n" UserInfo: 角色-用户
-UserInfo "1" ||--|{ "1" Teacher: 用户-老师
-UserInfo "1" ||-|{ "1" Student: 用户-学生
-Teacher "1" ||-|{ "n" Classes: 老师-班级
-Classes "m" }|--|{ "n" Student: 班级-学生
-Student "n" }|--|{ "1" StudentGrade: 学生-试卷分数
-Classes "n" }|--|{ "1" StudentGrade: 班级-试卷分数
-ExamPaper "n" }|--|{ "1" StudentGrade: 试卷-试卷分数
-Teacher "m" }|--|{ "n" Subject: 老师-学科
-Subject "1" ||--|{ "n" Chapter: 学科-章节
-Subject "1" ||-|| "1" Classes: 学科-班级
-Chapter "1" ||--|{ "n" Question: 章节-题目
-Question "1" ||--|| "1" MutipleChoice: 问题-选择题
-Question "1" ||--|| "1" FillInTheBlanks: 问题-填空题
-ExamPaper "m" }|--|{ "n" Question: 试卷-题目
+Role "m" ||--|{ "n" Permission: 角  色 -- 权  限
+Role "1" ||-|{ "n" UserInfo: 角  色 -- 用  户
+UserInfo "1" ||--|{ "1" Teacher: 用  户 -- 老  师
+UserInfo "1" ||-|{ "1" Student: 用  户 -- 学  生
+Teacher "1" ||-|{ "n" Classes: 老  师 -- 班  级
+Classes "m" }|--|{ "n" Student: 班  级 -- 学  生
+Student "n" }|--|{ "1" StudentGrade: 学  生 -- 试  卷  分  数
+Classes "n" }|--|{ "1" StudentGrade: 班  级 -- 试  卷  分  数
+ExamPaper "n" }|--|{ "1" StudentGrade: 试  卷 -- 试  卷  分  数
+Teacher "m" }|--|{ "n" Subject: 老  师 -- 学  科
+Subject "1" ||--|{ "n" Chapter: 学  科 -- 章  节
+Subject "1" ||-|| "1" Classes: 学  科 -- 班  级
+Chapter "1" ||--|{ "n" Question: 章  节 -- 题  目
+Question "1" ||--|| "1" MutipleChoice: 问  题 -- 选  择  题
+Question "1" ||--|| "1" FillInTheBlanks: 问  题 -- 填  空  题
+ExamPaper "m" }|--|{ "n" Question: 试  卷 -- 题  目
 @enduml
