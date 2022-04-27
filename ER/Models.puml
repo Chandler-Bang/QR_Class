@@ -92,8 +92,9 @@ entity UserInfo{
 entity Teacher{
     id : INTEGER
     ..
-    username : STRING
-    password : STRING
+    teacher_id : INTEGER
+    classes_id : INTEGER
+    subject_id : INTEGER
 }
 
 

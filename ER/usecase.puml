@@ -1,32 +1,33 @@
 @startuml Usecase
 left to right direction
-actor "老师" as t
-package "老师端" as T{
-    usecase "登录" as UC1
-    usecase "课程选择" as UC2
-    usecase "班级选择" as UC3
-    usecase "添加题目" as UC4
-    usecase "随堂测试" as UC5
-    usecase "二维码生成" as UC6
-    usecase "生成可视化结果" as UC7
-}
-
-t --> UC1
-t --> UC2
-t --> UC3
-t --> UC4
-t --> UC5
-t --> UC6
-t --> UC7
-
-actor "学生" as s
-package "学生端" as S{
-    usecase "登录" as UC8
-    usecase "加入教学班" as UC9
-    usecase "答题" as UC10
-}
-UC8 <-- s
-UC9 <-- s
-UC10 <-- s
-T *--* S : 通过二维码交互
+skinparam actorStyle awesome
+skinparam RoundCorner 25
+actor Teacher as tc
+    usecase "老   师   端" as tcsys
+    usecase "   登   录   系   统" as sys <<$archimate/device>>
+    usecase " 展   示   主   页" as page
+    usecase "  添   加   科   目" as sub
+    usecase "  教   学   班  管   理" as cl
+    usecase "题   库   管   理" as ques
+    usecase "试   卷   管   理" as exam
+    usecase "任   务   发   布" as task
+actor Student as st
+    usecase "学   生   端" as stsys
+    usecase "加  入  或  退  出  教  学  班" as classes
+    usecase "在  线  答  题" as quesAns
+tc --> sys 
+st --> sys
+sys -- page
+page -- tcsys
+page -- stsys 
+tcsys -- sub
+tcsys -- cl
+tcsys -- ques
+tcsys -- exam
+tcsys -- task
+stsys -- classes
+stsys -- quesAns
+note top of page
+取  决  于  用  户 的  类  型
+end note
 @enduml
