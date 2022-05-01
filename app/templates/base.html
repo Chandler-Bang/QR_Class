@@ -22,9 +22,38 @@
         <div class="collapse navbar-collapse" id="sToggler">
                 {% if current_user.is_authenticated %}
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('teacher.addSubject', teacher_id=current_user.id)}}">添加科目</a>
+                        <li class="nav-item dropdown">
+                                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                      科目管理
+                                  </a>
+                                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li> 
+                            <a class="dropdown-item" href="{{url_for('teacher.addSubject', teacher_id=current_user.id)}}">添加科目</a>
                         </li>
+                                    <li><a class="dropdown-item" href="#">查看科目</a></li>
+                                  </ul>
+                                </li>
+                        <li class="nav-item dropdown">
+                                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                      教学班管理
+                                  </a>
+                                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li> 
+                            <a class="dropdown-item" href="{{url_for('teacher.teacherIndex', teacher_id=current_user.id)}}">添加教学班</a>
+                        </li>
+                                    <li><a class="dropdown-item" href="#">查看教学班</a></li>
+                                  </ul>
+                                </li>
+                        <li class="nav-item dropdown">
+                                  <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                      试卷管理
+                                  </a>
+                                  <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <li><a class="dropdown-item" href="#">添加试卷</a></li>
+                                    <li><a class="dropdown-item" href="#">查看试卷</a></li>
+                                    <li><a class="dropdown-item" href="#">发布试卷</a></li>
+                                  </ul>
+                                </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{url_for('teacher.controlAnswer', teacher_id=current_user.id)}}">开始答题</a>
                         </li>
@@ -32,7 +61,6 @@
                             <a class="nav-link" href="{{url_for('auth.questionAnswer', timestamp=0)}}">答题界面</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('teacher.teacherIndex', teacher_id=current_user.id)}}">添加教学班</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ms-auto">
