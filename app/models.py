@@ -188,6 +188,12 @@ class Chapter(db.Model):
     questions = db.relationship('Question', secondary=chapter_question,
                                 back_populates='chapters')
 
+    def serialize(self):
+        return{
+                'id': self.id,
+                'chapterName': self.chapterName
+                }
+
 
 # 试卷和问题是多对多
 exampaper_question = db.Table(

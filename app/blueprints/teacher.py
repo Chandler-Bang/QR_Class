@@ -170,6 +170,39 @@ def addExamPaper(chapter_id=0, teacher_id=0):
         )
 
 
+@teacher_bp.route('/testExamPaper', methods=['GET', 'POST'])
+def testExamPaper(teacher_id=0):
+    from app.models import db
+    subjects = Subject.query.all()
+    chapter = subjects[0].chapters[0]
+    if request.method == 'POST':
+        exampaper = ExamPaper(
+                name=request.values.get('exampaper_name'),
+                chapter_id=request.values.get('exampaper_chapter'),
+                tag=request.values.get('exampaper_tag')
+                )
+        db.session.add(exampaper)
+        db.session.commit()
+    return render_template(
+            '/teacher/testExamPaper.html',
+            subjects=subjects,
+            chapter=chapter,
+            teacher_id=teacher_id
+        )
+
+
+@teacher_bp.route('/returnChapter/<int:subject_id>', methods=['GET', 'POST'])
+def returnChapter(teacher_id=0, subject_id=0):
+    subject = Subject.query.filter_by(id=subject_id).first()
+    chapters = subject.chapters
+    if chapters:
+        return jsonify([i.serialize() for i in chapters])
+    else:
+        return {'1': 'null'}
+
+
+
+
 @teacher_bp.route(
         '/exampaperToClasses/<int:exampaper_id>', methods=['POST']
         )

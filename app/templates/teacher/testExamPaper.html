@@ -1,0 +1,122 @@
+{% extends 'loginbase.html' %}
+{% block formHead %}
+    添加试卷
+{% endblock %}
+
+{% block form %}
+<form action="{{url_for('teacher.testExamPaper', teacher_id=teacher_id)}}" id="form" method="post" accept-charset="utf-8">
+    <div class="form-label">
+        试卷名称
+    </div>
+    <input type="text" class="form-control" name="exampaper_name" id="name" value="" >
+    <div class="form-label">
+        科目
+    </div>
+    <select class="form-control" name="exampaper_subject" id="subject" onchange="checkChapter()">
+        {% if subjects %}
+            {% for subject in subjects %}
+            <option value="{{subject.id}}">{{subject.subjectName}}</option>
+            {% endfor %}
+        {% else %}
+        <option value=" ">暂无科目</option>
+        {% endif %}
+        
+    </select>
+    <div class="form-label">
+        章节
+    </div>
+    <select name="exampaper_chapter" class="form-control" id="chapter" >
+        {% if subjects %}
+            {% if chapter %}
+            <option value="{{chapter.id}}">{{chapter.chapterName}}</option>
+            {% else %}
+                <option value=" ">暂无章节</option>
+            {% endif %}
+        {% else %}
+        <option value=" ">暂无科目</option>
+        {% endif %}
+    </select>
+    <div class="form-label">
+        标签
+    </div>
+    <input type="text" class="form-control" name="exampaper_tag" id="name" value="" >
+    <button class="btn btn-primary my-3" type="submit">创建</button>
+    
+</form>
+<script charset="utf-8">
+function createRequest()
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		// IE6, IE5 浏览器执行代码
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+    return xmlhttp;
+}
+    
+
+    const subject = document.getElementById('subject')
+    
+function checkChapter(){
+    request = createRequest()
+    if (request == null){
+        alert('Unable to create request');
+    }else{
+        const subject_value = document.getElementById('subject').value;
+        request.onreadystatechange=addOption;
+        console.log(subject_value);
+        const url = "/teacher/{{teacher_id}}/returnChapter/"+subject_value;
+        request.open("GET", url, true);
+        request.send();
+    }
+}
+
+
+function addOption(){
+    if (request.readyState == 4){
+        if(request.status == 200){
+                const select = document.getElementById('chapter');
+                var data = JSON.parse(request.responseText);
+                const keys = [];
+                const values = [];
+                for(const key in data){
+                   keys.push(key);
+                   values.push(data[key]);
+                   var content = data[key]['chapterName'];
+                   var value = data[key]['id'];
+                   if (content){
+                        var optionObj = document.createElement("option");
+                        optionObj.value = value;
+                        optionObj.innerHTML = content;
+                        while (select.firstChild) {
+                          select.removeChild(select.firstChild);
+                        }
+                        select.appendChild(optionObj);
+                   }else{
+                        var optionObj = document.createElement("option");
+                        optionObj.value = " ";
+                        optionObj.innerHTML = "暂无章节";
+                        while (select.firstChild) {
+                          select.removeChild(select.firstChild);
+                        }
+                        select.appendChild(optionObj);
+                   }
+                }
+        }
+            else
+            {
+                alert("Something is wrong!");
+            }
+
+    }
+}
+</script>
+
+
+{% endblock %}
