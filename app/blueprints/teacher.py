@@ -136,6 +136,18 @@ def showQuestion(chapter_id=0, teacher_id=0):
     )
 
 
+@teacher_bp.route('/showQues', methods=['GET', 'POST'])
+def showQues(teacher_id=0):
+    teacher = Teacher.query.get(teacher_id)
+    questions = teacher.questions
+    length = len(questions)
+    return render_template(
+        'teacher/showQues.html',
+        questions=questions,
+        length=length, zip=zip,
+        teacher_id=teacher_id
+    )
+
 @teacher_bp.route('/addExamPaper/<int:chapter_id>', methods=['GET', 'POST'])
 def addExamPaper(chapter_id=0, teacher_id=0):
     from app.models import db
@@ -173,22 +185,102 @@ def addExamPaper(chapter_id=0, teacher_id=0):
 @teacher_bp.route('/testExamPaper', methods=['GET', 'POST'])
 def testExamPaper(teacher_id=0):
     from app.models import db
-    subjects = Subject.query.all()
-    chapter = subjects[0].chapters[0]
+    subjects = Subject.query.filter_by(teacher_id=teacher_id).all()
+    if subjects:
+        chapter = subjects[0].chapters[0]
+    else:
+        chapter = 0
     if request.method == 'POST':
-        exampaper = ExamPaper(
-                name=request.values.get('exampaper_name'),
-                chapter_id=request.values.get('exampaper_chapter'),
-                tag=request.values.get('exampaper_tag')
-                )
-        db.session.add(exampaper)
-        db.session.commit()
+        chapter_id = request.form['exampaper_chapter']
+        name = request.form['exampaper_name']
+        if ExamPaper.query.filter_by(name=name).first():
+            flash('试卷名称已经存在，请重新输入')
+        elif chapter_id == " ":
+            flash("你需要先去创建完整的科目信息")
+        else:
+            exampaper = ExamPaper(
+                    name=request.form['exampaper_name'],
+                    subject_id=request.form['exampaper_subject'],
+                    chapter_id=request.form['exampaper_chapter'],
+                    teacher_id=teacher_id,
+                    tag=request.form['exampaper_tag']
+                    )
+            db.session.add(exampaper)
+            db.session.commit()
     return render_template(
             '/teacher/testExamPaper.html',
             subjects=subjects,
             chapter=chapter,
             teacher_id=teacher_id
         )
+
+
+@teacher_bp.route('/listExamPaper')
+def listExamPaper(teacher_id=0):
+    classes_exampaper = ExamPaperToClasses()
+    teacher = Teacher().query.filter_by(teacher_id=teacher_id).first()
+    classes = teacher.classes
+    classes_exampaper.classes_select.choices += [(r.classes_id, r.classes_id) for r in classes]
+    exampapers = teacher.exampapers
+    length = len(exampapers)
+    return render_template(
+            'teacher/listExamPaper.html',
+            teacher_id=teacher_id,
+            exampapers=exampapers,
+            classes_exampaper=classes_exampaper,
+            length=length,
+            zip=zip
+            )
+
+
+@teacher_bp.route('/addQues', methods=['GET', 'POST'])
+def addQues(teacher_id=0):
+    from app.models import db
+    subjects = Subject.query.filter_by(teacher_id=teacher_id).all()
+    if subjects:
+        chapters = subjects[0].chapters[0]
+    else:
+        chapters = 0
+    if request.method == "POST":
+        print(11)
+        chapter_id = request.form['question_chapter']
+        questionText = request.form['questionText']
+        if Question.query.filter_by(questionText=questionText).first():
+            flash('问题已经存在，请重新输入')
+        elif chapter_id == " ":
+            flash("请先去创建完整的科目信息")
+        else:
+            chapter = Chapter.query.get(chapter_id)
+            question = Question(
+                questionText=request.form['questionText'],
+                difficulity=request.form['difficulty'],
+                type=request.form.get('select'),
+                teacher_id=teacher_id
+            )
+            question.chapters.append(chapter)
+            type = request.form.get('select')
+            if type == "选择题":
+                mutipleChoice = MutipleChoice(
+                    choice1=request.form['choice1'],
+                    choice2=request.form['choice2'],
+                    choice3=request.form['choice3'],
+                    choice4=request.form['choice4'],
+                    answer=request.form['answer']
+                )
+                question.mutipleChoice = mutipleChoice
+                db.session.add(question)
+            elif type == "填空题":
+                fillInTheBlank = FillInTheBlanks(answer=request.form['answer'])
+                question.fillInTheBlanks = fillInTheBlank
+                db.session.add(question)
+            db.session.commit()
+            flash('提交成功')
+    return render_template(
+            'teacher/addQues.html',
+            subjects=subjects,
+            chapters=chapters,
+            teacher_id=teacher_id
+            )
 
 
 @teacher_bp.route('/returnChapter/<int:subject_id>', methods=['GET', 'POST'])
@@ -245,6 +337,26 @@ def addQuestionToExamPaper(
         'teacher/addQuestionToExamPaper.html',
         questions=questions,
         chapter_id=chapter_id,
+        length=length, zip=zip, exampaper_id=exampaper_id,
+        exampaper=exampaper,
+        teacher_id=teacher_id
+    )
+
+
+@teacher_bp.route(
+        '/addQuesToExamPaper/<int:exampaper_id>',
+        methods=['GET', 'POST']
+        )
+def addQuesToExamPaper(
+        exampaper_id=0, teacher_id=0
+        ):
+    teacher = Teacher.query.get(teacher_id)
+    exampaper = ExamPaper.query.filter_by(id=exampaper_id).first()
+    questions = teacher.questions #是否需要传值得考量
+    length = len(questions)
+    return render_template(
+        'teacher/addQuesToExamPaper.html',
+        questions=questions,
         length=length, zip=zip, exampaper_id=exampaper_id,
         exampaper=exampaper,
         teacher_id=teacher_id

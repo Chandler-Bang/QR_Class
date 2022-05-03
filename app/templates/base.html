@@ -53,8 +53,19 @@
                         <li>
                             <a class="dropdown-item" href="{{url_for('teacher.testExamPaper', teacher_id=current_user.id)}}" >添加试卷</a>
                         </li>
-                                        <li><a class="dropdown-item" href="#">查看试卷</a></li>
+                        <li><a class="dropdown-item" href="{{url_for('teacher.listExamPaper', teacher_id=current_user.id)}}">查看试卷</a></li>
                                         <li><a class="dropdown-item" href="#">发布试卷</a></li>
+                                      </ul>
+                                    </li>
+                            <li class="nav-item dropdown">
+                                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                          题目管理
+                                      </a>
+                                      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item" href="{{url_for('teacher.addQues', teacher_id=current_user.id)}}" >添加题目</a>
+                        </li>
+                        <li><a class="dropdown-item" href="{{url_for('teacher.showQues', teacher_id=current_user.id)}}">查看题目</a></li>
                                       </ul>
                                     </li>
                             <li class="nav-item">

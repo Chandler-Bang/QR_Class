@@ -1,0 +1,45 @@
+{% extends "showbase.html" %}
+
+
+<head>
+{% block title %}
+    showQuestion
+{% endblock %}
+    
+</head>
+
+{% block content %}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            {% block tableHeadLine %}
+                <th scope="col">#</th>
+                <th scope="col">题目正文</th>
+                <th scope="col">题目类型</th>
+                <th scope="col">操作</th>
+            {% endblock %}
+          
+        </tr>
+    </thead>
+    <tbody>
+        {% block tableContent %}
+            {% if length %}
+                 {% for question,i in zip(questions,range(1,length+1)) %}
+                       <tr>
+                         <td>{{i}}</td>
+                         <td>{{question.questionText}}</td>
+                         <td>{{question.type}}</td>
+                         <td>
+                             {% block operation scoped %}
+                                 <a href="{{url_for('teacher.questionDelete', question_id=question.id, teacher_id=teacher_id)}}">删除</a>
+                             {% endblock %}
+                             
+                         </td>
+                       </tr>
+                 {% endfor %}
+            {% endif %}
+        {% endblock %}
+    </tbody>
+</table>
+{% endblock %}

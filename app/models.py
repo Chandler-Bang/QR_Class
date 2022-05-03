@@ -84,6 +84,8 @@ class Teacher(db.Model):
     classes = db.relationship('Classes')
     # 老师和学科是一对多
     subjects = db.relationship('Subject')
+    exampapers = db.relationship('ExamPaper')
+    questions = db.relationship('Question')
 
 
 class Subject(db.Model, UserMixin):
@@ -93,6 +95,7 @@ class Subject(db.Model, UserMixin):
     # 学科和班级一对多
     classes = db.relationship('Classes')
     chapters = db.relationship('Chapter', back_populates="subject")
+    exampapers = db.relationship('ExamPaper', back_populates="subjects")
 
 
 # 学生和班级是多对多
@@ -209,9 +212,13 @@ exampaper_question = db.Table(
 
 class ExamPaper(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120))
-    chapter_id = db.Column(db.Integer, db.ForeignKey('chapter.id'))
+    name = db.Column(db.String(120), unique=True)
     tag = db.Column(db.String(120))
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
+    subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'))
+    chapter_id = db.Column(db.Integer, db.ForeignKey('chapter.id'))
+    teachers = db.relationship("Teacher", back_populates="exampapers")
+    subjects = db.relationship("Subject", back_populates="exampapers")
     chapters = db.relationship("Chapter", back_populates="exampapers")
     questions = db.relationship(
         'Question', secondary=exampaper_question, back_populates='exampapers'
@@ -224,6 +231,8 @@ class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     questionText = db.Column(db.Text(254), nullable=False)
     difficulity = db.Column(db.Float(2), nullable=False)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
+    teachers = db.relationship('Teacher', back_populates="questions")
     exampapers = db.relationship(
         'ExamPaper', secondary=exampaper_question, back_populates='questions'
     )

@@ -1,18 +1,26 @@
-{% extends 'loginbase.html' %}
-{% block formHead %}
-    添加试卷
+{% extends "base.html" %}
+{% block title %}
+addQuestion
 {% endblock %}
 
-{% block form %}
-<form action="{{url_for('teacher.testExamPaper', teacher_id=teacher_id)}}" id="form" method="post" accept-charset="utf-8">
-    <div class="form-label">
-        试卷名称
+{% block content %}
+<h1>学科名</h1>
+<h2>章节</h1>
+<hr>
+<form action="{{url_for('teacher.addQues', teacher_id=teacher_id)}}" method="post" style="text-align:center;">
+    <div>
+        <p>
+            <select name="select" id="select">
+                <option value="选择题" selected>选择题</option>
+                <option value="填空题">填空题</option>
+            </select>
+        </p>
+        
     </div>
-    <input type="text" class="form-control" name="exampaper_name" id="name" value="" required>
     <div class="form-label">
         科目
     </div>
-    <select class="form-control" name="exampaper_subject" id="subject" onchange="checkChapter()">
+    <select  name="question_subject" id="subject" onchange="checkChapter()">
         {% if subjects %}
             {% for subject in subjects %}
             <option value="{{subject.id}}">{{subject.subjectName}}</option>
@@ -25,10 +33,10 @@
     <div class="form-label">
         章节
     </div>
-    <select name="exampaper_chapter" class="form-control" id="chapter" >
+    <select name="question_chapter"  id="chapter" >
         {% if subjects %}
-            {% if chapter %}
-            <option value="{{chapter.id}}">{{chapter.chapterName}}</option>
+            {% if chapters %}
+            <option value="{{chapters.id}}">{{chapters.chapterName}}</option>
             {% else %}
                 <option value=" ">暂无章节</option>
             {% endif %}
@@ -36,14 +44,59 @@
         <option value=" ">暂无科目</option>
         {% endif %}
     </select>
-    <div class="form-label">
-        标签
-    </div>
-    <input type="text" class="form-control" name="exampaper_tag" id="name" value="" required>
-    <button class="btn btn-primary my-3" type="submit">创建</button>
     
+    <div>
+        题目描述
+    </div>
+    <input type="text" name="questionText" id="" value="" required>
+    <div id="choice">
+       <p>
+       A </br>
+       <input type="text" name="choice1" id="choice1" value="" >
+       </p> 
+       <p>
+       B </br>
+       <input type="text" name="choice2" id="choice2" value="" >
+       </p>
+       <p>
+       C </br>
+       <input type="text" name="choice3" id="choice3" value="" >
+       </p>
+       <p>
+       D </br>
+       <input type="text" name="choice4" id="choice4" value="" >
+       </p>
+    </div>
+    <div>
+        <p>
+        答案 </br>
+        <input type="text" name="answer" id="answer" value="" required>
+        </p>
+    </div>
+    <div>
+        <p>
+            难度<br/>
+            <input type="text" name="difficulty" id="difficulty" value="" required>
+        </p>
+    </div>
+        <p>
+        <button type="submit">提交</button>
+        </p>
+        
+    </div>
+    
+    
+   
+    
+
 </form>
-<script charset="utf-8">
+<hr>
+{% for qst in que %}
+    <p>
+        {{qst.questionText}}
+    </p>
+{% endfor %}
+<script>
 function createRequest()
 {
 	var xmlhttp;
@@ -116,7 +169,16 @@ function addOption(){
 
     }
 }
+
+    var select = document.getElementById("select");
+    select.onclick=function(){
+        var optionIndex = select.selectedIndex;
+        var selected =  select.options[optionIndex].value;
+        if (selected === "选择题")
+            choice.style.display="block";
+        else 
+            choice.style.display="none";
+    }
 </script>
-
-
 {% endblock %}
+

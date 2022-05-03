@@ -67,13 +67,14 @@ def checkExampaper(student_id=0, class_id=0, exampaper_id=0):
     questions = exampaper.questions
     questions_mutipleChoice = []
     questions_fillInTheBlank = []
-    for question in questions:
-        if question.type == '选择题':
-            questions_mutipleChoice.append(question)
-        else:
-            questions_fillInTheBlank.append(question)
-        length_mutipleChoice = len(questions_mutipleChoice)
-        length_fillInTheBlank = len(questions_fillInTheBlank)
+    if questions:
+        for question in questions:
+            if question.type == '选择题':
+                questions_mutipleChoice.append(question)
+            else:
+                questions_fillInTheBlank.append(question)
+    length_mutipleChoice = len(questions_mutipleChoice)
+    length_fillInTheBlank = len(questions_fillInTheBlank)
     if request.method == 'POST':
         classes_id = Classes().query.get(class_id).classes_id
         student_grade_record = StudentGrade.query.filter(
