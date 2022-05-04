@@ -96,6 +96,7 @@ class Subject(db.Model, UserMixin):
     classes = db.relationship('Classes')
     chapters = db.relationship('Chapter', back_populates="subject")
     exampapers = db.relationship('ExamPaper', back_populates="subjects")
+    questions = db.relationship('Question', back_populates="subjects")
 
 
 # 学生和班级是多对多
@@ -232,7 +233,9 @@ class Question(db.Model):
     questionText = db.Column(db.Text(254), nullable=False)
     difficulity = db.Column(db.Float(2), nullable=False)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
+    subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'))
     teachers = db.relationship('Teacher', back_populates="questions")
+    subjects = db.relationship('Subject', back_populates="questions")
     exampapers = db.relationship(
         'ExamPaper', secondary=exampaper_question, back_populates='questions'
     )
@@ -246,6 +249,15 @@ class Question(db.Model):
     fillInTheBlanks = db.relationship(
             'FillInTheBlanks', cascade='all', uselist=False
             )
+
+    def serialize(self):
+        return{
+                'id': self.id,
+                'questionText': self.questionText,
+                'difficulity': self.difficulity,
+                'type': self.type,
+                'chapters': self.chapters
+                }
 
 
 class MutipleChoice(db.Model):

@@ -10,12 +10,132 @@
 
 {% block content %}
 
+{% block form %}
+
+
+<form action="{% block url %}{{url_for('teacher.showQues', teacher_id=teacher_id)}}{% endblock %}" id="form" method="post" accept-charset="utf-8">
+        科目
+    <select name="ques_subject" id="subject" onchange="checkChapter()">
+        {% if subjects %}
+            <option value="-1">所有科目</option>
+            {% for subject in subjects %}
+            <option value="{{subject.id}}">{{subject.subjectName}}</option>
+            {% endfor %}
+        {% else %}
+        <option value=" ">暂无科目</option>
+        {% endif %}
+    </select>
+        章节
+    <select name="ques_chapter" id="chapter" >
+        {% if subjects %}
+            {% if chapters == "-1" %}
+                <option value="-1">所有章节</option>
+            {% elif chapters %}
+                {% for chapter in chapters %}
+                    <option value="{{chapter.id}}">{{chapter.chapterName}}</option>
+                {% endfor %}
+            {% else %}
+                <option value=" ">暂无章节</option>
+            {% endif %}
+        {% else %}
+        <option value=" ">暂无科目</option>
+        {% endif %}
+    </select>
+    <select name="ques_type" id="type" >
+        <option value="mutiple">选择题</option>
+        <option value="fill">填空题</option>
+        
+    </select>
+    <button class="btn btn-primary my-3" >查询</button>
+    
+</form>
+<script charset="utf-8">
+function createRequest()
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		// IE6, IE5 浏览器执行代码
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+    return xmlhttp;
+}
+    
+
+    
+function checkChapter(){
+    request = createRequest()
+    if (request == null){
+        alert('Unable to create request');
+    }else{
+        const subject_value = document.getElementById('subject').value;
+        request.onreadystatechange=addOption;
+        const url = "/teacher/{{teacher_id}}/returnChapter/"+subject_value;
+        request.open("GET", url, true);
+        request.send();
+    }
+}
+
+
+function addOption(){
+    if (request.readyState == 4){
+        if(request.status == 200){
+                const select = document.getElementById('chapter');
+                while (select.firstChild) {
+                  select.removeChild(select.firstChild);
+                }
+                if (request.responseText == "0"){
+                    var optionObj = document.createElement("option");
+                    optionObj.value = " ";
+                    optionObj.innerHTML = "暂无章节";
+                    select.appendChild(optionObj);
+                }else if (request.responseText == "-1"){
+                    var option = document.createElement("option");
+                    option.value = -1;
+                    option.innerHTML = "所有章节";
+                    select.appendChild(option);
+                }else{
+                    var option = document.createElement("option");
+                    option.value = -1;
+                    option.innerHTML = "所有章节";
+                    select.appendChild(option);
+                    var data = JSON.parse(request.responseText);
+                    for(const key in data){
+                       var content = data[key]['chapterName'];
+                       var value = data[key]['id'];
+                        var optionObj = document.createElement("option");
+                        optionObj.value = value;
+                        optionObj.innerHTML = content;
+                        select.appendChild(optionObj);
+                       }
+                    }
+            }
+            else
+            {
+                alert("Something is wrong!");
+                
+            }
+        }
+
+    }
+</script>
+
+
+{% endblock %}
+
 <table class="table table-striped">
     <thead>
         <tr>
             {% block tableHeadLine %}
                 <th scope="col">#</th>
                 <th scope="col">题目正文</th>
+                <th scope="col">题目科目</th>
+                <th scope="col">题目章节</th>
                 <th scope="col">题目类型</th>
                 <th scope="col">操作</th>
             {% endblock %}
@@ -29,6 +149,8 @@
                        <tr>
                          <td>{{i}}</td>
                          <td>{{question.questionText}}</td>
+                         <td>{{question.chapters[0].subject.subjectName}}</td>
+                         <td>{{question.chapters[0].chapterName}}</td>
                          <td>{{question.type}}</td>
                          <td>
                              {% block operation scoped %}

@@ -4,18 +4,20 @@
 {% endblock %}
 
 {% block form %}
-<form action="{{url_for('teacher.testExamPaper', teacher_id=teacher_id)}}" id="form" method="post" accept-charset="utf-8">
+<form action="{% block url %}{{url_for('teacher.testExamPaper', teacher_id=teacher_id)}}{% endblock %}" id="form" method="post" accept-charset="utf-8">
+    {% block item %}
     <div class="form-label">
         试卷名称
     </div>
     <input type="text" class="form-control" name="exampaper_name" id="name" value="" required>
+    {% endblock %}
     <div class="form-label">
         科目
     </div>
-    <select class="form-control" name="exampaper_subject" id="subject" onchange="checkChapter()">
+    <select class="form-control" name="{% block subjectName %}exampaper_subject{% endblock %}" id="subject" onchange="checkChapter()">
         {% if subjects %}
             {% for subject in subjects %}
-            <option value="{{subject.id}}">{{subject.subjectName}}</option>
+                    <option value="{{subject.id}}">{{subject.subjectName}}</option>
             {% endfor %}
         {% else %}
         <option value=" ">暂无科目</option>
@@ -25,10 +27,13 @@
     <div class="form-label">
         章节
     </div>
-    <select name="exampaper_chapter" class="form-control" id="chapter" >
+    <select name="{% block chapterName %}exampaper_chapter{% endblock %}" class="form-control" id="chapter" >
         {% if subjects %}
-            {% if chapter %}
-            <option value="{{chapter.id}}">{{chapter.chapterName}}</option>
+            {% if chapters %}
+                {% for chapter in chapters %}
+                    <option value="{{chapter.id}}">{{chapter.chapterName}}</option>
+                {% endfor %}
+                
             {% else %}
                 <option value=" ">暂无章节</option>
             {% endif %}
@@ -36,11 +41,15 @@
         <option value=" ">暂无科目</option>
         {% endif %}
     </select>
+    {% block items %}
     <div class="form-label">
         标签
     </div>
     <input type="text" class="form-control" name="exampaper_tag" id="name" value="" required>
     <button class="btn btn-primary my-3" type="submit">创建</button>
+        
+    {% endblock %}
+    
     
 </form>
 <script charset="utf-8">
@@ -82,31 +91,31 @@ function addOption(){
     if (request.readyState == 4){
         if(request.status == 200){
                 const select = document.getElementById('chapter');
-                var data = JSON.parse(request.responseText);
-                const keys = [];
-                const values = [];
-                for(const key in data){
-                   keys.push(key);
-                   values.push(data[key]);
-                   var content = data[key]['chapterName'];
-                   var value = data[key]['id'];
-                   if (content){
-                        var optionObj = document.createElement("option");
-                        optionObj.value = value;
-                        optionObj.innerHTML = content;
-                        while (select.firstChild) {
-                          select.removeChild(select.firstChild);
-                        }
-                        select.appendChild(optionObj);
-                   }else{
-                        var optionObj = document.createElement("option");
-                        optionObj.value = " ";
-                        optionObj.innerHTML = "暂无章节";
-                        while (select.firstChild) {
-                          select.removeChild(select.firstChild);
-                        }
-                        select.appendChild(optionObj);
-                   }
+                while (select.firstChild) {
+                  select.removeChild(select.firstChild);
+                }
+                if (request.responseText == "0"){
+                    var optionObj = document.createElement("option");
+                    optionObj.value = " ";
+                    optionObj.innerHTML = "暂无章节";
+                    select.appendChild(optionObj);
+                }else{
+                    var data = JSON.parse(request.responseText);
+                    const keys = [];
+                    const values = [];
+                    for(const key in data){
+                       keys.push(key);
+                       values.push(data[key]);
+                       var content = data[key]['chapterName'];
+                       var value = data[key]['id'];
+                       if (content){
+                            var optionObj = document.createElement("option");
+                            optionObj.value = value;
+                            optionObj.innerHTML = content;
+                            select.appendChild(optionObj);
+                       }
+                       
+                    }
                 }
         }
             else

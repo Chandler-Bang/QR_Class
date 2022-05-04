@@ -1,13 +1,20 @@
-{% extends "base.html" %}
+{% extends "teacher/testExamPaper.html" %}
 {% block title %}
 addQuestion
 {% endblock %}
 
-{% block content %}
 <h1>学科名</h1>
 <h2>章节</h1>
 <hr>
-<form action="{{url_for('teacher.addQues', teacher_id=teacher_id)}}" method="post" style="text-align:center;">
+{% block formHead %}
+添加问题
+{% endblock %}
+
+{% block url %}
+{{url_for('teacher.addQues', teacher_id=teacher_id)}}
+{% endblock %}
+ 
+{% block item %}
     <div>
         <p>
             <select name="select" id="select">
@@ -17,34 +24,10 @@ addQuestion
         </p>
         
     </div>
-    <div class="form-label">
-        科目
-    </div>
-    <select  name="question_subject" id="subject" onchange="checkChapter()">
-        {% if subjects %}
-            {% for subject in subjects %}
-            <option value="{{subject.id}}">{{subject.subjectName}}</option>
-            {% endfor %}
-        {% else %}
-        <option value=" ">暂无科目</option>
-        {% endif %}
-        
-    </select>
-    <div class="form-label">
-        章节
-    </div>
-    <select name="question_chapter"  id="chapter" >
-        {% if subjects %}
-            {% if chapters %}
-            <option value="{{chapters.id}}">{{chapters.chapterName}}</option>
-            {% else %}
-                <option value=" ">暂无章节</option>
-            {% endif %}
-        {% else %}
-        <option value=" ">暂无科目</option>
-        {% endif %}
-    </select>
-    
+    {% endblock %}
+    {% block subjectName %}question_subject{% endblock %}
+    {% block chapterName %}question_chapter{% endblock %}
+    {% block items %}
     <div>
         题目描述
     </div>
@@ -84,92 +67,7 @@ addQuestion
         </p>
         
     </div>
-    
-    
-   
-    
-
-</form>
-<hr>
-{% for qst in que %}
-    <p>
-        {{qst.questionText}}
-    </p>
-{% endfor %}
 <script>
-function createRequest()
-{
-	var xmlhttp;
-	if (window.XMLHttpRequest)
-	{
-		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
-		xmlhttp=new XMLHttpRequest();
-	}
-	else
-	{
-		// IE6, IE5 浏览器执行代码
-		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-	}
-    return xmlhttp;
-}
-    
-
-    const subject = document.getElementById('subject')
-    
-function checkChapter(){
-    request = createRequest()
-    if (request == null){
-        alert('Unable to create request');
-    }else{
-        const subject_value = document.getElementById('subject').value;
-        request.onreadystatechange=addOption;
-        console.log(subject_value);
-        const url = "/teacher/{{teacher_id}}/returnChapter/"+subject_value;
-        request.open("GET", url, true);
-        request.send();
-    }
-}
-
-
-function addOption(){
-    if (request.readyState == 4){
-        if(request.status == 200){
-                const select = document.getElementById('chapter');
-                var data = JSON.parse(request.responseText);
-                const keys = [];
-                const values = [];
-                for(const key in data){
-                   keys.push(key);
-                   values.push(data[key]);
-                   var content = data[key]['chapterName'];
-                   var value = data[key]['id'];
-                   if (content){
-                        var optionObj = document.createElement("option");
-                        optionObj.value = value;
-                        optionObj.innerHTML = content;
-                        while (select.firstChild) {
-                          select.removeChild(select.firstChild);
-                        }
-                        select.appendChild(optionObj);
-                   }else{
-                        var optionObj = document.createElement("option");
-                        optionObj.value = " ";
-                        optionObj.innerHTML = "暂无章节";
-                        while (select.firstChild) {
-                          select.removeChild(select.firstChild);
-                        }
-                        select.appendChild(optionObj);
-                   }
-                }
-        }
-            else
-            {
-                alert("Something is wrong!");
-            }
-
-    }
-}
-
     var select = document.getElementById("select");
     select.onclick=function(){
         var optionIndex = select.selectedIndex;
@@ -181,4 +79,10 @@ function addOption(){
     }
 </script>
 {% endblock %}
+<hr>
+{% for qst in que %}
+    <p>
+        {{qst.questionText}}
+    </p>
+{% endfor %}
 

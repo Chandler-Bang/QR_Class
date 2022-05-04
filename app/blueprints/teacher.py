@@ -138,15 +138,38 @@ def showQuestion(chapter_id=0, teacher_id=0):
 
 @teacher_bp.route('/showQues', methods=['GET', 'POST'])
 def showQues(teacher_id=0):
+    from app.models import db
     teacher = Teacher.query.get(teacher_id)
     questions = teacher.questions
+    subjects = Subject.query.filter_by(teacher_id=teacher_id).all()
+    if subjects:
+        chapters = "-1"
+    else:
+        chapters = 0
+    if request.method == 'POST':
+        chapter_id = request.form['ques_chapter']
+        subject_id = request.form['ques_subject']
+        ques_type = request.form['ques_type']
+        if subject_id == " " or chapter_id == " ":
+            flash("你需要先去创建完整的科目信息")
+        elif subject_id == "-1":
+            chapters = "-1"
+        elif chapter_id == "-1":
+            subject = Subject.query.get(subject_id)
+            questions = subject.questions
+        else:
+            chapter = Chapter.query.get(chapter_id)
+            questions = chapter.questions
     length = len(questions)
     return render_template(
         'teacher/showQues.html',
         questions=questions,
         length=length, zip=zip,
-        teacher_id=teacher_id
+        teacher_id=teacher_id,
+        subjects=subjects,
+        chapters=chapters
     )
+
 
 @teacher_bp.route('/addExamPaper/<int:chapter_id>', methods=['GET', 'POST'])
 def addExamPaper(chapter_id=0, teacher_id=0):
@@ -187,9 +210,9 @@ def testExamPaper(teacher_id=0):
     from app.models import db
     subjects = Subject.query.filter_by(teacher_id=teacher_id).all()
     if subjects:
-        chapter = subjects[0].chapters[0]
+        chapters = subjects[0].chapters
     else:
-        chapter = 0
+        chapters = 0
     if request.method == 'POST':
         chapter_id = request.form['exampaper_chapter']
         name = request.form['exampaper_name']
@@ -210,7 +233,7 @@ def testExamPaper(teacher_id=0):
     return render_template(
             '/teacher/testExamPaper.html',
             subjects=subjects,
-            chapter=chapter,
+            chapters=chapters,
             teacher_id=teacher_id
         )
 
@@ -238,22 +261,23 @@ def addQues(teacher_id=0):
     from app.models import db
     subjects = Subject.query.filter_by(teacher_id=teacher_id).all()
     if subjects:
-        chapters = subjects[0].chapters[0]
+        chapters = subjects[0].chapters
     else:
         chapters = 0
     if request.method == "POST":
-        print(11)
         chapter_id = request.form['question_chapter']
+        subject_id = request.form['question_subject']
         questionText = request.form['questionText']
         if Question.query.filter_by(questionText=questionText).first():
             flash('问题已经存在，请重新输入')
-        elif chapter_id == " ":
+        elif chapter_id == " " or subject_id == " ":
             flash("请先去创建完整的科目信息")
         else:
             chapter = Chapter.query.get(chapter_id)
             question = Question(
                 questionText=request.form['questionText'],
                 difficulity=request.form['difficulty'],
+                subject_id=subject_id,
                 type=request.form.get('select'),
                 teacher_id=teacher_id
             )
@@ -285,14 +309,29 @@ def addQues(teacher_id=0):
 
 @teacher_bp.route('/returnChapter/<int:subject_id>', methods=['GET', 'POST'])
 def returnChapter(teacher_id=0, subject_id=0):
-    subject = Subject.query.filter_by(id=subject_id).first()
-    chapters = subject.chapters
-    if chapters:
-        return jsonify([i.serialize() for i in chapters])
+    print(type(subject_id))
+    if subject_id != -1:
+        subject = Subject.query.filter_by(id=subject_id).first()
+        print(subject)
+        chapters = subject.chapters
+        print(chapters)
+        if chapters:
+            return jsonify([i.serialize() for i in chapters])
+        else:
+            return "0"
+    else:
+        return "-1"
+
+
+
+@teacher_bp.route('/returnQues/<int:chapter_id>', methods=['GET', 'POST'])
+def returnQues(teacher_id=0, chapter_id=0):
+    chapter = Chapter.query.filter_by(id=chapter_id).first()
+    questions = chapter.questions
+    if questions:
+        return jsonify([i.serialize() for i in questions])
     else:
         return {'1': 'null'}
-
-
 
 
 @teacher_bp.route(
