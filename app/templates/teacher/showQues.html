@@ -41,9 +41,43 @@
         <option value=" ">暂无科目</option>
         {% endif %}
     </select>
+    题型
     <select name="ques_type" id="type" >
+        <option value="-1">不分题型</option>
         <option value="mutiple">选择题</option>
         <option value="fill">填空题</option>
+        
+    </select>
+    难度
+    <select name="ques_difficulty_start" >
+        <option value=0>0</option>
+        <option value=1>1</option>
+        <option value=2>2</option>
+        <option value=3>3</option>
+        <option value=3>3</option>
+        <option value=4>4</option>
+        <option value=5>5</option>
+        <option value=6>6</option>
+        <option value=7>7</option>
+        <option value=8>8</option>
+        <option value=9>9</option>
+        <option value=10>10</option>
+        
+    </select>
+    ~
+    <select name="ques_difficulty_end" >
+        <option value=0>0</option>
+        <option value=1>1</option>
+        <option value=2>2</option>
+        <option value=3>3</option>
+        <option value=3>3</option>
+        <option value=4>4</option>
+        <option value=5>5</option>
+        <option value=6>6</option>
+        <option value=7>7</option>
+        <option value=8>8</option>
+        <option value=9>9</option>
+        <option value=10 selected>10</option>
         
     </select>
     <button class="btn btn-primary my-3" >查询</button>
@@ -137,6 +171,7 @@ function addOption(){
                 <th scope="col">题目科目</th>
                 <th scope="col">题目章节</th>
                 <th scope="col">题目类型</th>
+                <th scope="col">题目难度</th>
                 <th scope="col">操作</th>
             {% endblock %}
           
@@ -152,6 +187,7 @@ function addOption(){
                          <td>{{question.chapters[0].subject.subjectName}}</td>
                          <td>{{question.chapters[0].chapterName}}</td>
                          <td>{{question.type}}</td>
+                         <td>{{question.difficulity}}</td>
                          <td>
                              {% block operation scoped %}
                                  <a href="{{url_for('teacher.questionDelete', question_id=question.id, teacher_id=teacher_id)}}">删除</a>
