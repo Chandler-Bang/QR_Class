@@ -93,10 +93,16 @@ class Subject(db.Model, UserMixin):
     subjectName = db.Column(db.String(10), nullable=False)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
     # 学科和班级一对多
-    classes = db.relationship('Classes')
-    chapters = db.relationship('Chapter', back_populates="subject")
-    exampapers = db.relationship('ExamPaper', back_populates="subjects")
-    questions = db.relationship('Question', back_populates="subjects")
+    classes = db.relationship('Classes', cascade="all")
+    chapters = db.relationship(
+            'Chapter', cascade="all", back_populates="subject"
+            )
+    exampapers = db.relationship(
+            'ExamPaper', cascade="all", back_populates="subjects"
+            )
+    questions = db.relationship(
+            'Question', cascade="all", back_populates="subjects"
+            )
 
 
 # 学生和班级是多对多
@@ -187,10 +193,16 @@ class Chapter(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     chapterName = db.Column(db.String(5), nullable=False)
     subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'))
-    exampapers = db.relationship("ExamPaper", back_populates="chapters")
+    exampapers = db.relationship(
+            "ExamPaper", cascade="all", back_populates="chapters"
+            )
     subject = db.relationship('Subject', back_populates="chapters")
-    questions = db.relationship('Question', secondary=chapter_question,
-                                back_populates='chapters')
+    questions = db.relationship(
+            'Question',
+            secondary=chapter_question,
+            cascade="all",
+            back_populates='chapters'
+            )
 
     def serialize(self):
         return{

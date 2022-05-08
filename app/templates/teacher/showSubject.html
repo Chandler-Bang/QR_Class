@@ -1,0 +1,53 @@
+{% extends "showbase.html" %}
+
+
+<head>
+{% block title %}
+    showSubject
+{% endblock %}
+    
+</head>
+
+{% block content %}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            {% block tableHeadLine %}
+                <th scope="col">#</th>
+                <th scope="col">科目</th>
+            {% endblock %}
+          
+        </tr>
+    </thead>
+    <tbody>
+        {% block tableContent %}
+            {% if length %}
+                 {% for subject,i in zip(subjects,range(1,length+1)) %}
+                       <tr>
+                         <td>{{i}}</td>
+                         <td>{{subject.subjectName}}</td>
+                         <td>
+                             {% block operation scoped %}
+                             <a href="{{url_for('teacher.showChapter', teacher_id=teacher_id, subject_id=subject.id)}}" >查看章节</a>
+                             <a id="del" onclick="return delAlert()" href="{{url_for('teacher.subjectDelete', teacher_id=teacher_id, subject_id=subject.id)}}" >删除</a>
+                             {% endblock %}
+                             
+                         </td>
+                       </tr>
+                 {% endfor %}
+            {% endif %}
+        {% endblock %}
+    </tbody>
+</table>
+<script charset="utf-8">
+ function delAlert(){
+   if (confirm( '确定要执行此操作吗?' ))
+   {
+     return true ;
+   }
+   return false ;
+
+ }
+</script>
+{% endblock %}

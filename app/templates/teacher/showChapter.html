@@ -1,0 +1,50 @@
+{% extends "showbase.html" %}
+
+
+<head>
+{% block title %}
+    showChapter
+{% endblock %}
+    
+</head>
+{% block content %}
+{{subject.subjectName}}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            {% block tableHeadLine %}
+                <th scope="col">#</th>
+                <th scope="col">章节</th>
+            {% endblock %}
+          
+        </tr>
+    </thead>
+    <tbody>
+        {% block tableContent %}
+            {% if length %}
+                 {% for chapter,i in zip(chapters,range(1,length+1)) %}
+                       <tr>
+                         <td>{{i}}</td>
+                         <td>{{chapter.chapterName}}</td>
+                         <td>
+                             {% block operation scoped %}
+                             <a id="del" onclick="return delAlert()" href="{{url_for('teacher.chapterDelete', teacher_id=teacher_id, chapter_id=chapter.id)}}" >删除</a>
+                             {% endblock %}
+                         </td>
+                       </tr>
+                 {% endfor %}
+            {% endif %}
+        {% endblock %}
+    </tbody>
+</table>
+<script charset="utf-8">
+ function delAlert(){
+   if (confirm( '确定要执行此操作吗?' ))
+   {
+     return true ;
+   }
+   return false ;
+
+ }
+</script>
+{% endblock %}

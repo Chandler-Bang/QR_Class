@@ -96,6 +96,28 @@ def addSubject(teacher_id=0):
             )
 
 
+@teacher_bp.route('/showSubject', methods=["GET", "POST"])
+def showSubject(teacher_id=0):
+    subjects = Subject.query.filter_by(teacher_id=teacher_id).all()
+    length = len(subjects)
+    return render_template(
+            "teacher/showSubject.html",
+            teacher_id=teacher_id,
+            subjects=subjects,
+            length=length,
+            zip=zip
+            )
+
+
+@teacher_bp.route('/subjectDelete/<int:subject_id>', methods=['GET', 'POST'])
+def subjectDelete(subject_id=0, teacher_id=0):
+    from app.models import db
+    subject = Subject.query.get(subject_id)
+    db.session.delete(subject)
+    db.session.commit()
+    return redirect(redirect_url())
+
+
 @teacher_bp.route('/addChapter/<int:subject_id>', methods=['GET', 'POST'])
 def addChapter(subject_id=0, teacher_id=0):
     from app.models import db
@@ -121,6 +143,29 @@ def addChapter(subject_id=0, teacher_id=0):
             form=form, chapter=chapter, teacher_id=teacher_id
             )
 
+
+@teacher_bp.route('/showChapter/<int:subject_id>', methods=["GET", "POST"])
+def showChapter(teacher_id=0, subject_id=0):
+    subject = Subject.query.get(subject_id)
+    chapters = subject.chapters
+    length = len(chapters)
+    return render_template(
+            "teacher/showChapter.html",
+            teacher_id=teacher_id,
+            subject=subject,
+            chapters=chapters,
+            length=length,
+            zip=zip
+            )
+
+
+@teacher_bp.route('/chapterDelete/<int:chapter_id>', methods=['GET', 'POST'])
+def chapterDelete(chapter_id=0, teacher_id=0):
+    from app.models import db
+    chapter = Chapter.query.get(chapter_id)
+    db.session.delete(chapter)
+    db.session.commit()
+    return redirect(redirect_url())
 
 @teacher_bp.route('/showQuestion/<int:chapter_id>', methods=['GET', 'POST'])
 def showQuestion(chapter_id=0, teacher_id=0):
