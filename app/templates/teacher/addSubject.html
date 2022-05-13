@@ -1,26 +1,25 @@
-{% extends "base.html" %}
+{% extends "teacher/teacherLogin.html" %}
 {% block title %}
 addSubject
 {% endblock %}
 
+{% block pagehead %}
+    科目添加
+{% endblock %}
 
-{% block content %}
-    <a class="btn btn-primary" href="{{url_for('teacher.teacherIndex', teacher_id=teacher_id)}}">添加班级</a>
+
+
+{% block form %}
 <form action="" method="post">
     {{form.hidden_tag()}}
     <div>
-        {{form.subject.label()}}
-        {{form.subject}}<br/>
+        {{form.subject.label(class="form-label")}}
+        {{form.subject(class="form-control")}}<br/>
     </div>
     <div>
-        {{form.submit}}
+        {{form.submit(class="my-3 btn btn-primary")}}
     </div>
 </form>
-<hr>
-{% for items in subject %}
-    <p>
-    <a href="{{url_for('teacher.addChapter', subject_id=items.id, teacher_id=teacher_id)}}">{{items.subjectName}}</a>
-    </p>
-{% endfor %}
-显示已添加学科
+    
 {% endblock %}
+

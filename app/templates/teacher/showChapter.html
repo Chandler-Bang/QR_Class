@@ -9,12 +9,13 @@
 </head>
 {% block content %}
 {{subject.subjectName}}
-<table class="table table-striped">
+<table class="table table table-hover">
     <thead>
         <tr>
             {% block tableHeadLine %}
                 <th scope="col">#</th>
                 <th scope="col">章节</th>
+                <th scope="col">操作</th>
             {% endblock %}
           
         </tr>
@@ -28,7 +29,7 @@
                          <td>{{chapter.chapterName}}</td>
                          <td>
                              {% block operation scoped %}
-                             <a id="del" onclick="return delAlert()" href="{{url_for('teacher.chapterDelete', teacher_id=teacher_id, chapter_id=chapter.id)}}" >删除</a>
+                             <a class=" btn btn-primary " id="del" onclick="return delAlert()" href="{{url_for('teacher.chapterDelete', teacher_id=teacher_id, chapter_id=chapter.id)}}" >删除</a>
                              {% endblock %}
                          </td>
                        </tr>
