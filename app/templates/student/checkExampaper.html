@@ -1,27 +1,62 @@
-<form action="{{url_for('student.checkExampaper', student_id=student_id, exampaper_id=exampaper_id, class_id=class_id)}}" name="exampaper" method="post" accept-charset="utf-8">
-    <h1>一、选择题</h1>
-   {% for question_mutipleChoice, i in zip(questions_mutipleChoice, range(1, length_mutipleChoice+1)) %}
-   {{i}}
-   {{question_mutipleChoice.questionText}}</br>
-   <input type="radio" value="{{question_mutipleChoice.mutipleChoice.choice1}}" name="{{question_mutipleChoice.mutipleChoice.id}}" id="" required/>A. {{question_mutipleChoice.mutipleChoice.choice1}}
+{% extends "base.html" %}
+{% block content %}
 
-   <input type="radio" value="{{question_mutipleChoice.mutipleChoice.choice2}}" name="{{question_mutipleChoice.mutipleChoice.id}}" id="" required/>B. {{question_mutipleChoice.mutipleChoice.choice2}}
-   <input type="radio" value="{{question_mutipleChoice.mutipleChoice.choice3}}" name="{{question_mutipleChoice.mutipleChoice.id}}" id="" required/>C. {{question_mutipleChoice.mutipleChoice.choice3}}
-   <input type="radio" value="{{question_mutipleChoice.mutipleChoice.choice4}}" name="{{question_mutipleChoice.mutipleChoice.id}}" id="" required/>D. {{question_mutipleChoice.mutipleChoice.choice4}}
+<div class="container">
+
+ <div class="row">
+<form action="{{url_for('student.checkExampaper', student_id=student_id, exampaper_id=exampaper_id, class_id=class_id)}}" name="exampaper" method="post" accept-charset="utf-8">
+    <div class="row">
+        <h2>一、选择题（每题5分）</h2>
+        <hr>
+    <ol>
+   {% for question_mutipleChoice, i in zip(questions_mutipleChoice, range(1, length_mutipleChoice+1)) %}
+   <li>
+   {{question_mutipleChoice.questionText}}</br>
+   </li>
+   <div>
+   <input type="radio" value="{{question_mutipleChoice.mutipleChoice.choice1}}" name="{{question_mutipleChoice.mutipleChoice.id}}" id="" required/>(A){{question_mutipleChoice.mutipleChoice.choice1}}
+   </div>
+   <div>
+       
+   <input type="radio" value="{{question_mutipleChoice.mutipleChoice.choice2}}" name="{{question_mutipleChoice.mutipleChoice.id}}" id="" required/>(B){{question_mutipleChoice.mutipleChoice.choice2}}
+   </div>
+   <div>
+   <input type="radio" value="{{question_mutipleChoice.mutipleChoice.choice3}}" name="{{question_mutipleChoice.mutipleChoice.id}}" id="" required/>(C){{question_mutipleChoice.mutipleChoice.choice3}}
+       
+   </div>
+   <div>
+   <input type="radio" value="{{question_mutipleChoice.mutipleChoice.choice4}}" name="{{question_mutipleChoice.mutipleChoice.id}}" id="" required/>(D){{question_mutipleChoice.mutipleChoice.choice4}}
+       
+   </div>
+
        
    {% endfor %}
     
-    <h1>一、填空题</h1>
+    </ol>
+    </div>
+
+<div class="row">
+    <h2>二、填空题（每题5分）</h2>
+    <hr>
+        <ol>
    {% for question_fillInTheBlank, i in zip(questions_fillInTheBlank, range(1, length_fillInTheBlank+1)) %}
-   {{i}}
+   <li>
    {{question_fillInTheBlank.questionText}}</br>
    <input type="text" name="{{question_fillInTheBlank.fillInTheBlanks.id}}" id="" required/></br>
+   </li>
        
    {% endfor %}
+        </ol>
+    </div>
    <button type="submit">提交</button>
 </form>
+ </div>
+</div>
 <script charset="utf-8">
     function formValidate(){
         if(document.form.)
     } 
 </script>
+    
+{% endblock %}
+

@@ -7,6 +7,8 @@ entity Subject{
     teacher_id : INTEGER
     classes_id : INTEGER
     chapter_id : INTEGER
+    exam_paper_id: INTEGER
+    question_id: INTEGER
 }
 
 
@@ -25,6 +27,8 @@ entity ExamPaper{
     --
     name : STRING
     tag : STRING
+    teacher_id : INTEGER
+    subject_id : INTEGER
     chapter_id : INTEGER
     question_id : INTEGER
     grade_id : INTEGER
@@ -38,8 +42,12 @@ entity Question{
     questionText : STRING
     difficulty : FLOAT
     type : STRING
+    teacher_id : INTEGER
+    subject_id : INTEGER
     examPaper_id : INTEGER
     chapter_id : INTEGER
+    mutiple_choice_id : INTEGER
+    fill_in_the_blanks_id : INTEGER
 }
 
 entity MutipleChoice{
@@ -50,14 +58,14 @@ entity MutipleChoice{
     choice3 : STRING
     choice4 : STRING
     answer : STRING
-    questionId : INTEGER
+    question_id : INTEGER
 }
 
 entity FillInTheBlanks{
     id : INTEGER
     ..
     answer : STRING
-    questionId : INTEGER
+    question_id : INTEGER
 }
 
 
@@ -95,6 +103,8 @@ entity Teacher{
     teacher_id : INTEGER
     classes_id : INTEGER
     subject_id : INTEGER
+    exam_paper_id : INTEGER
+    question_id : INTEGER
 }
 
 
@@ -116,7 +126,6 @@ entity Student{
     id : INTEGER
     ..
     student_id : INTEGER
-    user_id : INTEGER
     grade : INTEGER
     classes_id : INTEGER
 }
