@@ -14,7 +14,7 @@
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <div class="container-fluid">
             <div class="navitem">
-                <a class="navbar-brand" href="#">Navbar</a>
+                <a class="navbar-brand" href="#">课堂互动答题系统</a>
             </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sToggler" aria-controls="sToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -78,17 +78,10 @@
                             </li>
                         {% endif %}
                         {% if current_user.role.name == 'student' %}
-                            <li class="nav-item dropdown">
-                                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                          科目管理
-                                      </a>
-                                      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                        <li> 
-                                <a class="dropdown-item" href="{{url_for('teacher.addSubject', teacher_id=current_user.id)}}">添加科目</a>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{url_for('student.studentIndex', student_id=current_user.id)}}">班级查看</a>
                             </li>
-                                        <li><a class="dropdown-item" href="#">查看科目</a></li>
-                                      </ul>
-                                    </li>
+                            <li class="nav-item">
                         {% endif %}
                         </ul>
                     <ul class="navbar-nav ms-auto">

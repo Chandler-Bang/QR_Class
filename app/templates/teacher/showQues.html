@@ -13,7 +13,7 @@
 {% block form %}
 
 
-<form action="{% block url %}{{url_for('teacher.showQues', teacher_id=teacher_id)}}{% endblock %}" id="form" method="post" accept-charset="utf-8">
+<form class="bg-dark" action="{% block url %}{{url_for('teacher.showQues', teacher_id=teacher_id)}}{% endblock %}" id="form" method="post" accept-charset="utf-8">
         科目
     <select name="ques_subject" id="subject" onchange="checkChapter()">
         {% if subjects %}
@@ -190,7 +190,7 @@ function addOption(){
                          <td>{{question.difficulity}}</td>
                          <td>
                              {% block operation scoped %}
-                                 <a href="{{url_for('teacher.questionDelete', question_id=question.id, teacher_id=teacher_id)}}">删除</a>
+                                 <a class="btn btn-primary" href="{{url_for('teacher.questionDelete', question_id=question.id, teacher_id=teacher_id)}}">删除</a>
                              {% endblock %}
                              
                          </td>

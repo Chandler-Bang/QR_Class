@@ -16,12 +16,11 @@ addQuestion
  
 {% block item %}
     <div>
-        <p>
-            <select name="select" id="select">
+        题目类型
+            <select class="form-control" name="select" id="select">
                 <option value="选择题" selected>选择题</option>
                 <option value="填空题">填空题</option>
             </select>
-        </p>
         
     </div>
     {% endblock %}
@@ -31,39 +30,39 @@ addQuestion
     <div>
         题目描述
     </div>
-    <input type="text" name="questionText" id="" value="" required>
+    <input class="form-control" type="text" name="questionText" id="" value="" required>
     <div id="choice">
        <p>
        A </br>
-       <input type="text" name="choice1" id="choice1" value="" >
+       <input class="form-control" type="text" name="choice1" id="choice1" value="" >
        </p> 
        <p>
        B </br>
-       <input type="text" name="choice2" id="choice2" value="" >
+       <input class="form-control" type="text" name="choice2" id="choice2" value="" >
        </p>
        <p>
        C </br>
-       <input type="text" name="choice3" id="choice3" value="" >
+       <input class="form-control" type="text" name="choice3" id="choice3" value="" >
        </p>
        <p>
        D </br>
-       <input type="text" name="choice4" id="choice4" value="" >
+       <input class="form-control" type="text" name="choice4" id="choice4" value="" >
        </p>
     </div>
     <div>
         <p>
         答案 </br>
-        <input type="text" name="answer" id="answer" value="" required>
+        <input class="form-control" type="text" name="answer" id="answer" value="" required>
         </p>
     </div>
     <div>
         <p>
             难度<br/>
-            <input type="text" name="difficulty" id="difficulty" value="" required>
+            <input class="form-control" type="text" name="difficulty" id="difficulty" value="" required>
         </p>
     </div>
         <p>
-        <button type="submit">提交</button>
+        <button class="btn btn-primary" type="submit">提交</button>
         </p>
         
     </div>

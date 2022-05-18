@@ -67,7 +67,7 @@ def showClasses(teacher_id=0):
     length = len(classes)
     return render_template(
             'teacher/showClasses.html', classes=classes, length=length,
-            zip=zip 
+            zip=zip, Subject=Subject
             )
 
 
@@ -130,14 +130,7 @@ def addChapter(subject_id=0, teacher_id=0):
         chapter.subject = subject
         db.session.add(chapter)
         db.session.commit()
-        print(chapter.id)
-        return redirect(
-                url_for(
-                    'teacher.showQuestion',
-                    chapter_id=chapter.id,
-                    teacher_id=teacher_id
-                    )
-                )
+        flash('添加成功')
     return render_template(
             'teacher/addChapter.html',
             form=form, chapter=chapter, teacher_id=teacher_id

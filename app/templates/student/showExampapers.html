@@ -20,14 +20,16 @@
             {% endblock %}
             <td>
                 {% block operation scoped %}
-                <a href="{{url_for('student.checkExampaper', student_id=student_id, exampaper_id=exampaper.id, class_id=class_id)}}" >查看试卷</a>
+                <a class="btn btn-primary" href="{{url_for('student.checkExampaper', student_id=student_id, exampaper_id=exampaper.id, class_id=class_id)}}" >查看试卷</a>
                 <a href="{{url_for('student.listExampaper', student_id=0, exampaper_id=exampaper.id, class_id=class_id)}}" >查看试卷</a>
                 {% endblock %}
             </td>
         </tr>
         {% endfor %}
     {% else %}
+    <h3 class="my-auto bg-dark">
         暂无试卷信息
+    </h3>
     {% endif %}
     
 {% endblock %}

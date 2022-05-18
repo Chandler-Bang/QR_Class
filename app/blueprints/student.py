@@ -5,7 +5,7 @@ from flask import render_template
 from flask_login import current_user
 from app.forms import StudentLogin
 from app.models import Classes
-from app.models import ExamPaper
+from app.models import ExamPaper, Subject
 from app.models import UserInfo, Student, StudentGrade
 import  pymysql
 
@@ -22,7 +22,7 @@ def studentIndex(student_id=0):
             'student/showClasses.html',
             classes=classes, length=length,
             student_id=student_id, zip=zip,
-            student=student, len=len
+            student=student, len=len, Subject=Subject
             )
 
 

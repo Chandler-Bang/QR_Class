@@ -9,11 +9,12 @@
 {% block tableHeadLine %}
     <td>#</td>
     <td>班级编号</td>
+    <td>学科名</td>
     <td>学期</td>
     <td>班级最多人数</td>
-    <td>操作</td>
     {% block tableHeadLineItem %}
     {% endblock %}
+    <td>操作</td>
     
 {% endblock %}
 
@@ -21,9 +22,11 @@
 {% block tableContent %}
        {% if length %}
             {% for classObject,i in zip(classes,range(1,length+1)) %}
+                {%set subject = Subject.query.get(classObject.subject_id) %}
                   <tr>
                     <td>{{i}}</td>
                     <td>{{classObject.classes_id}}</td>
+                    <td>{{subject.subjectName}}</td>
                     <td>{{classObject.terms}}</td>
                     <td>{{classObject.studentCount}}</td>
                     {% block tableItems scoped %}
