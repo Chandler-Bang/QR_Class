@@ -293,7 +293,7 @@ def listExamPaper(teacher_id=0):
     classes_exampaper = ExamPaperToClasses()
     teacher = Teacher().query.filter_by(teacher_id=teacher_id).first()
     classes = teacher.classes
-    classes_exampaper.classes_select.choices += [(r.classes_id, r.classes_id) for r in classes]
+    classes_exampaper.classes_select.choices += [(r.id, r.classes_id) for r in classes]
     exampapers = teacher.exampapers
     length = len(exampapers)
     return render_template(
@@ -391,15 +391,17 @@ def exampaperToClasses(teacher_id=0, exampaper_id=0):
     from app.models import db
     form = ExamPaperToClasses()
     exampaper = ExamPaper().query.get(exampaper_id)
-    print(form.classes_select.data)
-    print(form.validate_on_submit())
     classes_id = form.classes_select.data
-    classes = Classes().query.filter_by(classes_id=classes_id).first()
+    classes = Classes().query.get(classes_id)
     exampaper.classes.append(classes)
     db.session.add(exampaper)
     db.session.commit()
     flash('发布成功')
-    return redirect(redirect_url())
+    return render_template(
+            "teacher/generateQR.html",
+            class_id=classes_id,
+            exampaper_id=exampaper_id
+            )
 
 
 @teacher_bp.route(

@@ -22,7 +22,7 @@ questionAnswer
                                         {{choice.label}} 
                                     </div>
                                 {% endfor %}
-                                {{form.submit(class="btn btn-primary d-flex mx-auto mt-4")}}
+                                {{form.submit(class="btn btn-primary d-flex mx-auto mt-4", id="sub")}}
                              </div>
                          </div>
                      </div>
@@ -37,4 +37,11 @@ questionAnswer
     list-style-type: none;
 }
 </style>
+<script charset="utf-8">
+    button = document.getElementById("sub");
+    button.onclick = function(){
+        button.setAttribute("disabled", "disabled");
+
+    }
+</script>
 {% endblock %}

@@ -14,7 +14,7 @@
     <div class="form-label">
         科目
     </div>
-    <select class="form-control" name="{% block subjectName %}exampaper_subject{% endblock %}" id="subject" onchange="checkChapter()">
+    <select class="form-select" name="{% block subjectName %}exampaper_subject{% endblock %}" id="subject" onchange="checkChapter()">
         {% if subjects %}
             {% for subject in subjects %}
                     <option value="{{subject.id}}">{{subject.subjectName}}</option>
@@ -27,7 +27,7 @@
     <div class="form-label">
         章节
     </div>
-    <select name="{% block chapterName %}exampaper_chapter{% endblock %}" class="form-control" id="chapter" >
+    <select name="{% block chapterName %}exampaper_chapter{% endblock %}" class="form-select" id="chapter" >
         {% if subjects %}
             {% if chapters %}
                 {% for chapter in chapters %}
@@ -79,7 +79,6 @@ function checkChapter(){
     }else{
         const subject_value = document.getElementById('subject').value;
         request.onreadystatechange=addOption;
-        console.log(subject_value);
         const url = "/teacher/{{teacher_id}}/returnChapter/"+subject_value;
         request.open("GET", url, true);
         request.send();
