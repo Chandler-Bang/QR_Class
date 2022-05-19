@@ -1,0 +1,33 @@
+@startuml Usecase
+left to right direction
+skinparam actorStyle awesome
+skinparam RoundCorner 25
+actor Teacher as tc
+    usecase "老   师   端" as tcsys
+    usecase "   登   录   系   统" as sys <<$archimate/device>>
+    usecase " 展   示   主   页" as page
+    usecase "  添   加   科   目" as sub
+    usecase "  教   学   班  管   理" as cl
+    usecase "题   库   管   理" as ques
+    usecase "试   卷   管   理" as exam
+    usecase "任   务   发   布" as task
+actor Student as st
+    usecase "学   生   端" as stsys
+    usecase "加  入  或  退  出  教  学  班" as classes
+    usecase "在  线  答  题" as quesAns
+tc --> sys 
+st --> sys
+sys -- page
+page -- tcsys
+page -- stsys 
+tcsys -- sub
+tcsys -- cl
+tcsys -- ques
+tcsys -- exam
+tcsys -- task
+stsys -- classes
+stsys -- quesAns
+note top of page
+取  决  于  用  户 的  类  型
+end note
+@enduml

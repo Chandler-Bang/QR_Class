@@ -1,0 +1,87 @@
+{% extends "teacher/testExamPaper.html" %}
+{% block title %}
+addQuestion
+{% endblock %}
+
+<h1>学科名</h1>
+<h2>章节</h1>
+<hr>
+{% block formHead %}
+添加问题
+{% endblock %}
+
+{% block url %}
+{{url_for('teacher.addQues', teacher_id=teacher_id)}}
+{% endblock %}
+ 
+{% block item %}
+    <div>
+        题目类型
+            <select class="form-select" name="select" id="select">
+                <option value="选择题" selected>选择题</option>
+                <option value="填空题">填空题</option>
+            </select>
+        
+    </div>
+    {% endblock %}
+    {% block subjectName %}question_subject{% endblock %}
+    {% block chapterName %}question_chapter{% endblock %}
+    {% block items %}
+    <div>
+        题目描述
+    </div>
+    <input class="form-control" type="text" name="questionText" id="" value="" required>
+    <div id="choice">
+       <p>
+       A </br>
+       <input class="form-control" type="text" name="choice1" id="choice1" value="" >
+       </p> 
+       <p>
+       B </br>
+       <input class="form-control" type="text" name="choice2" id="choice2" value="" >
+       </p>
+       <p>
+       C </br>
+       <input class="form-control" type="text" name="choice3" id="choice3" value="" >
+       </p>
+       <p>
+       D </br>
+       <input class="form-control" type="text" name="choice4" id="choice4" value="" >
+       </p>
+    </div>
+    <div>
+        <p>
+        答案 </br>
+        <input class="form-control" type="text" name="answer" id="answer" value="" required>
+        </p>
+    </div>
+    <div>
+        <p>
+            难度<br/>
+            <input class="form-control" type="text" name="difficulty" id="difficulty" value="" required>
+        </p>
+    </div>
+        <p>
+        <button class="btn btn-primary" type="submit">提交</button>
+        </p>
+        
+    </div>
+<script>
+    var select = document.getElementById("select");
+    select.onclick=function(){
+        var optionIndex = select.selectedIndex;
+        var selected =  select.options[optionIndex].value;
+        if (selected === "选择题")
+            choice.style.display="block";
+        else 
+            choice.style.display="none";
+    }
+</script>
+{% endblock %}
+<hr>
+{% for qst in que %}
+    <p>
+        {{qst.questionText}}
+    </p>
+{% endfor %}
+

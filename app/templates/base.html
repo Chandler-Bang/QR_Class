@@ -14,7 +14,7 @@
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
         <div class="container-fluid">
             <div class="navitem">
-                <a class="navbar-brand" href="#">Navbar</a>
+                <a class="navbar-brand" href="#">课堂互动答题系统</a>
             </div>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sToggler" aria-controls="sToggler" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -22,16 +22,68 @@
         <div class="collapse navbar-collapse" id="sToggler">
                 {% if current_user.is_authenticated %}
                     <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('teacher.addSubject', teacher_id=current_user.id)}}">添加科目</a>
+                        {% if current_user.role.name == 'teacher' %}
+                            <li class="nav-item dropdown">
+                                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                          科目管理
+                                      </a>
+                                      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <li> 
+                                <a class="dropdown-item" href="{{url_for('teacher.addSubject', teacher_id=current_user.id)}}">添加科目</a>
+                            </li>
+                            <li><a class="dropdown-item" href="{{url_for('teacher.showSubject', teacher_id=current_user.id)}}">查看科目</a></li>
+                                      </ul>
+                                    </li>
+                            <li class="nav-item dropdown">
+                                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                          教学班管理
+                                      </a>
+                                      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                        <li> 
+                                <a class="dropdown-item" href="{{url_for('teacher.teacherIndex', teacher_id=current_user.id)}}">添加教学班</a>
+                            </li>
+                            <li><a class="dropdown-item" href="{{url_for('teacher.showClasses', teacher_id=current_user.id)}}">查看教学班</a></li>
+                                      </ul>
+                                    </li>
+                            <li class="nav-item dropdown">
+                                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                          试卷管理
+                                      </a>
+                                      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item" href="{{url_for('teacher.testExamPaper', teacher_id=current_user.id)}}" >添加试卷</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('teacher.controlAnswer', teacher_id=current_user.id)}}">开始答题</a>
+                        <li><a class="dropdown-item" href="{{url_for('teacher.listExamPaper', teacher_id=current_user.id)}}">查看试卷</a></li>
+                                        <li><a class="dropdown-item" href="#">发布试卷</a></li>
+                                      </ul>
+                                    </li>
+                            <li class="nav-item dropdown">
+                                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                          题目管理
+                                      </a>
+                                      <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li>
+                            <a class="dropdown-item" href="{{url_for('teacher.addQues', teacher_id=current_user.id)}}" >添加题目</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{url_for('auth.questionAnswer')}}">答题界面</a>
-                        </li>
-                    </ul>
+                        <li><a class="dropdown-item" href="{{url_for('teacher.showQues', teacher_id=current_user.id)}}">查看题目</a></li>
+                                      </ul>
+                                    </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{url_for('teacher.controlAnswer', teacher_id=current_user.id)}}">开始答题</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{url_for('auth.questionAnswer', timestamp=0)}}">答题界面</a>
+                            </li>
+                            <li class="nav-item">
+                            </li>
+                        {% endif %}
+                        {% if current_user.role.name == 'student' %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{url_for('student.studentIndex', student_id=current_user.id)}}">班级查看</a>
+                            </li>
+                            <li class="nav-item">
+                        {% endif %}
+                        </ul>
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
                             <a class="nav-link" href="{{url_for('auth.logout')}}">注销</a>
@@ -66,7 +118,15 @@
 {% block content %}
 
 {% endblock%}
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </script>
+<style type="text/css" media="screen">
+body {
+    background-image: url("{{url_for('static',filename="images/easy.png")}}");
+    background-size: 100%;
+    color: white;
+    }
+</style>
 </body>
 </html>

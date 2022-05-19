@@ -1,0 +1,53 @@
+{% extends "showbase.html" %}
+
+
+<head>
+{% block title %}
+    showChapter
+{% endblock %}
+    
+</head>
+{% block content %}
+<h2 class="my-auto bg-dark">
+学科名：{{subject.subjectName}}
+</h2>
+<table class="table table-dark table-hover">
+    <thead>
+        <tr>
+            {% block tableHeadLine %}
+                <th scope="col">#</th>
+                <th scope="col">章节</th>
+                <th scope="col">操作</th>
+            {% endblock %}
+          
+        </tr>
+    </thead>
+    <tbody>
+        {% block tableContent %}
+            {% if length %}
+                 {% for chapter,i in zip(chapters,range(1,length+1)) %}
+                       <tr>
+                         <td>{{i}}</td>
+                         <td>{{chapter.chapterName}}</td>
+                         <td>
+                             {% block operation scoped %}
+                             <a class=" btn btn-primary " id="del" onclick="return delAlert()" href="{{url_for('teacher.chapterDelete', teacher_id=teacher_id, chapter_id=chapter.id)}}" >删除</a>
+                             {% endblock %}
+                         </td>
+                       </tr>
+                 {% endfor %}
+            {% endif %}
+        {% endblock %}
+    </tbody>
+</table>
+<script charset="utf-8">
+ function delAlert(){
+   if (confirm( '确定要执行此操作吗?' ))
+   {
+     return true ;
+   }
+   return false ;
+
+ }
+</script>
+{% endblock %}
