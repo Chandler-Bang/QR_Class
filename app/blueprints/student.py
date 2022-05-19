@@ -2,12 +2,26 @@ from app.blueprints import student_bp
 from flask import redirect, request
 from flask import url_for, flash
 from flask import render_template
-from flask_login import current_user
+from flask_login import current_user, login_required
 from app.forms import StudentLogin
 from app.models import Classes
 from app.models import ExamPaper, Subject
 from app.models import UserInfo, Student, StudentGrade
 import  pymysql
+
+
+@student_bp.before_request
+@login_required
+def login_commit():
+    if current_user.is_student():
+        pass
+    else:
+        return render_template('error.html')
+
+
+@student_bp.errorhandler(401)
+def unauthorized(error):
+    return render_template('error.html'), 401
 
 
 @student_bp.route(

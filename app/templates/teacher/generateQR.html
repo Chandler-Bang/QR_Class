@@ -5,11 +5,13 @@
     <div class="container mt-5">
         <div class="row mt-5 justify-content-center">
             <div class="col-md-4 rounded border-danger">
+
                             
-                <img src="{{qrcode(url_for('student.listExampaper', student_id=0, exampaper_id=exampaper_id, class_id=class_id))}}" ></img>
+                <img src="{{qrcode("http://123.123.123.123:8000/teacher/"+class_id+"/"+exampaper_id)}}" id="img"></img>
 
             </div>
         </div>
+                <img src="{{qrcode(url_for('student.listExampaper', student_id=0, exampaper_id=exampaper_id, class_id=class_id))}}" id="img"></img>
     </div>
 </section>
 {% endblock %}
