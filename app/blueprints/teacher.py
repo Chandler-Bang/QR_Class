@@ -397,6 +397,8 @@ def exampaperToClasses(teacher_id=0, exampaper_id=0):
     db.session.add(exampaper)
     db.session.commit()
     flash('发布成功')
+    classes_id = str(classes_id)
+    exampaper_id = str(exampaper_id)
     return render_template(
             "teacher/generateQR.html",
             class_id=classes_id,
