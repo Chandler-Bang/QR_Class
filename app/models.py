@@ -90,7 +90,7 @@ class Teacher(db.Model):
 
 class Subject(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    subjectName = db.Column(db.String(10), nullable=False)
+    subjectName = db.Column(db.String(30), nullable=False)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
     # 学科和班级一对多
     classes = db.relationship('Classes', cascade="all")
@@ -191,7 +191,7 @@ chapter_question = db.Table(
 
 class Chapter(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    chapterName = db.Column(db.String(5), nullable=False)
+    chapterName = db.Column(db.String(40), nullable=False)
     subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'))
     exampapers = db.relationship(
             "ExamPaper", cascade="all", back_populates="chapters"
