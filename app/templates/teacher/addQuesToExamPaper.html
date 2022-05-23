@@ -4,6 +4,9 @@
 addQuesToExamPaper
 {% endblock %}
 
+{% block url %}
+{{url_for('teacher.addQuesToExamPaper', teacher_id=teacher_id, exampaper_id=exampaper_id)}}
+{% endblock %}
 
 
 
