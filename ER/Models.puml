@@ -138,7 +138,6 @@ entity StudentGrade{
     classes_id : INTEGER
     examPaper_id : INTEGER
     grade : INTEGER
-    student_id : INTEGER
     examPaper_id : INTEGER
 }
 

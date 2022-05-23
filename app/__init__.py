@@ -51,6 +51,7 @@ def register_user(app):
         role_teacher = Role.query.filter_by(name='teacher').first()
         role_student = Role.query.filter_by(name='student').first()
         j = 123
+        k = 200
         for i in range(10):
             teacher = Teacher()
             student = Student()
@@ -58,9 +59,10 @@ def register_user(app):
                     username=str(j), role_id=role_teacher.id
             )
             student_info = UserInfo(
-                    username=str(j), role_id=role_student.id
+                    username=str(k), role_id=role_student.id
             )
             j += 1
+            k += 1
             teacher.user = teacher_info
             student.user = student_info
             teacher_info.generate_password('123456')

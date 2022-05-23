@@ -37,27 +37,33 @@ def login_commit():
 
 
 @teacher_bp.route(
-        '/index',
+        '/addClasses',
         methods=['GET', 'POST']
     )
 def teacherIndex(teacher_id=0):
     from app.models import db
     form = AddClasses(teacher_id)
     if form.validate_on_submit():
-        subject = Subject.query.filter_by(teacher_id=teacher_id)
-        subject_id = subject.filter_by(
-                subjectName=form.subjectName.data
-                ).first().id
-        classes = Classes(
-                classes_id=form.classes_id.data,
-                terms=form.terms.data,
-                studentCount=form.studentCount.data,
-                subject_id=subject_id,
-                teacher_id=teacher_id
-        )
-        db.session.add(classes)
-        db.session.commit()
-        return redirect(url_for('teacher.showClasses', teacher_id=teacher_id))
+
+        if Classes.query.filter_by(classes_id=form.classes_id.data).first():
+            flash('该教学班已存在')
+        else:
+            subject = Subject.query.filter_by(teacher_id=teacher_id)
+            subject_id = subject.filter_by(
+                    subjectName=form.subjectName.data
+                    ).first().id
+            classes = Classes(
+                    classes_id=form.classes_id.data,
+                    terms=form.terms.data,
+                    studentCount=form.studentCount.data,
+                    subject_id=subject_id,
+                    teacher_id=teacher_id
+            )
+            db.session.add(classes)
+            db.session.commit()
+            return redirect(url_for('teacher.showClasses', teacher_id=teacher_id))
+    else:
+        flash("请检查是否科目信息不完整")
     return render_template('teacher/addClasses.html', form=form, redirect_url=redirect_url)
 
 
@@ -78,18 +84,21 @@ def addSubject(teacher_id=0):
     subject = Subject.query.all()
     if form.validate_on_submit():
         data = form.subject.data
-        subject = Subject(
-                subjectName=data,
-                teacher_id=teacher_id
-                )
-        db.session.add(subject)
-        db.session.commit()
-        id = Subject.query.filter_by(subjectName=data)[0].id
-        return redirect(
-                url_for(
-                    'teacher.addChapter', subject_id=id, teacher_id=teacher_id
+        if Subject.query.filter_by(subjectName=data).first():
+            flash('科目已存在')
+        else:
+            subject = Subject(
+                    subjectName=data,
+                    teacher_id=teacher_id
                     )
-                )
+            db.session.add(subject)
+            db.session.commit()
+            id = Subject.query.filter_by(subjectName=data)[0].id
+            return redirect(
+                    url_for(
+                        'teacher.addChapter', subject_id=id, teacher_id=teacher_id
+                        )
+                    )
     return render_template(
             'teacher/addSubject.html',
             form=form, subject=subject, teacher_id=teacher_id
@@ -125,12 +134,16 @@ def addChapter(subject_id=0, teacher_id=0):
     chapter = Chapter.query.filter_by(subject_id=subject_id)
     if form.validate_on_submit():
         data = form.chapter.data
-        chapter = Chapter(chapterName=data)
-        subject = Subject.query.get(subject_id)
-        chapter.subject = subject
-        db.session.add(chapter)
-        db.session.commit()
-        flash('添加成功')
+        if Chapter.query.filter_by(chapterName=data).first():
+            flash('章节名已存在')
+        else:
+            chapter = Chapter(chapterName=data)
+            subject = Subject.query.get(subject_id)
+            chapter.subject = subject
+            db.session.add(chapter)
+            db.session.commit()
+            flash('添加成功')
+            return redirect(url_for('teacher.showChapter', teacher_id=teacher_id, subject_id=subject_id))
     return render_template(
             'teacher/addChapter.html',
             form=form, chapter=chapter, teacher_id=teacher_id

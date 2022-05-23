@@ -56,7 +56,7 @@ class Permission(db.Model):
 
 class UserInfo(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(10))
+    username = db.Column(db.String(10), unique=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
     role = db.relationship("Role", back_populates="users")
@@ -90,7 +90,7 @@ class Teacher(db.Model):
 
 class Subject(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    subjectName = db.Column(db.String(10), nullable=False)
+    subjectName = db.Column(db.String(30), nullable=False, unique=True)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
     # 学科和班级一对多
     classes = db.relationship('Classes', cascade="all")
@@ -191,7 +191,7 @@ chapter_question = db.Table(
 
 class Chapter(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    chapterName = db.Column(db.String(5), nullable=False)
+    chapterName = db.Column(db.String(40), nullable=False, unique=True)
     subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'))
     exampapers = db.relationship(
             "ExamPaper", cascade="all", back_populates="chapters"
@@ -225,8 +225,8 @@ exampaper_question = db.Table(
 
 class ExamPaper(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120), unique=True)
-    tag = db.Column(db.String(120))
+    name = db.Column(db.String(120), nullable=False, unique=True)
+    tag = db.Column(db.String(120), nullable=False)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
     subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'))
     chapter_id = db.Column(db.Integer, db.ForeignKey('chapter.id'))
