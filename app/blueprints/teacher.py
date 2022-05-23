@@ -80,11 +80,15 @@ def showClasses(teacher_id=0):
 @teacher_bp.route('/addSubject', methods=['GET', 'POST'])
 def addSubject(teacher_id=0):
     from app.models import db
+    subject = Teacher.query.get(teacher_id).subjects
+    subject_name = []
+    if subject:
+        for i in subject:
+            subject_name.append(i.subjectName)
     form = AddSubjectForm()
-    subject = Subject.query.all()
     if form.validate_on_submit():
         data = form.subject.data
-        if Subject.query.filter_by(subjectName=data).first():
+        if data in subject_name:
             flash('科目已存在')
         else:
             subject = Subject(
@@ -130,11 +134,18 @@ def subjectDelete(subject_id=0, teacher_id=0):
 @teacher_bp.route('/addChapter/<int:subject_id>', methods=['GET', 'POST'])
 def addChapter(subject_id=0, teacher_id=0):
     from app.models import db
+    subject = Subject.query.get(subject_id)
     form = AddChapterForm()
-    chapter = Chapter.query.filter_by(subject_id=subject_id)
+    chap = Subject.query.get(subject_id).chapters
+    chap_name = []
+    if chap:
+        for i in chap:
+            chap_name.append(i.chapterName)
+    chapter = Chapter.query.filter_by(subject_id=subject_id).all()
+    length = len(chapter)
     if form.validate_on_submit():
         data = form.chapter.data
-        if Chapter.query.filter_by(chapterName=data).first():
+        if data in chap_name:
             flash('章节名已存在')
         else:
             chapter = Chapter(chapterName=data)
@@ -146,7 +157,8 @@ def addChapter(subject_id=0, teacher_id=0):
             return redirect(url_for('teacher.showChapter', teacher_id=teacher_id, subject_id=subject_id))
     return render_template(
             'teacher/addChapter.html',
-            form=form, chapter=chapter, teacher_id=teacher_id
+            form=form, chapter=chapter, teacher_id=teacher_id,
+            length=length, zip=zip, subject=subject
             )
 
 
@@ -271,6 +283,11 @@ def addExamPaper(chapter_id=0, teacher_id=0):
 @teacher_bp.route('/testExamPaper', methods=['GET', 'POST'])
 def testExamPaper(teacher_id=0):
     from app.models import db
+    exams = Teacher.query.get(teacher_id).exampapers
+    exam_name = []
+    if exams:
+        for i in exampapers:
+            exam_name.append(i.name)
     subjects = Subject.query.filter_by(teacher_id=teacher_id).all()
     if subjects:
         chapters = subjects[0].chapters
@@ -279,7 +296,7 @@ def testExamPaper(teacher_id=0):
     if request.method == 'POST':
         chapter_id = request.form['exampaper_chapter']
         name = request.form['exampaper_name']
-        if ExamPaper.query.filter_by(name=name).first():
+        if name in exam_name:
             flash('试卷名称已经存在，请重新输入')
         elif chapter_id == " ":
             flash("你需要先去创建完整的科目信息")

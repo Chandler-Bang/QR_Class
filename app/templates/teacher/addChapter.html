@@ -4,9 +4,8 @@ addChapter
 {% endblock %}
 
 {% block pagehead %}
-    添加章节
+添加章节({{subject.subjectName}})
 {% endblock %}
-
 
 {% block form %}
 <form action="" method="post">
@@ -19,6 +18,27 @@ addChapter
         {{form.submit(class="ms-3 btn btn-primary")}}
     </div>
 </form>
+
+{% endblock %}
+{% block show %}
+<table style="width:50%; margin:0 auto;" class="my-5 table table-dark table-hover">
+    <thead>
+      <tr>
+      <tr>
+        <th style="width:40%" scope="col">#</th>
+        <th style="width:60%" scope="col">章节名</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for chap,i in zip(chapter, range(1, length+1)) %}
+        <tr>
+            <td>{{i}}</td>
+            <td>{{chap.chapterName}}</td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
 {% endblock %}
     
 
