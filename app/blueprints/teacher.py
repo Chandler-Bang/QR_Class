@@ -286,7 +286,7 @@ def testExamPaper(teacher_id=0):
     exams = Teacher.query.get(teacher_id).exampapers
     exam_name = []
     if exams:
-        for i in exampapers:
+        for i in exams:
             exam_name.append(i.name)
     subjects = Subject.query.filter_by(teacher_id=teacher_id).all()
     if subjects:
@@ -321,10 +321,11 @@ def testExamPaper(teacher_id=0):
 @teacher_bp.route('/listExamPaper')
 def listExamPaper(teacher_id=0):
     classes_exampaper = ExamPaperToClasses()
-    teacher = Teacher().query.filter_by(teacher_id=teacher_id).first()
+    teacher = Teacher().query.get(teacher_id)
     classes = teacher.classes
     classes_exampaper.classes_select.choices += [(r.id, r.classes_id) for r in classes]
     exampapers = teacher.exampapers
+    print(teacher.exampapers)
     length = len(exampapers)
     return render_template(
             'teacher/listExamPaper.html',
@@ -474,14 +475,47 @@ def addQuesToExamPaper(
         exampaper_id=0, teacher_id=0
         ):
     teacher = Teacher.query.get(teacher_id)
-    exampaper = ExamPaper.query.filter_by(id=exampaper_id).first()
+    exampaper = ExamPaper.query.get(exampaper_id)
+    ques = Question.query.filter_by(teacher_id=teacher_id)
     questions = teacher.questions #是否需要传值得考量
+    subjects = Subject.query.filter_by(teacher_id=teacher_id).all()
+    if subjects:
+        chapters = "-1"
+    else:
+        chapters = 0
+    if request.method == 'POST':
+        chapter_id = request.form['ques_chapter']
+        subject_id = request.form['ques_subject']
+        ques_type = request.form['ques_type']
+        ques_difficulty_start = request.form['ques_difficulty_start']
+        ques_difficulty_end = request.form['ques_difficulty_end']
+        ques = ques.filter(
+                Question.difficulity >= ques_difficulty_start,
+                Question.difficulity <= ques_difficulty_end
+                )
+        if ques_type == "mutiple":
+            ques = ques.filter_by(type="选择题")
+        elif ques_type == "fill":
+            ques = ques.filter_by(type="填空题")
+        if subject_id == " " or chapter_id == " ":
+            flash("你需要先去创建完整的科目信息")
+        elif subject_id == "-1":  # 科目为所有时
+            chapters = "-1"
+            questions = ques.all()
+        elif chapter_id == "-1":  # 科目已选，章节为所有时
+            questions = ques.filter_by(subject_id=subject_id)
+        else:  # 科目章节均已选定
+            questions = ques.filter(
+                    Question.chapters.any(Chapter.id == chapter_id)
+                    ).all()
     length = len(questions)
     return render_template(
         'teacher/addQuesToExamPaper.html',
         questions=questions,
         length=length, zip=zip, exampaper_id=exampaper_id,
+        subjects=subjects,
         exampaper=exampaper,
+        chapters=chapters,
         teacher_id=teacher_id
     )
 
