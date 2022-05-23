@@ -286,7 +286,7 @@ def testExamPaper(teacher_id=0):
     exams = Teacher.query.get(teacher_id).exampapers
     exam_name = []
     if exams:
-        for i in exampapers:
+        for i in exams:
             exam_name.append(i.name)
     subjects = Subject.query.filter_by(teacher_id=teacher_id).all()
     if subjects:
@@ -578,6 +578,7 @@ def examPaperDelete(exampaper_id=0, teacher_id=0):
 @teacher_bp.route('/controlAnswer', methods=['GET', 'POST'])
 def controlAnswer(teacher_id=0):
     timestamp = int(time.time())
+    timestamp = str(timestamp)
     return render_template(
             'teacher/startAnswer.html',
             teacher_id=teacher_id,

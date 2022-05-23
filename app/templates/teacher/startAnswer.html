@@ -21,7 +21,7 @@
       var myChart = echarts.init(document.getElementById('main'),'dark');
 function generateQR(){
         img = document.getElementById('num');
-        img.src="{{qrcode(url_for('auth.questionAnswer', timestamp=timestamp))}}";
+        img.src="{{qrcode('http://182.92.226.238:8000/auth/'+timestamp)}}";
 
 
     }

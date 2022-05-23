@@ -40,6 +40,7 @@ def questionAnswer(timestamp=0):
                     )
         db.session.add(record)
         db.session.commit()
+        print(123213123)
     return render_template('questionAnswer.html', form=form)
 
 
