@@ -612,6 +612,7 @@ def examPaperDelete(exampaper_id=0, teacher_id=0):
 @teacher_bp.route('/controlAnswer', methods=['GET', 'POST'])
 def controlAnswer(teacher_id=0):
     timestamp = int(time.time())
+    timestamp = str(timestamp)
     return render_template(
             'teacher/startAnswer.html',
             teacher_id=teacher_id,
