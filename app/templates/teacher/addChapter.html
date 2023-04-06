@@ -1,25 +1,44 @@
-{% extends "base.html" %}
+{% extends "teacher/teacherLogin.html" %}
 {% block title %}
 addChapter
 {% endblock %}
 
+{% block pagehead %}
+添加章节({{subject.subjectName}})
+{% endblock %}
 
-{% block content %}
+{% block form %}
 <form action="" method="post">
     {{form.hidden_tag()}}
     <div>
-        {{form.chapter.label()}}
-        {{form.chapter}}<br/>
+        {{form.chapter.label(class="form-label")}}
+        {{form.chapter(class="form-control")}}<br/>
     </div>
     <div>
-        {{form.submit}}
+        {{form.submit(class="ms-3 btn btn-primary")}}
     </div>
 </form>
-<hr>
-显示已经添加的章节
-{% for chapters in chapter %}
-    <p>
-       <a href="{{url_for('teacher.showQuestion', chapter_id=chapters.id, teacher_id=teacher_id)}}">{{chapters.chapterName}}</a>
-    </p>
-{% endfor %}
+
 {% endblock %}
+{% block show %}
+<table style="width:50%; margin:0 auto;" class="my-5 table table-dark table-hover">
+    <thead>
+      <tr>
+      <tr>
+        <th style="width:40%" scope="col">#</th>
+        <th style="width:60%" scope="col">章节名</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for chap,i in zip(chapter, range(1, length+1)) %}
+        <tr>
+            <td>{{i}}</td>
+            <td>{{chap.chapterName}}</td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>
+{% endblock %}
+    
+

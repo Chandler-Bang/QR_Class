@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="448px" preserveAspectRatio="none" style="width:822px;height:448px;background:#FFFFFF;" version="1.1" viewBox="0 0 822 448" width="822px" zoomAndPan="magnify"><defs><filter height="300%" id="f4jip8c0izeie" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[0dc3a655c088fd6165ba4a37cb8fe693]
+entity tc--><ellipse cx="34.5" cy="208" fill="#FEFECE" filter="url(#f4jip8c0izeie)" rx="16" ry="16" style="stroke:#A80036;stroke-width:1.5;"/><path d="M34.5,228 C38.5,228 41.5,228 45.5,224 C53.5,224 61.5,232 61.5,240 L61.5,244 C61.5,248 57.5,252 53.5,252 L15.5,252 C11.5,252 7.5,248 7.5,244 L7.5,240 C7.5,232 15.5,224 23.5,224 C27.5,228 30.5,228 34.5,228 " fill="#FEFECE" filter="url(#f4jip8c0izeie)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="6" y="266.4951">Teacher</text><ellipse cx="542.8836" cy="188.1478" fill="#FEFECE" filter="url(#f4jip8c0izeie)" rx="45.8836" ry="14.6478" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="48" x="515.8836" y="191.8954">老   师   端</text><ellipse cx="181.6509" cy="286.9315" fill="#FEFECE" filter="url(#f4jip8c0izeie)" rx="58.6509" ry="21.9315" style="stroke:#A80036;stroke-width:1.5;"/><image height="16" width="16" x="168.9854" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAATklEQVR4Xs2RsQ0AIAjA+P9o46KD0iqJi01YSh0MEb/RioPoAsAWpYAtSgFblAK2KAVsUQrYohS0nXe+jXJcDrTRBZDaJAosb/Y/VuedDqytNZXIcSA4AAAAAElFTkSuQmCC" y="266.4968"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="148.4854" y="294.4919">登   录   系   统</text><ellipse cx="368.7349" cy="286.947" fill="#FEFECE" filter="url(#f4jip8c0izeie)" rx="62.7349" ry="14.947" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="333.7349" y="290.6945">展   示   主   页</text><ellipse cx="729.5594" cy="21.2119" fill="#FEFECE" filter="url(#f4jip8c0izeie)" rx="64.0594" ry="15.2119" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="696.5594" y="24.9594">添   加   科   目</text><ellipse cx="729.6952" cy="87.839" fill="#FEFECE" filter="url(#f4jip8c0izeie)" rx="69.6952" ry="16.339" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="84" x="688.6952" y="91.5866">教   学   班  管   理</text><ellipse cx="729.313" cy="154.7771" fill="#FEFECE" filter="url(#f4jip8c0izeie)" rx="60.813" ry="14.7771" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="692.313" y="158.5247">题   库   管   理</text><ellipse cx="729.313" cy="219.7771" fill="#FEFECE" filter="url(#f4jip8c0izeie)" rx="60.813" ry="14.7771" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="692.313" y="223.5247">试   卷   管   理</text><ellipse cx="729.313" cy="284.7771" fill="#FEFECE" filter="url(#f4jip8c0izeie)" rx="60.813" ry="14.7771" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="692.313" y="288.5247">任   务   发   布</text><!--MD5=[5d4b2633e4791513268a2604d42d888f]
+entity st--><ellipse cx="34.5" cy="322" fill="#FEFECE" filter="url(#f4jip8c0izeie)" rx="16" ry="16" style="stroke:#A80036;stroke-width:1.5;"/><path d="M34.5,342 C38.5,342 41.5,342 45.5,338 C53.5,338 61.5,346 61.5,354 L61.5,358 C61.5,362 57.5,366 53.5,366 L15.5,366 C11.5,366 7.5,362 7.5,358 L7.5,354 C7.5,346 15.5,338 23.5,338 C27.5,342 30.5,342 34.5,342 " fill="#FEFECE" filter="url(#f4jip8c0izeie)" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="55" x="7" y="380.4951">Student</text><ellipse cx="542.8836" cy="354.1478" fill="#FEFECE" filter="url(#f4jip8c0izeie)" rx="45.8836" ry="14.6478" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="48" x="515.8836" y="357.8954">学   生   端</text><ellipse cx="729.6107" cy="354.0221" fill="#FEFECE" filter="url(#f4jip8c0izeie)" rx="80.6107" ry="18.5221" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="120" x="668.1726" y="357.3348">加  入  或  退  出  教  学  班</text><ellipse cx="729.3543" cy="422.2084" fill="#FEFECE" filter="url(#f4jip8c0izeie)" rx="51.8543" ry="14.7084" style="stroke:#A80036;stroke-width:1.5;"/><text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="56" x="698.3543" y="425.956">在  线  答  题</text><path d="M300,224 L300,224.1328 A12.5,12.5 0 0 0 312.5,236.6328 L364.5,236.6328 L368.5,271.74 L372.5,236.6328 L424.5,236.6328 A12.5,12.5 0 0 0 437,224.1328 L437,221.5 L427,211.5 L312.5,211.5 A12.5,12.5 0 0 0 300,224 " fill="#FBFB77" filter="url(#f4jip8c0izeie)" style="stroke:#A80036;stroke-width:1.0;"/><path d="M427,211.5 L427,215.25 A6.25,6.25 0 0 0 433.25,221.5 L437,221.5 L427,211.5 " fill="#FBFB77" style="stroke:#A80036;stroke-width:1.0;"/><text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="116" x="306" y="228.5669">取  决  于  用  户 的  类  型</text><!--MD5=[75078abb0daf6113048a97e11007904a]
+link tc to sys--><path d="M63.11,240.86 C83.61,248.91 111.98,260.07 135.7,269.39 " fill="none" id="tc-to-sys" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="140.38,271.23,133.4645,264.2174,135.7259,269.4026,130.5407,271.664,140.38,271.23" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[ba5d0ec13d6dfb93a98aae85d0ce4d49]
+link st to sys--><path d="M63.11,333.14 C83.61,325.09 111.98,313.93 135.7,304.61 " fill="none" id="st-to-sys" style="stroke:#A80036;stroke-width:1.0;"/><polygon fill="#A80036" points="140.38,302.77,130.5407,302.336,135.7259,304.5974,133.4645,309.7826,140.38,302.77" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[7563afc3d069e24603247738e6114988]
+link sys to page--><path d="M240.02,287 C260.92,287 284.6,287 305.84,287 " fill="none" id="sys-page" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[f8ed5314cb9b1568854dded793491aae]
+link page to tcsys--><path d="M398.42,273.69 C410.5,267.92 424.58,260.92 437,254 C467.67,236.93 501.85,214.84 522.64,201.04 " fill="none" id="page-tcsys" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[1bf8f824019d09fa41c575fd9eea17ba]
+link page to stsys--><path d="M402.35,299.76 C434.41,312.21 482.71,330.97 513.28,342.84 " fill="none" id="page-stsys" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[92fc8f11a3bb3d910b27af8e2dc1c43e]
+link tcsys to sub--><path d="M551.93,173.5 C567.35,146.54 603.82,88.33 649,54 C660.9,44.96 675.63,37.95 689.17,32.76 " fill="none" id="tcsys-sub" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[6a750cf781b2096f9c7d021a1bcf67d5]
+link tcsys to cl--><path d="M562.82,174.9 C583.43,160.87 617.72,138.39 649,122 C662.83,114.75 678.54,107.78 692.33,102.06 " fill="none" id="tcsys-cl" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[4d5a3417efb650a9866750ef90d63cf3]
+link tcsys to ques--><path d="M583.58,180.92 C611.74,175.88 649.76,169.08 679.79,163.71 " fill="none" id="tcsys-ques" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[a535cdb2ec783e16ea2843c27d3f14b8]
+link tcsys to exam--><path d="M583.58,194.86 C611.53,199.71 649.19,206.24 679.11,211.43 " fill="none" id="tcsys-exam" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[fc4c8077bb854228a386d72eaee3fd2d]
+link tcsys to task--><path d="M563.6,201.21 C584.31,214.86 618.17,236.32 649,252 C663.79,259.52 680.7,266.72 695.11,272.47 " fill="none" id="tcsys-task" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[dd16b49c329be5d7248ea290790ecdbf]
+link stsys to classes--><path d="M589.13,354 C607.16,354 628.47,354 648.94,354 " fill="none" id="stsys-classes" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[777de29fcef22aebab539863d06c5c3a]
+link stsys to quesAns--><path d="M573.64,364.93 C607.56,377.43 662.87,397.81 697.39,410.53 " fill="none" id="stsys-quesAns" style="stroke:#A80036;stroke-width:1.0;"/><!--MD5=[e810809a71e890eb1fd35f3657fadba3]
+@startuml Usecase
+left to right direction
+skinparam actorStyle awesome
+skinparam RoundCorner 25
+actor Teacher as tc
+    usecase "老   师   端" as tcsys
+    usecase "   登   录   系   统" as sys <<$archimate/device>>
+    usecase " 展   示   主   页" as page
+    usecase "  添   加   科   目" as sub
+    usecase "  教   学   班  管   理" as cl
+    usecase "题   库   管   理" as ques
+    usecase "试   卷   管   理" as exam
+    usecase "任   务   发   布" as task
+actor Student as st
+    usecase "学   生   端" as stsys
+    usecase "加  入  或  退  出  教  学  班" as classes
+    usecase "在  线  答  题" as quesAns
+tc - -> sys 
+st - -> sys
+sys - - page
+page - - tcsys
+page - - stsys 
+tcsys - - sub
+tcsys - - cl
+tcsys - - ques
+tcsys - - exam
+tcsys - - task
+stsys - - classes
+stsys - - quesAns
+note top of page
+取  决  于  用  户 的  类  型
+end note
+@enduml
+
+PlantUML version 1.2022.0(Wed Jan 12 00:16:42 CST 2022)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>

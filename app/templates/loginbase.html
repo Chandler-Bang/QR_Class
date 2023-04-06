@@ -16,7 +16,7 @@
  <hr>
     <div class="container mt-5">
         <div class="row mt-5 justify-content-center">
-            <div class="col-md-4 border rounded border-primary">
+            <div class="col-md-4 border rounded border-danger">
                 <h2>
                     {% block formHead %}
                     
@@ -37,5 +37,6 @@
         </div>
     </div>
 </section>
-
+{% block show %}
+{% endblock %}
 {% endblock %}

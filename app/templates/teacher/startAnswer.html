@@ -1,18 +1,27 @@
 {% extends "base.html" %}
-
 {% block content %}
-<button id="startSubmit" onclick="generateQR()">开始答题</button>
-<button id="endSubmit" onclick="loadXMLDoc()">结束答题</button>
-<a class="btn btn-primary" href="{{url_for('teacher.deleteRecord', teacher_id=teacher_id)}}" >清除数据</a>
+<section class="text-center">
+ <hr>
+    <div class="container mt-5">
+        <div class="row mt-5 justify-content-center">
+            <div class="col-md-4 rounded border-danger">
+                            
+<button id="startSubmit" class="btn btn-primary" onclick="generateQR()">开始答题</button>
+<button id="endSubmit" class="btn btn-danger" onclick="loadXMLDoc()">结束答题</button>
+<a class="btn btn-warning" href="{{url_for('teacher.deleteRecord', teacher_id=teacher_id)}}" >清除数据</a>
 <img id="num" ></img>
-<div id="main" style="width: 600px;height:400px;"></div>
+<div id="main" style="width: 400px;height:400px;"></div>
 
+            </div>
+        </div>
+    </div>
+</section>
 <script type='text/javascript'>
 
-      var myChart = echarts.init(document.getElementById('main'));
+      var myChart = echarts.init(document.getElementById('main'),'dark');
 function generateQR(){
         img = document.getElementById('num');
-        img.src="{{qrcode('/auth/')}}";
+        img.src="{{qrcode(url_for('auth.questionAnswer', timestamp=timestamp))}}";
 
 
     }
@@ -45,11 +54,11 @@ function loadXMLDoc()
 
 var option = {
         title: {
-          text: 'ECharts Getting Started Example'
+          text: '学生答题情况统计'
         },
         tooltip: {},
         legend: {
-          data: ['sales']
+          data: ['计数']
         },
         xAxis: {
           data: keys
@@ -57,7 +66,7 @@ var option = {
         yAxis: {},
         series: [
           {
-            name: 'sales',
+            name: '计数',
             type: 'bar',
             data: values
           }

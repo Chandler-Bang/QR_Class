@@ -1,0 +1,130 @@
+{% extends 'loginbase.html' %}
+{% block formHead %}
+    添加试卷
+{% endblock %}
+
+{% block form %}
+<form action="{% block url %}{{url_for('teacher.testExamPaper', teacher_id=teacher_id)}}{% endblock %}" id="form" method="post" accept-charset="utf-8">
+    {% block item %}
+    <div class="form-label">
+        试卷名称
+    </div>
+    <input type="text" class="form-control" name="exampaper_name" id="name" value="" required>
+    {% endblock %}
+    <div class="form-label">
+        科目
+    </div>
+    <select class="form-select" name="{% block subjectName %}exampaper_subject{% endblock %}" id="subject" onchange="checkChapter()">
+        {% if subjects %}
+            {% for subject in subjects %}
+                    <option value="{{subject.id}}">{{subject.subjectName}}</option>
+            {% endfor %}
+        {% else %}
+        <option value=" ">暂无科目</option>
+        {% endif %}
+        
+    </select>
+    <div class="form-label">
+        章节
+    </div>
+    <select name="{% block chapterName %}exampaper_chapter{% endblock %}" class="form-select" id="chapter" >
+        {% if subjects %}
+            {% if chapters %}
+                {% for chapter in chapters %}
+                    <option value="{{chapter.id}}">{{chapter.chapterName}}</option>
+                {% endfor %}
+                
+            {% else %}
+                <option value=" ">暂无章节</option>
+            {% endif %}
+        {% else %}
+        <option value=" ">暂无科目</option>
+        {% endif %}
+    </select>
+    {% block items %}
+    <div class="form-label">
+        标签
+    </div>
+    <input type="text" class="form-control" name="exampaper_tag" id="name" value="" required>
+    <button class="btn btn-primary my-3" type="submit">创建</button>
+        
+    {% endblock %}
+    
+    
+</form>
+<script charset="utf-8">
+function createRequest()
+{
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		//  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+		xmlhttp=new XMLHttpRequest();
+	}
+	else
+	{
+		// IE6, IE5 浏览器执行代码
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+    return xmlhttp;
+}
+    
+
+    const subject = document.getElementById('subject')
+    
+function checkChapter(){
+    request = createRequest()
+    if (request == null){
+        alert('Unable to create request');
+    }else{
+        const subject_value = document.getElementById('subject').value;
+        request.onreadystatechange=addOption;
+        const url = "/teacher/{{teacher_id}}/returnChapter/"+subject_value;
+        request.open("GET", url, true);
+        request.send();
+    }
+}
+
+
+function addOption(){
+    if (request.readyState == 4){
+        if(request.status == 200){
+                const select = document.getElementById('chapter');
+                while (select.firstChild) {
+                  select.removeChild(select.firstChild);
+                }
+                if (request.responseText == "0"){
+                    var optionObj = document.createElement("option");
+                    optionObj.value = " ";
+                    optionObj.innerHTML = "暂无章节";
+                    select.appendChild(optionObj);
+                }else{
+                    var data = JSON.parse(request.responseText);
+                    const keys = [];
+                    const values = [];
+                    for(const key in data){
+                       keys.push(key);
+                       values.push(data[key]);
+                       var content = data[key]['chapterName'];
+                       var value = data[key]['id'];
+                       if (content){
+                            var optionObj = document.createElement("option");
+                            optionObj.value = value;
+                            optionObj.innerHTML = content;
+                            select.appendChild(optionObj);
+                       }
+                       
+                    }
+                }
+        }
+            else
+            {
+                alert("Something is wrong!");
+            }
+
+    }
+}
+</script>
+
+
+{% endblock %}

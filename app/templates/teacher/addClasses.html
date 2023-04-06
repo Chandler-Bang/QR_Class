@@ -7,7 +7,6 @@
 
 
 {% block button %}
-<a class="btn btn-primary" href="{{redirect_url()}}" >返回</a>
 {% endblock %}
 
 
@@ -28,7 +27,7 @@
                 {{form.classes_id.label(class="form-label")}}
                 {{form.classes_id(class="form-control")}}
                 {{form.subjectName.label(class="form-label")}}
-                {{form.subjectName(class="form-control")}}
+                {{form.subjectName(class="form-select")}}
                 {{form.terms.label(class="form-label")}}
                 {{form.terms(class="form-select text-center")}}
                 {{form.studentCount.label(class="form-label")}}

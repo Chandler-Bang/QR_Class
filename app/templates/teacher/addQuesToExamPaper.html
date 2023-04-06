@@ -1,0 +1,28 @@
+{% extends "teacher/showQues.html" %}
+
+{% block title %}
+addQuesToExamPaper
+{% endblock %}
+
+{% block url %}
+{{url_for('teacher.addQuesToExamPaper', teacher_id=teacher_id, exampaper_id=exampaper_id)}}
+{% endblock %}
+
+
+
+{% block operation %}
+{% if question in exampaper.questions %}
+<a class="btn btn-primary" id="deleteFromExam" href="{{url_for('teacher.questionDeleteFromExamPaper', exampaper_id=exampaper_id, question_id=question.id, teacher_id=teacher_id)}}">从试卷中删除</a>
+    <span class="text-success">
+已添加进试卷
+    </span>
+{% else %}
+<a class="btn btn-primary" id="addToExam" href="{{url_for('teacher.questionAddToExamPaper', exampaper_id=exampaper_id, question_id=question.id, teacher_id=teacher_id)}}">加入试卷</a>
+<span class="text-danger">
+    未加入试卷
+</span>
+{% endif %}
+
+{% endblock %}
+
+

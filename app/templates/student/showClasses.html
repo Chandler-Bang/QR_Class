@@ -15,12 +15,15 @@
 
 {% block operation %}
 {% if student in classObject.students %}
-<a href="{{url_for('student.deleteFromClass', student_id=student_id, class_id=classObject.id)}}" >退出班级</a> 
+<a class="btn btn-primary" href="{{url_for('student.deleteFromClass', student_id=student_id, class_id=classObject.id)}}" >退出班级</a> 
+<a class="btn btn-primary" href="{{url_for('student.showClassesInfo', student_id=student_id, class_id=classObject.id)}}" >查看班级任务</a>
+<span class="text-success">
 已在该教学班中 
-<a href="{{url_for('student.showClassesInfo', student_id=student_id, class_id=classObject.id)}}" >查看班级任务</a>
+</span>
 {% else %}
-<a href="{{url_for('student.addToClass', student_id=student_id, class_id=classObject.id)}}" >加入班级</a> 
-尚未加入该教学班
+<a class="btn btn-primary" href="{{url_for('student.addToClass', student_id=student_id, class_id=classObject.id)}}" >加入班级</a> 
+<span class="text-danger">尚未加入该教学班</span>
+
 {% endif %}
 
 {% endblock %}

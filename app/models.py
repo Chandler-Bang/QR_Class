@@ -56,7 +56,7 @@ class Permission(db.Model):
 
 class UserInfo(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(10))
+    username = db.Column(db.String(10), unique=True)
     password_hash = db.Column(db.String(128))
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
     role = db.relationship("Role", back_populates="users")
@@ -84,15 +84,25 @@ class Teacher(db.Model):
     classes = db.relationship('Classes')
     # 老师和学科是一对多
     subjects = db.relationship('Subject')
+    exampapers = db.relationship('ExamPaper')
+    questions = db.relationship('Question')
 
 
 class Subject(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
-    subjectName = db.Column(db.String(10), nullable=False)
+    subjectName = db.Column(db.String(30), nullable=False)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
     # 学科和班级一对多
-    classes = db.relationship('Classes')
-    chapters = db.relationship('Chapter', back_populates="subject")
+    classes = db.relationship('Classes', cascade="all")
+    chapters = db.relationship(
+            'Chapter', cascade="all", back_populates="subject"
+            )
+    exampapers = db.relationship(
+            'ExamPaper', cascade="all", back_populates="subjects"
+            )
+    questions = db.relationship(
+            'Question', cascade="all", back_populates="subjects"
+            )
 
 
 # 学生和班级是多对多
@@ -161,7 +171,7 @@ class StudentGrade(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     grade = db.Column(db.Integer)
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'))
-    classes_id = db.Column(db.Integer, db.ForeignKey('classes.id'))
+    classes_id = db.Column(db.String(20), db.ForeignKey('classes.classes_id'))
     exampaper_id = db.Column(db.Integer, db.ForeignKey('exam_paper.id'))
     # 成绩和学生、试卷是一对多
     classes = db.relationship('Classes', back_populates='grade')
@@ -181,12 +191,24 @@ chapter_question = db.Table(
 
 class Chapter(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    chapterName = db.Column(db.String(5), nullable=False)
+    chapterName = db.Column(db.String(40), nullable=False)
     subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'))
-    exampapers = db.relationship("ExamPaper", back_populates="chapters")
+    exampapers = db.relationship(
+            "ExamPaper", cascade="all", back_populates="chapters"
+            )
     subject = db.relationship('Subject', back_populates="chapters")
-    questions = db.relationship('Question', secondary=chapter_question,
-                                back_populates='chapters')
+    questions = db.relationship(
+            'Question',
+            secondary=chapter_question,
+            cascade="all",
+            back_populates='chapters'
+            )
+
+    def serialize(self):
+        return{
+                'id': self.id,
+                'chapterName': self.chapterName
+                }
 
 
 # 试卷和问题是多对多
@@ -203,9 +225,13 @@ exampaper_question = db.Table(
 
 class ExamPaper(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(120))
+    name = db.Column(db.String(120), nullable=False)
+    tag = db.Column(db.String(120), nullable=False)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
+    subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'))
     chapter_id = db.Column(db.Integer, db.ForeignKey('chapter.id'))
-    tag = db.Column(db.String(120))
+    teachers = db.relationship("Teacher", back_populates="exampapers")
+    subjects = db.relationship("Subject", back_populates="exampapers")
     chapters = db.relationship("Chapter", back_populates="exampapers")
     questions = db.relationship(
         'Question', secondary=exampaper_question, back_populates='exampapers'
@@ -218,6 +244,10 @@ class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     questionText = db.Column(db.Text(254), nullable=False)
     difficulity = db.Column(db.Float(2), nullable=False)
+    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'))
+    subject_id = db.Column(db.Integer, db.ForeignKey('subject.id'))
+    teachers = db.relationship('Teacher', back_populates="questions")
+    subjects = db.relationship('Subject', back_populates="questions")
     exampapers = db.relationship(
         'ExamPaper', secondary=exampaper_question, back_populates='questions'
     )
@@ -231,6 +261,15 @@ class Question(db.Model):
     fillInTheBlanks = db.relationship(
             'FillInTheBlanks', cascade='all', uselist=False
             )
+
+    def serialize(self):
+        return{
+                'id': self.id,
+                'questionText': self.questionText,
+                'difficulity': self.difficulity,
+                'type': self.type,
+                'chapters': self.chapters
+                }
 
 
 class MutipleChoice(db.Model):
